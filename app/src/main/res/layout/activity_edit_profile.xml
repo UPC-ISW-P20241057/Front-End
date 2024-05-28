@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/main"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".controllers.activities.EditProfileActivity">
+
+  <TextView
+    android:id="@+id/textView17"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="16dp"
+    android:fontFamily="@font/palanquin_dark"
+    android:text="@string/medibox"
+    android:textColor="#5D46EF"
+    android:textSize="36sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+    android:id="@+id/textView18"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="36dp"
+    android:layout_marginTop="80dp"
+    android:fontFamily="@font/palanquin_dark"
+    android:text="Profile"
+    android:textSize="26sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <ImageView
+    android:id="@+id/imageView4"
+    android:layout_width="220dp"
+    android:layout_height="194dp"
+    android:layout_marginStart="88dp"
+    android:layout_marginTop="128dp"
+    android:layout_marginEnd="103dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/profile_mockup" />
+
+  <TextView
+    android:id="@+id/textView19"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="36dp"
+    android:layout_marginTop="300dp"
+    android:fontFamily="@font/palanquin_dark"
+    android:text="Name:"
+    android:textColor="#5E5E5E"
+    android:textSize="20sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <EditText
+    android:id="@+id/editTextText"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="36dp"
+    android:layout_marginTop="5dp"
+    android:ems="10"
+    android:fontFamily="@font/palanquin_dark"
+    android:hint="Name"
+    android:inputType="text"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+  <TextView
+    android:id="@+id/textView20"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="36dp"
+    android:layout_marginTop="10dp"
+    android:fontFamily="@font/palanquin_dark"
+    android:text="LastName:"
+    android:textSize="20sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+
+  <EditText
+    android:id="@+id/editTextText2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="36dp"
+    android:layout_marginTop="5dp"
+    android:ems="10"
+    android:fontFamily="@font/palanquin_dark"
+    android:hint="LastName"
+    android:inputType="text"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+  <TextView
+    android:id="@+id/textView21"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="36dp"
+    android:layout_marginTop="10dp"
+    android:fontFamily="@font/palanquin_dark"
+    android:text="Email:"
+    android:textSize="20sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+
+  <EditText
+    android:id="@+id/editTextTextEmailAddress"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="36dp"
+    android:layout_marginTop="5dp"
+    android:ems="10"
+    android:fontFamily="@font/palanquin_dark"
+    android:hint="Email"
+    android:inputType="textEmailAddress"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+  <TextView
+    android:id="@+id/textView22"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="36dp"
+    android:layout_marginTop="10dp"
+    android:fontFamily="@font/palanquin_dark"
+    android:text="Cellphone"
+    android:textSize="20sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
+
+  <EditText
+    android:id="@+id/editTextPhone"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="36dp"
+    android:layout_marginTop="5dp"
+    android:ems="10"
+    android:fontFamily="@font/palanquin_dark"
+    android:hint="Cellphone"
+    android:inputType="phone"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView22" />
+
+  <Button
+    android:id="@+id/button3"
+    android:layout_width="134dp"
+    android:layout_height="61dp"
+    android:layout_marginStart="50dp"
+    android:layout_marginTop="8dp"
+    android:backgroundTint="#7E69F5"
+    android:fontFamily="@font/palanquin_dark"
+    android:text="Save"
+    android:textSize="20sp"
+    app:cornerRadius="13dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
+
+  <Button
+    android:id="@+id/button4"
+    android:layout_width="134dp"
+    android:layout_height="61dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="50dp"
+    android:backgroundTint="#E86868"
+    android:fontFamily="@font/palanquin_dark"
+    android:text="Cancel"
+    android:textSize="20sp"
+    app:cornerRadius="13dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
+</androidx.constraintlayout.widget.ConstraintLayout>

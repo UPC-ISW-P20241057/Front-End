@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controllers.activities.LoginActivity">
+
+  <TextView
+    android:id="@+id/textView23"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="16dp"
+    android:fontFamily="@font/palanquin_dark"
+    android:text="@string/medibox"
+    android:textColor="#5D46EF"
+    android:textSize="36sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <androidx.cardview.widget.CardView
+    android:layout_width="356dp"
+    android:layout_height="550dp"
+    android:layout_marginStart="27dp"
+    android:layout_marginTop="120dp"
+    app:cardCornerRadius="50dp"
+    app:cardElevation="3dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+      android:id="@+id/textView24"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="130dp"
+      android:layout_marginTop="20dp"
+      android:fontFamily="@font/palanquin_dark"
+      android:text="Log In"
+      android:textSize="32sp" />
+
+    <TextView
+      android:id="@+id/textView25"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="25dp"
+      android:layout_marginTop="100dp"
+      android:fontFamily="@font/palanquin_dark"
+      android:text="User"
+      android:textColor="#6A788E"
+      android:textSize="24sp" />
+
+    <EditText
+      android:id="@+id/editTextText3"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="15dp"
+      android:layout_marginTop="140dp"
+      android:ems="10"
+      android:fontFamily="@font/palanquin_dark"
+      android:hint="Email or phone number"
+      android:inputType="text"
+      android:textSize="18sp" />
+
+    <TextView
+      android:id="@+id/textView26"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="25dp"
+      android:layout_marginTop="230dp"
+      android:fontFamily="@font/palanquin_dark"
+      android:text="Password"
+      android:textColor="#6A788E"
+      android:textSize="24sp" />
+
+    <EditText
+      android:id="@+id/editTextTextPassword"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="15dp"
+      android:layout_marginTop="280dp"
+      android:ems="10"
+      android:fontFamily="@font/palanquin_dark"
+      android:hint="Password"
+      android:inputType="textPassword" />
+
+    <Button
+      android:id="@+id/button5"
+      android:layout_width="131dp"
+      android:layout_height="58dp"
+      android:layout_marginStart="110dp"
+      android:layout_marginTop="350dp"
+      android:backgroundTint="#5D46EF"
+      android:fontFamily="@font/palanquin_dark"
+      android:text="Log In"
+      android:textColor="#FFFFFF"
+      android:textSize="20sp"
+      app:cornerRadius="13dp" />
+
+    <TextView
+      android:id="@+id/textView27"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="110dp"
+      android:layout_marginTop="420dp"
+      android:fontFamily="@font/palanquin_dark"
+      android:text="I forgot my password" />
+
+    <TextView
+      android:id="@+id/textView28"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="90dp"
+      android:layout_marginTop="450dp"
+      android:fontFamily="@font/palanquin_dark"
+      android:text="You do not have an account?" />
+
+    <TextView
+      android:id="@+id/textView29"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="150dp"
+      android:layout_marginTop="480dp"
+      android:fontFamily="@font/palanquin_dark"
+      android:text="Sign Up"
+      android:textColor="#5D46EF" />
+  </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
