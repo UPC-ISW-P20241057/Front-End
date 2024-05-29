@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<AuthenticationResponse>, p1: Throwable) {
-                Toast.makeText(this@LoginActivity, "Error al iniciar sesión.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, call.toString(), Toast.LENGTH_SHORT).show()
             }
         })
     }

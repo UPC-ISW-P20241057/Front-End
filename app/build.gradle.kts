@@ -16,7 +16,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    configurations.implementation{
+        exclude(group = "com.intellij", module = "annotations")
+    }
     buildTypes {
         release {
             isMinifyEnabled = false

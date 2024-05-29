@@ -12,9 +12,9 @@ object SharedMethods {
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         return formatter.format(date)
     }
-    private fun retrofitBuilder(): Retrofit {
+    fun retrofitBuilder(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://localhost:/44304")
+            .baseUrl("https://medibox-gateway-devel.azurewebsites.net/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
