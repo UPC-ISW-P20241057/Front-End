@@ -52,7 +52,7 @@
       android:textSize="24sp" />
 
     <EditText
-      android:id="@+id/etEmail"
+      android:id="@+id/etLoginEmail"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="15dp"
@@ -64,7 +64,7 @@
       android:textSize="18sp" />
 
     <TextView
-      android:id="@+id/tvPassword"
+      android:id="@+id/tvLoginPassword"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="25dp"
@@ -75,7 +75,7 @@
       android:textSize="24sp" />
 
     <EditText
-      android:id="@+id/etPassword"
+      android:id="@+id/etLoginPassword"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="15dp"
