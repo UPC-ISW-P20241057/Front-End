@@ -86,17 +86,18 @@
       android:inputType="textPassword" />
 
     <Button
-      android:id="@+id/btnLogin"
-      android:layout_width="131dp"
-      android:layout_height="58dp"
-      android:layout_marginStart="110dp"
-      android:layout_marginTop="350dp"
-      android:backgroundTint="#5D46EF"
-      android:fontFamily="@font/palanquin_dark"
-      android:text="@string/login"
-      android:textColor="#FFFFFF"
-      android:textSize="20sp"
-      app:cornerRadius="13dp" />
+        android:id="@+id/btnLogin"
+        android:layout_width="131dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="350dp"
+        android:backgroundTint="#5D46EF"
+        android:fontFamily="@font/palanquin_dark"
+        android:onClick="signIn"
+        android:text="@string/login"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:cornerRadius="13dp" />
 
     <TextView
       android:id="@+id/tvForgetPwd"
