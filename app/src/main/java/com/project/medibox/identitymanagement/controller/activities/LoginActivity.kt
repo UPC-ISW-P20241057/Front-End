@@ -1,4 +1,4 @@
-package com.project.medibox.controllers.activities
+package com.project.medibox.identitymanagement.controller.activities
 
 import android.os.Bundle
 import android.view.View

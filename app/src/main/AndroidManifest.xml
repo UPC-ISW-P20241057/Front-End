@@ -13,7 +13,7 @@
         android:theme="@style/Theme.MediBox"
         tools:targetApi="31">
         <activity
-            android:name=".controllers.activities.LoginActivity"
+            android:name=".identitymanagement.controller.activities.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".controllers.activities.EditProfileActivity"
