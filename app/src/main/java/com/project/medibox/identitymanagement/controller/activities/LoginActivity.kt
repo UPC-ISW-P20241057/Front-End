@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_customize_alarm)
+        setContentView(R.layout.activity_login)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -49,6 +49,7 @@ class LoginActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     if (response.body()!!.role == "User") {
+                        AppDatabase.getInstance(this@LoginActivity).getLoginCredentialsDao().cleanTable()
                         AppDatabase.getInstance(this@LoginActivity).getLoginCredentialsDao().insertCredentials(
                             LoginCredentials(null, etLoginEmail.text.toString(), etLoginPassword.text.toString())
                         )
