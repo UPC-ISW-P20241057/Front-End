@@ -16,6 +16,9 @@
         android:theme="@style/Theme.MediBox"
         tools:targetApi="31">
         <activity
+            android:name=".controllers.activities.CustomizeAlarmActivity"
+            android:exported="false" />
+        <activity
             android:name=".controllers.activities.RegisterSuccesfullyActivity"
             android:exported="false" />
         <activity

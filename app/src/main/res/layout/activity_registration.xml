@@ -15,7 +15,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/palanquin_dark"
         android:text="@string/medibox"
-        android:textColor="#5D46EF"
+        android:textColor="#7E69F5"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +27,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="80dp"
         android:fontFamily="@font/palanquin_dark"
-        android:text="<<Back"
+        android:text="Go Back"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
