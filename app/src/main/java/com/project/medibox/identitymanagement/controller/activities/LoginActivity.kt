@@ -1,5 +1,6 @@
 package com.project.medibox.identitymanagement.controller.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.project.medibox.R
+import com.project.medibox.controllers.activities.DashboardActivity
 import com.project.medibox.identitymanagement.models.AuthenticationRequest
 import com.project.medibox.identitymanagement.models.AuthenticationResponse
 import com.project.medibox.identitymanagement.models.LoginCredentials
@@ -68,7 +70,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun goToHome(authenticateResponse: AuthenticationResponse) {
-        Toast.makeText(this@LoginActivity, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
         StateManager.authToken = "Bearer ${authenticateResponse.jwtToken}"
         StateManager.loggedUser = User(
             authenticateResponse.id,
@@ -79,5 +80,12 @@ class LoginActivity : AppCompatActivity() {
             authenticateResponse.lastName,
         )
         StateManager.loggedUserId = authenticateResponse.id
+
+        val intent = Intent(this, DashboardActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
     }
 }
