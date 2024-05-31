@@ -46,16 +46,16 @@
     app:layout_constraintTop_toTopOf="parent" />
 
   <ImageView
-    android:id="@+id/imageView3"
-    android:layout_width="220dp"
-    android:layout_height="194dp"
-    android:layout_marginStart="88dp"
-    android:layout_marginTop="128dp"
-    android:layout_marginEnd="103dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:srcCompat="@drawable/profile_mockup" />
+      android:id="@+id/imageView3"
+      android:layout_width="220dp"
+      android:layout_height="194dp"
+      android:layout_marginStart="90dp"
+      android:layout_marginTop="128dp"
+      android:layout_marginEnd="103dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/profile_mockup" />
 
   <TextView
     android:id="@+id/textView9"
