@@ -17,9 +17,9 @@ object SharedMethods {
     }
     private fun retrofitBuilder(): Retrofit {
         val okHttpClient = OkHttpClient.Builder()
-            .readTimeout(60, TimeUnit.SECONDS) // Tiempo de espera para leer
-            .writeTimeout(60, TimeUnit.SECONDS) // Tiempo de espera para escribir
-            .connectTimeout(60, TimeUnit.SECONDS) // Tiempo de espera para conectar
+            .readTimeout(90, TimeUnit.SECONDS) // Tiempo de espera para leer
+            .writeTimeout(90, TimeUnit.SECONDS) // Tiempo de espera para escribir
+            .connectTimeout(90, TimeUnit.SECONDS) // Tiempo de espera para conectar
             .build()
 
         return Retrofit.Builder()

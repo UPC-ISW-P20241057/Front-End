@@ -34,6 +34,10 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
     }
+    fun goToSignUpActivity(view: View) {
+        val intent = Intent(this, RegistrationActivity::class.java)
+        startActivity(intent)
+    }
     fun signIn(view: View){
         val etLoginEmail = findViewById<EditText>(R.id.etLoginEmail)
         val etLoginPassword = findViewById<EditText>(R.id.etLoginPassword)
