@@ -1,5 +1,6 @@
 package com.project.medibox.identitymanagement.controller.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.project.medibox.R
+import com.project.medibox.controllers.activities.DashboardActivity
 import com.project.medibox.identitymanagement.models.AuthenticationRequest
 import com.project.medibox.identitymanagement.models.AuthenticationResponse
 import com.project.medibox.identitymanagement.models.LoginCredentials
@@ -25,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_customize_alarm)
+        setContentView(R.layout.activity_login)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -49,6 +51,7 @@ class LoginActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     if (response.body()!!.role == "User") {
+                        AppDatabase.getInstance(this@LoginActivity).getLoginCredentialsDao().cleanTable()
                         AppDatabase.getInstance(this@LoginActivity).getLoginCredentialsDao().insertCredentials(
                             LoginCredentials(null, etLoginEmail.text.toString(), etLoginPassword.text.toString())
                         )
@@ -67,7 +70,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun goToHome(authenticateResponse: AuthenticationResponse) {
-        Toast.makeText(this@LoginActivity, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
         StateManager.authToken = "Bearer ${authenticateResponse.jwtToken}"
         StateManager.loggedUser = User(
             authenticateResponse.id,
@@ -78,5 +80,12 @@ class LoginActivity : AppCompatActivity() {
             authenticateResponse.lastName,
         )
         StateManager.loggedUserId = authenticateResponse.id
+
+        val intent = Intent(this, DashboardActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
     }
 }
