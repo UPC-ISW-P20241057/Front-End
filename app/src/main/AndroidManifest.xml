@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MediBox"
         tools:targetApi="31">
+
+        <activity
+            android:name=".home.controller.activities.HomeActivity"
+            android:exported="false" />
         <activity
             android:name=".controllers.activities.CustomizeAlarmActivity"
             android:exported="false" />
@@ -30,18 +34,20 @@
         <activity
             android:name=".controllers.activities.EditProfileActivity"
             android:exported="false" />
+        <!-- Eliminar las siguientes líneas -->
+        <!--
         <activity
-            android:name=".controllers.activities.ProfileActivity"
+            android:name=".home.controller.fragments.ProfileFragment"
             android:exported="false" />
         <activity
-            android:name=".controllers.activities.DashboardActivity"
+            android:name=".home.controller.fragments.DashboardFragment"
             android:exported="false" />
+        -->
         <activity
             android:name=".controllers.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

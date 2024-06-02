@@ -1,5 +1,7 @@
 package com.project.medibox.identitymanagement.models
 
+import com.google.gson.annotations.SerializedName
+
 data class RegisterRequest(
     var email: String,
     var password: String,

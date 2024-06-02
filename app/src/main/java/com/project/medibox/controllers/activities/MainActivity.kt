@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.project.medibox.R
+import com.project.medibox.home.controller.activities.HomeActivity
+import com.project.medibox.home.controller.fragments.DashboardFragment
 import com.project.medibox.identitymanagement.controller.activities.LoginActivity
 import com.project.medibox.identitymanagement.models.AuthenticationRequest
 import com.project.medibox.identitymanagement.models.AuthenticationResponse
@@ -39,15 +41,12 @@ class MainActivity : AppCompatActivity() {
                     call: Call<AuthenticationResponse>,
                     response: Response<AuthenticationResponse>
                 ) {
-                    if (response.isSuccessful)
-                    {
+                    if (response.isSuccessful) {
                         goToHome(response.body()!!)
-                    }
-                    else {
+                    } else {
                         AppDatabase.getInstance(this@MainActivity).getLoginCredentialsDao().cleanTable()
                         Toast.makeText(this@MainActivity, "Error al iniciar sesión de forma automatica", Toast.LENGTH_SHORT).show()
                         startLoginActivity()
-
                     }
                 }
 
@@ -56,10 +55,8 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this@MainActivity, "Error al iniciar sesión de forma automatica", Toast.LENGTH_SHORT).show()
                     startLoginActivity()
                 }
-
             })
-        }
-        else startLoginActivity()
+        } else startLoginActivity()
     }
 
     private fun goToHome(authenticateResponse: AuthenticationResponse) {
@@ -70,11 +67,11 @@ class MainActivity : AppCompatActivity() {
             authenticateResponse.role,
             authenticateResponse.phone,
             authenticateResponse.name,
-            authenticateResponse.lastName,
+            authenticateResponse.lastName
         )
         StateManager.loggedUserId = authenticateResponse.id
-        StateManager.loggedUserId = authenticateResponse.id
-        val intent = Intent(this, DashboardActivity::class.java)
+
+        val intent = Intent(this, HomeActivity::class.java) // Cambia a HomeActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -91,3 +88,4 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 }
+

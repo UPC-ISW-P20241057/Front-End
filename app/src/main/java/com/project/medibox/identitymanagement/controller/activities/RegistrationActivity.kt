@@ -35,32 +35,40 @@ class RegistrationActivity : AppCompatActivity() {
         val etRegEmail = findViewById<EditText>(R.id.etRegEmail)
         val etRegPhone = findViewById<EditText>(R.id.etRegPhone)
         val etRegPassword = findViewById<EditText>(R.id.etRegPassword)
+        val etRepeatRegPassword = findViewById<EditText>(R.id.etRepeatRegPassword)
         val userService = SharedMethods.retrofitServiceBuilder(UserService::class.java)
-        val request = userService.signUp(RegisterRequest(
-            etRegEmail.toString(),
-            etRegPassword.toString(),
-            "User",
-            etRegPhone.toString(),
-            etRegPhone.toString(),
-            etRegLastName.toString()
-        ))
-        request.enqueue(object : Callback<RegisterResponse> {
-            override fun onResponse(
-                call: Call<RegisterResponse>,
-                response: Response<RegisterResponse>
-            ) {
-                goToRegistrationSuccessfullyActivity()
-            }
 
-            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                Toast.makeText(this@RegistrationActivity, "An error occurred while registration", Toast.LENGTH_SHORT).show()
-            }
+        if (etRegPassword.text.toString() == etRepeatRegPassword.text.toString()) {
+            val request = userService.signUp(RegisterRequest(
+                etRegEmail.text.toString(),
+                etRegPassword.text.toString(),
+                "User",
+                etRegPhone.text.toString(),
+                etRegName.text.toString(),
+                etRegLastName.text.toString()
+            ))
+            request.enqueue(object : Callback<RegisterResponse> {
+                override fun onResponse(
+                    call: Call<RegisterResponse>,
+                    response: Response<RegisterResponse>
+                ) {
+                    if(response.isSuccessful)
+                        goToRegistrationSuccessfullyActivity()
+                    else Toast.makeText(this@RegistrationActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                }
 
-        })
+                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                    Toast.makeText(this@RegistrationActivity, "An error occurred while registration", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+        }
+        else Toast.makeText(this@RegistrationActivity, "Validation errors occurred", Toast.LENGTH_SHORT).show()
+
     }
 
     private fun goToRegistrationSuccessfullyActivity() {
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, RegisterSuccessfullyActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

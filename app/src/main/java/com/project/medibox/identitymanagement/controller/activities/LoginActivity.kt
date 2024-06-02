@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.project.medibox.R
-import com.project.medibox.controllers.activities.DashboardActivity
+import com.project.medibox.home.controller.activities.HomeActivity
 import com.project.medibox.identitymanagement.models.AuthenticationRequest
 import com.project.medibox.identitymanagement.models.AuthenticationResponse
 import com.project.medibox.identitymanagement.models.LoginCredentials
@@ -85,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
         )
         StateManager.loggedUserId = authenticateResponse.id
 
-        val intent = Intent(this, DashboardActivity::class.java)
+        val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
