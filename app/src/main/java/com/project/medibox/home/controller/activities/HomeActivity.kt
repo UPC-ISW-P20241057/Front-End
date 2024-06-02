@@ -13,7 +13,6 @@ import com.project.medibox.home.controller.fragments.CalendarFragment
 import com.project.medibox.home.controller.fragments.DashboardFragment
 import com.project.medibox.home.controller.fragments.HomeFragment
 import com.project.medibox.home.controller.fragments.ProfileFragment
-import com.project.medibox.home.controller.fragments.UpcomingFragment
 
 class HomeActivity : AppCompatActivity() {
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
