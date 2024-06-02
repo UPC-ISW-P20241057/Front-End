@@ -11,6 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.medibox.R
 import com.project.medibox.home.controller.fragments.CalendarFragment
 import com.project.medibox.home.controller.fragments.DashboardFragment
+import com.project.medibox.home.controller.fragments.HomeFragment
 import com.project.medibox.home.controller.fragments.ProfileFragment
 import com.project.medibox.home.controller.fragments.UpcomingFragment
 
@@ -36,7 +37,7 @@ class HomeActivity : AppCompatActivity() {
         // Cargar el fragmento predeterminado al iniciar la actividad
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.flFragment, DashboardFragment())
+                .replace(R.id.flFragment, HomeFragment())
                 .commit()
         }
     }
@@ -51,11 +52,11 @@ class HomeActivity : AppCompatActivity() {
 
     private fun getFragmentFor(item: MenuItem): Fragment {
         return when (item.itemId) {
-            R.id.menu_upcoming -> UpcomingFragment()
+            R.id.menu_home -> HomeFragment()
             R.id.menu_dashboard -> DashboardFragment()
             R.id.menu_calendar -> CalendarFragment()
             R.id.menu_profile -> ProfileFragment()
-            else -> UpcomingFragment()
+            else -> HomeFragment()
         }
     }
 }
