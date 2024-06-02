@@ -118,13 +118,14 @@
       android:text="@string/not_account" />
 
     <TextView
-      android:id="@+id/tvSignUp"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="150dp"
-      android:layout_marginTop="480dp"
-      android:fontFamily="@font/palanquin_dark"
-      android:text="@string/signup"
-      android:textColor="#5D46EF" />
+        android:id="@+id/tvSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="480dp"
+        android:fontFamily="@font/palanquin_dark"
+        android:onClick="goToSignUpActivity"
+        android:text="@string/signup"
+        android:textColor="#5D46EF" />
   </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
