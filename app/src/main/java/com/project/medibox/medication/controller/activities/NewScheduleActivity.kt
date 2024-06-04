@@ -1,5 +1,6 @@
 package com.project.medibox.medication.controller.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -15,13 +16,14 @@ import com.project.medibox.medication.models.Medicine
 import com.project.medibox.medication.network.MedicationService
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
+import com.project.medibox.shared.StateManager.selectedMedicine
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class NewScheduleActivity : AppCompatActivity() {
     private lateinit var optionsSpinner: Spinner
-    private lateinit var selectedMedicine: Medicine
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,8 +69,17 @@ class NewScheduleActivity : AppCompatActivity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // No se seleccionó nada
+
             }
         }
+    }
+
+    fun goToNextActivity(view: View) {
+        if (selectedMedicine != null) {
+            val intent = Intent(this, NextNewScheduleActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        else Toast.makeText(this, "Please select a medicine.", Toast.LENGTH_SHORT).show()
     }
 }
