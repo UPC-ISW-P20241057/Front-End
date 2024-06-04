@@ -1,6 +1,6 @@
-package com.project.medibox.medication.controller.fragments.network
+package com.project.medibox.medication.network
 
-import com.project.medibox.medication.controller.fragments.models.Medicine
+import com.project.medibox.medication.models.Medicine
 import retrofit2.Call
 import retrofit2.http.Header
 import retrofit2.http.POST

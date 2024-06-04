@@ -1,4 +1,4 @@
-package com.project.medibox.medication.controller.fragments.models
+package com.project.medibox.medication.models
 
 data class Medicine (
     var id: Long,
