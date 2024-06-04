@@ -15,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MediBox"
         tools:targetApi="31">
-
+        <activity
+            android:name=".medication.controller.activities.NewScheduleActivity"
+            android:exported="false" />
         <activity
             android:name=".home.controller.activities.HomeActivity"
             android:exported="false" />
@@ -33,8 +35,7 @@
             android:exported="false" />
         <activity
             android:name=".controllers.activities.EditProfileActivity"
-            android:exported="false" />
-        <!-- Eliminar las siguientes líneas -->
+            android:exported="false" /> <!-- Eliminar las siguientes líneas -->
         <!--
         <activity
             android:name=".home.controller.fragments.ProfileFragment"
@@ -48,6 +49,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

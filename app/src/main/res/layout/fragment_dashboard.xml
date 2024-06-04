@@ -39,10 +39,11 @@
           app:layout_constraintTop_toBottomOf="@+id/tbUpcMed" />
 
       <androidx.cardview.widget.CardView
-          android:id="@+id/cardView"
+          android:id="@+id/cvScheduleReminder"
           android:layout_width="352dp"
           android:layout_height="130dp"
           android:layout_marginTop="135dp"
+          android:onClick="goToNewScheduleActivity"
           app:cardBackgroundColor="#71F2B4"
           app:cardCornerRadius="20dp"
           app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +83,7 @@
           app:cardCornerRadius="20dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/cardView">
+          app:layout_constraintTop_toBottomOf="@+id/cvScheduleReminder">
 
         <ImageView
             android:id="@+id/imageView2"
