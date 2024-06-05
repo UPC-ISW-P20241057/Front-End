@@ -8,4 +8,10 @@
         <!-- color de la pista cuando está desactivado -->
         <item name="android:colorForeground">#616161</item>
     </style>
+    <style name="MediBoxRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#5D46EF</item>
+        <item name="colorControlActivated">#5D46EF</item>
+        <item name="android:textColorSecondary">@color/black</item>
+    </style>
+
 </resources>

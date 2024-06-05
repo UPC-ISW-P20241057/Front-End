@@ -12,6 +12,18 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/tvTakeWithFood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/palanquin_dark"
+            android:text="Should it be taken with food?"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cvFrequency" />
+
+        <TextView
             android:id="@+id/tvNSDMedibox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +65,7 @@
             android:id="@+id/tvDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/palanquin_dark"
             android:text="Medication schedule:"
@@ -67,9 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             app:cardCornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cvInterval">
@@ -234,5 +244,45 @@
                     app:layout_constraintTop_toBottomOf="@+id/swInterval" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
+
+        <RadioGroup
+            android:id="@+id/rgrpFood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTakeWithFood" >
+
+            <RadioButton
+                android:id="@+id/rbtnFoodYes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/palanquin_dark"
+                android:text="Yes"
+                android:theme="@style/MediBoxRadioButton"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rbtnFoodNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/palanquin_dark"
+                android:text="No"
+                android:theme="@style/MediBoxRadioButton"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rbtnFoodNotMatter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/palanquin_dark"
+                android:text="It doesn't matter"
+                android:theme="@style/MediBoxRadioButton"
+                android:textSize="16sp" />
+        </RadioGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
