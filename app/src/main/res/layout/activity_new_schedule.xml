@@ -30,6 +30,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:spinnerMode="dropdown"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.338"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MediBoxSwitch" parent="Theme.AppCompat.Light">
+        <!-- color activado -->
+        <item name="colorControlActivated">#5D46EF</item>
+        <!-- color del pulgar cuando está desactivado -->
+        <item name="colorSwitchThumbNormal">#BDBDBD</item>
+        <!-- color de la pista cuando está desactivado -->
+        <item name="android:colorForeground">#616161</item>
+    </style>
+</resources>

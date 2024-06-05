@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.transition.Visibility
 import com.project.medibox.R
 import com.project.medibox.medication.models.Medicine
 import com.project.medibox.medication.network.MedicationService
@@ -23,6 +24,7 @@ import retrofit2.Response
 
 class NewScheduleActivity : AppCompatActivity() {
     private lateinit var optionsSpinner: Spinner
+
 
 
 
@@ -56,6 +58,7 @@ class NewScheduleActivity : AppCompatActivity() {
 
     }
     private fun loadSpinner(medicines: List<Medicine>) {
+        optionsSpinner.visibility = View.VISIBLE
         val options = medicines.map { it.name }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
