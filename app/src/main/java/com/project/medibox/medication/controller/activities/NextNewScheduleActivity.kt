@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Switch
 import androidx.activity.enableEdgeToEdge
@@ -20,6 +21,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
     private lateinit var swFrequency: Switch
     private lateinit var spnFreqTimes: Spinner
     private lateinit var spnPer: Spinner
+
+    private lateinit var etPills: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +42,11 @@ class NextNewScheduleActivity : AppCompatActivity() {
         spnFreqTimes = findViewById(R.id.spnFrecTimes)
         spnPer = findViewById(R.id.spnPer)
         disableFrequency()
+
+        val swPills = findViewById<Switch>(R.id.swPills)
+
+        etPills = findViewById(R.id.etPills)
+        disablePillQuantity()
 
         loadSpinners()
 
@@ -61,6 +69,23 @@ class NextNewScheduleActivity : AppCompatActivity() {
                 disableFrequency()
             }
         }
+
+        swPills.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                enablePillQuantity()
+            }
+            else {
+                disablePillQuantity()
+            }
+        }
+    }
+
+    private fun disablePillQuantity() {
+        etPills.isEnabled = false
+    }
+
+    private fun enablePillQuantity() {
+        etPills.isEnabled = true
     }
 
     private fun enableInterval() {

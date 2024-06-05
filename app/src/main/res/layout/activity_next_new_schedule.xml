@@ -11,6 +11,61 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvPills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMedDuration">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tvPills"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/palanquin_dark"
+                    android:text="Number of pills"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Switch
+                    android:id="@+id/swPills"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="25dp"
+                    app:layout_constraintStart_toEndOf="@+id/tvPills"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/etPills"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="12dp"
+                    android:ems="10"
+                    android:hint="100"
+                    android:inputType="number"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/tvTakeWithFood"
             android:layout_width="wrap_content"
@@ -245,17 +300,27 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
+        <TextView
+            android:id="@+id/tvMedDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/palanquin_dark"
+            android:text="Duration of medication"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rgrpFood" />
+
         <RadioGroup
             android:id="@+id/rgrpFood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTakeWithFood" >
+            app:layout_constraintTop_toBottomOf="@+id/tvTakeWithFood">
 
             <RadioButton
                 android:id="@+id/rbtnFoodYes"
@@ -263,8 +328,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/palanquin_dark"
                 android:text="Yes"
-                android:theme="@style/MediBoxRadioButton"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:theme="@style/MediBoxRadioButton" />
 
             <RadioButton
                 android:id="@+id/rbtnFoodNo"
@@ -272,8 +337,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/palanquin_dark"
                 android:text="No"
-                android:theme="@style/MediBoxRadioButton"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:theme="@style/MediBoxRadioButton" />
 
             <RadioButton
                 android:id="@+id/rbtnFoodNotMatter"
@@ -281,8 +346,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/palanquin_dark"
                 android:text="It doesn't matter"
-                android:theme="@style/MediBoxRadioButton"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:theme="@style/MediBoxRadioButton" />
         </RadioGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
