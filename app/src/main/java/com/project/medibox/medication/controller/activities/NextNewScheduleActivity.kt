@@ -24,6 +24,9 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
     private lateinit var etPills: EditText
 
+    private lateinit var spnForTime: Spinner
+    private lateinit var spnForTimeType: Spinner
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,6 +50,11 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
         etPills = findViewById(R.id.etPills)
         disablePillQuantity()
+
+        val swLapse = findViewById<Switch>(R.id.swLapse)
+        spnForTime = findViewById(R.id.spnForTime)
+        spnForTimeType = findViewById(R.id.spnForTimeType)
+        disableLapse()
 
         loadSpinners()
 
@@ -78,6 +86,25 @@ class NextNewScheduleActivity : AppCompatActivity() {
                 disablePillQuantity()
             }
         }
+
+        swLapse.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                enableLapse()
+            }
+            else {
+                disableLapse()
+            }
+        }
+    }
+
+    private fun enableLapse() {
+        spnForTime.isEnabled = true
+        spnForTimeType.isEnabled = true
+    }
+
+    private fun disableLapse() {
+        spnForTime.isEnabled = false
+        spnForTimeType.isEnabled = false
     }
 
     private fun disablePillQuantity() {
@@ -114,16 +141,22 @@ class NextNewScheduleActivity : AppCompatActivity() {
         val timeTypeOptions = listOf("Hour(s)", "Day(s)")
         val freqTimesOptions = (1..30).map { it.toString() }
         val spnPerOptions = listOf("Day", "Week")
+        val spnForTimeOptions = (1..30).map { it.toString() }
+        val spnForTimeTypeOptions = listOf("Days", "Week(s)")
 
         val timeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, timeOptions)
         val typeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, timeTypeOptions)
         val freqTimesAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, freqTimesOptions)
         val spnPerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spnPerOptions)
+        val spnForTimeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spnForTimeOptions)
+        val spnForTimeTypeAdapter= ArrayAdapter(this, android.R.layout.simple_spinner_item, spnForTimeTypeOptions)
 
         spnTime.adapter = timeAdapter
         spnTimeType.adapter = typeAdapter
         spnFreqTimes.adapter = freqTimesAdapter
         spnPer.adapter = spnPerAdapter
+        spnForTime.adapter = spnForTimeAdapter
+        spnForTimeType.adapter = spnForTimeTypeAdapter
 
         spnTime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -159,6 +192,27 @@ class NextNewScheduleActivity : AppCompatActivity() {
         }
 
         spnPer.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+        }
+
+        spnForTime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+        }
+        spnForTimeType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
             }
