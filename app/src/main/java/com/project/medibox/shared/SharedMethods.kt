@@ -1,17 +1,15 @@
 package com.project.medibox.shared
 
-import androidx.annotation.NonNull
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.text.SimpleDateFormat
-import java.util.Date
 import okhttp3.OkHttpClient
+import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 
 
 object SharedMethods {
-    fun getJSDate(date: Date): String {
+    fun getJSDate(date: LocalDateTime): String {
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         return formatter.format(date)
     }

@@ -6,9 +6,12 @@ data class Reminder(
     var id: Long,
     @SerializedName("createdDate")
     var createdDateString: String,
-    var pills: Int,
+    var pills: Int?,
     @SerializedName("endDate")
-    var endDateString: String,
+    var endDateString: String?,
     var medicineId: Long,
-    var userId: Long
+    var userId: Long,
+    var frequency: Frequency?,
+    var interval: Interval?,
+    var consumeFood: Boolean?
 )
