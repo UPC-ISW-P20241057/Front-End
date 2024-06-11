@@ -16,6 +16,18 @@
         android:theme="@style/Theme.MediBox"
         tools:targetApi="31">
         <activity
+            android:name=".controllers.activities.MedicationAlarm2"
+            android:exported="false" />
+        <activity
+            android:name=".controllers.activities.EmptyAlarm"
+            android:exported="false" />
+        <activity
+            android:name=".controllers.activities.AlmostEmptyAlarm"
+            android:exported="false" />
+        <activity
+            android:name=".controllers.activities.MedicationAlarm"
+            android:exported="false" />
+        <activity
             android:name=".medication.controller.activities.NextNewScheduleActivity"
             android:exported="false" />
         <activity
