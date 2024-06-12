@@ -1,4 +1,4 @@
-package com.project.medibox.controllers.activities
+package com.project.medibox.profile.controller.activities
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
