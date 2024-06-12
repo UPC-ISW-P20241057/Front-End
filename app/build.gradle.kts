@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.retrofit)
     implementation(libs.androidx.room.runtime)
+    implementation(libs.logging.interceptor)
     kapt(libs.androidx.room.compiler)
     implementation(libs.converter.gson)
     testImplementation(libs.junit)
