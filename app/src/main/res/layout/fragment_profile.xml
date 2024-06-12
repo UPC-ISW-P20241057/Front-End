@@ -20,7 +20,7 @@
         android:layout_height="wrap_content">
 
       <TextView
-          android:id="@+id/textView11"
+          android:id="@+id/tvProfileLastnameTitle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="36dp"
@@ -30,7 +30,7 @@
           android:textColor="#5E5E5E"
           android:textSize="20sp"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/textView10" />
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileName" />
 
       <TextView
           android:id="@+id/textView7"
@@ -46,7 +46,7 @@
           app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-          android:id="@+id/textView8"
+          android:id="@+id/tvProfile"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="36dp"
@@ -70,7 +70,7 @@
           app:srcCompat="@drawable/profile_mockup" />
 
       <TextView
-          android:id="@+id/textView9"
+          android:id="@+id/tvProfileNameTitle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="36dp"
@@ -83,31 +83,31 @@
           app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-          android:id="@+id/textView10"
+          android:id="@+id/tvProfileName"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="38dp"
           android:layout_marginTop="5dp"
           android:fontFamily="@font/palanquin_dark"
-          android:text="Name"
           android:textSize="20sp"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/textView9" />
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileNameTitle"
+          tools:text="Name" />
 
       <TextView
-          android:id="@+id/textView12"
+          android:id="@+id/tvProfileLastname"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="38dp"
           android:layout_marginTop="5dp"
           android:fontFamily="@font/palanquin_dark"
-          android:text="Lastname"
           android:textSize="20sp"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/textView11" />
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileLastnameTitle"
+          tools:text="Lastname" />
 
       <TextView
-          android:id="@+id/textView13"
+          android:id="@+id/tvProfileEmailTitle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="36dp"
@@ -117,22 +117,22 @@
           android:textColor="#5E5E5E"
           android:textSize="20sp"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/textView12" />
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileLastname" />
 
       <TextView
-          android:id="@+id/textView14"
+          android:id="@+id/tvProfileEmail"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="38dp"
           android:layout_marginTop="5dp"
           android:fontFamily="@font/palanquin_dark"
-          android:text="Email"
           android:textSize="20sp"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/textView13" />
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileEmailTitle"
+          tools:text="Email" />
 
       <TextView
-          android:id="@+id/textView15"
+          android:id="@+id/tvProfileCellphoneTitle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="36dp"
@@ -142,22 +142,22 @@
           android:textColor="#5E5E5E"
           android:textSize="20sp"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/textView14" />
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileEmail" />
 
       <TextView
-          android:id="@+id/textView16"
+          android:id="@+id/tvProfileCellphone"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="38dp"
           android:layout_marginTop="5dp"
           android:fontFamily="@font/palanquin_dark"
-          android:text="Cellphone"
           android:textSize="20sp"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/textView15" />
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileCellphoneTitle"
+          tools:text="Cellphone" />
 
       <Button
-          android:id="@+id/button"
+          android:id="@+id/btnEditProfile"
           android:layout_width="134dp"
           android:layout_height="61dp"
           android:layout_marginStart="50dp"
@@ -170,10 +170,10 @@
           app:cornerRadius="13dp"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/textView16" />
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileCellphone" />
 
       <Button
-          android:id="@+id/button2"
+          android:id="@+id/btnSignOut"
           android:layout_width="134dp"
           android:layout_height="61dp"
           android:layout_marginStart="57dp"
@@ -186,7 +186,7 @@
           app:cornerRadius="13dp"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toEndOf="@+id/button" />
+          app:layout_constraintStart_toEndOf="@+id/btnEditProfile" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </ScrollView>
 
