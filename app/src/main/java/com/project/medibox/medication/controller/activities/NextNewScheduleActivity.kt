@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -120,6 +121,11 @@ class NextNewScheduleActivity : AppCompatActivity() {
                 disableLapse()
             }
         }
+
+        val btnCreateSchedule = findViewById<Button>(R.id.btnCreateSchedule)
+        btnCreateSchedule.setOnClickListener {
+            createSchedule()
+        }
     }
 
     private fun enableLapse() {
@@ -185,7 +191,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
         spnIntervalTime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                interval.quantity = parent.getItemAtPosition(position) as Int
+                interval.quantity = parent.getItemAtPosition(position).toString().toInt()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -207,7 +213,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
         spnFreqTimes.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                frequency.times = parent.getItemAtPosition(position) as Int
+                frequency.times = parent.getItemAtPosition(position).toString().toInt()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -229,7 +235,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
         spnForTime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                lapseTime = parent.getItemAtPosition(position) as Int
+                lapseTime = parent.getItemAtPosition(position).toString().toInt()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -248,7 +254,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
         }
     }
-    fun createSchedule(view: View) {
+    private fun createSchedule() {
         val etPills = findViewById<EditText>(R.id.etPills)
         val rgrpFood = findViewById<RadioGroup>(R.id.rgrpFood)
         val medicationService = SharedMethods.retrofitServiceBuilder(MedicationService::class.java)
@@ -258,8 +264,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
         if (swLapse.isChecked) {
             endDateString = when(lapseType) {
-                "Days" -> SharedMethods.getJSDate(now.plusDays(lapseTime.toLong()))
-                "Weeks" -> SharedMethods.getJSDate(now.plusWeeks(lapseTime.toLong()))
+                "Days" -> SharedMethods.getJSDateFromLocalDateTime(now.plusDays(lapseTime.toLong()))
+                "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(now.plusWeeks(lapseTime.toLong()))
                 else -> null
             }
         }
@@ -273,11 +279,14 @@ class NextNewScheduleActivity : AppCompatActivity() {
             else -> null
         }
 
-
+        val pills: Int? = when(swPills.isChecked) {
+            true -> etPills.text.toString().toInt()
+            false -> null
+        }
 
         val postReminderRequest = medicationService.createReminder(StateManager.authToken, CreateReminderResource(
-            SharedMethods.getJSDate(now),
-            etPills.text.toString().toInt(),
+            SharedMethods.getJSDateFromLocalDateTime(now),
+            pills,
             endDateString,
             StateManager.selectedMedicine!!.id,
             StateManager.loggedUserId,
@@ -313,14 +322,14 @@ class NextNewScheduleActivity : AppCompatActivity() {
                     }
                     else if (swFrequency.isChecked) {
                         val postFrequencyRequest = medicationService.createFrequency(StateManager.authToken, CreateFrequencyResource(
-                            spnFreqTimes.selectedItem.toString(),
-                            spnPer.selectedItem.toString().toInt(),
+                            spnPer.selectedItem.toString(),
+                            spnFreqTimes.selectedItem.toString().toInt(),
                             reminderId
                         ))
                         postFrequencyRequest.enqueue(object : Callback<Frequency> {
                             override fun onResponse(p0: Call<Frequency>, p1: Response<Frequency>) {
                                 if (response.isSuccessful)
-                                    Toast.makeText(this@NextNewScheduleActivity, "Reminder with interval created successfully", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextNewScheduleActivity, "Reminder with frequency created successfully", Toast.LENGTH_SHORT).show()
                                 else {
                                     Toast.makeText(this@NextNewScheduleActivity, "Error while creating frequency of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
                                     medicationService.deleteReminder(StateManager.authToken, reminderId)
@@ -334,6 +343,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
                         })
                     }
+                    finish()
                 }
                 else Toast.makeText(this@NextNewScheduleActivity, "Error while creating reminder", Toast.LENGTH_SHORT).show()
             }

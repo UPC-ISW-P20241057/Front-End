@@ -5,13 +5,26 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import okhttp3.OkHttpClient
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.Date
 import java.util.concurrent.TimeUnit
 
 
 object SharedMethods {
-    fun getJSDate(date: LocalDateTime): String {
+    fun getJSDate(date: Date): String {
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         return formatter.format(date)
+    }
+    fun getJSDateFromLocalDateTime(localDateTime: LocalDateTime): String {
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
+        val date = Date.from(instant)
+        return formatter.format(date)
+    }
+    fun localDateTimeToDate(localDateTime: LocalDateTime): Date {
+        val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
+        val date = Date.from(instant)
+        return date
     }
     private fun retrofitBuilder(): Retrofit {
         val okHttpClient = OkHttpClient.Builder()
