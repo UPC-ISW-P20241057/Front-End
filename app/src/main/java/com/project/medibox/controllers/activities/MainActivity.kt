@@ -7,12 +7,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.project.medibox.R
 import com.project.medibox.home.controller.activities.HomeActivity
-import com.project.medibox.home.controller.fragments.DashboardFragment
 import com.project.medibox.identitymanagement.controller.activities.LoginActivity
 import com.project.medibox.identitymanagement.models.AuthenticationRequest
 import com.project.medibox.identitymanagement.models.AuthenticationResponse
 import com.project.medibox.identitymanagement.models.User
-import com.project.medibox.identitymanagement.network.UserService
+import com.project.medibox.identitymanagement.network.UserApiService
 import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
@@ -25,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
         autoLogin()
     }
 
@@ -32,9 +32,9 @@ class MainActivity : AppCompatActivity() {
         val query = AppDatabase.getInstance(this).getLoginCredentialsDao().getAll()
         if (query.isNotEmpty()) {
             val loginCredentials = query[0]
-            val userService = SharedMethods.retrofitServiceBuilder(UserService::class.java)
+            val userApiService = SharedMethods.retrofitServiceBuilder(UserApiService::class.java)
 
-            val request = userService.signIn(AuthenticationRequest(loginCredentials.email, loginCredentials.password))
+            val request = userApiService.signIn(AuthenticationRequest(loginCredentials.email, loginCredentials.password))
 
             request.enqueue(object : Callback<AuthenticationResponse> {
                 override fun onResponse(

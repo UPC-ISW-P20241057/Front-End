@@ -10,7 +10,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-interface MedicationService {
+interface MedicationApiService {
     @GET("gateway/v1/medicines")
     fun getAllMedicines(@Header("Authorization") token: String): Call<List<Medicine>>
     @POST("gateway/v1/reminders")

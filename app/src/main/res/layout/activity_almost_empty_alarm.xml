@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controllers.activities.AlmostEmptyAlarm">
+    tools:context=".pillboxmanagement.controller.activities.AlmostEmptyAlarmActivity">
 
     <TextView
         android:id="@+id/textView29"
@@ -63,7 +63,7 @@
             android:textSize="34sp" />
 
         <Button
-            android:id="@+id/button6"
+            android:id="@+id/btnAcceptAlmostEmpty"
             android:layout_width="152dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="90dp"

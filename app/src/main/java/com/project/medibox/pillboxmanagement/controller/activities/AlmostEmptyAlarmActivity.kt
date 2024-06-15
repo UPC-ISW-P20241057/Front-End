@@ -1,13 +1,14 @@
-package com.project.medibox.controllers.activities
+package com.project.medibox.pillboxmanagement.controller.activities
 
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.project.medibox.R
 
-class AlmostEmptyAlarm : AppCompatActivity() {
+class AlmostEmptyAlarmActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -16,6 +17,10 @@ class AlmostEmptyAlarm : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+        val btnAcceptAlmostEmpty = findViewById<Button>(R.id.btnAcceptAlmostEmpty)
+        btnAcceptAlmostEmpty.setOnClickListener {
+            finish()
         }
     }
 }

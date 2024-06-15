@@ -1,9 +1,12 @@
 package com.project.medibox.home.controller.activities
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -13,8 +16,11 @@ import com.project.medibox.home.controller.fragments.CalendarFragment
 import com.project.medibox.home.controller.fragments.DashboardFragment
 import com.project.medibox.home.controller.fragments.HomeFragment
 import com.project.medibox.home.controller.fragments.ProfileFragment
+import com.project.medibox.pillboxmanagement.services.EmptyPillboxService
+import com.project.medibox.shared.AppDatabase
 
 class HomeActivity : AppCompatActivity() {
+
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         navigateTo(item)
     }
@@ -23,6 +29,14 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_home)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                0
+            )
+        }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bnvMenu)
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
@@ -39,6 +53,16 @@ class HomeActivity : AppCompatActivity() {
                 .replace(R.id.flFragment, HomeFragment())
                 .commit()
         }
+
+        startServices()
+    }
+
+    private fun startServices() {
+        EmptyPillboxService.startService(this)
+    }
+
+    private fun stopServices() {
+        EmptyPillboxService.stopService(this)
     }
 
     private fun navigateTo(item: MenuItem): Boolean {
@@ -57,5 +81,11 @@ class HomeActivity : AppCompatActivity() {
             R.id.menu_profile -> ProfileFragment()
             else -> HomeFragment()
         }
+    }
+
+    fun signOut() {
+        stopServices()
+        AppDatabase.getInstance(this).getLoginCredentialsDao().cleanTable()
+        finish()
     }
 }

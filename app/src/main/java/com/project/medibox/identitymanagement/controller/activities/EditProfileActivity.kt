@@ -13,7 +13,7 @@ import com.project.medibox.identitymanagement.models.LoginCredentials
 import com.project.medibox.identitymanagement.models.UpdateRequest
 import com.project.medibox.identitymanagement.models.UpdateResponse
 import com.project.medibox.identitymanagement.models.User
-import com.project.medibox.identitymanagement.network.UserService
+import com.project.medibox.identitymanagement.network.UserApiService
 import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
@@ -62,9 +62,9 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun saveChanges() {
-        val userService = SharedMethods.retrofitServiceBuilder(UserService::class.java)
+        val userApiService = SharedMethods.retrofitServiceBuilder(UserApiService::class.java)
 
-        val request = userService.updateUser(StateManager.authToken, StateManager.loggedUserId, UpdateRequest(
+        val request = userApiService.updateUser(StateManager.authToken, StateManager.loggedUserId, UpdateRequest(
             etEditEmail.text.toString(),
             etEditPassword.text.toString(),
             etEditCellphone.text.toString(),
