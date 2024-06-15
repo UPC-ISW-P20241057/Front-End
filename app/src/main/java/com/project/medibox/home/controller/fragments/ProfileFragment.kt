@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.project.medibox.R
+import com.project.medibox.home.controller.activities.HomeActivity
 import com.project.medibox.identitymanagement.controller.activities.EditProfileActivity
 import com.project.medibox.shared.StateManager
 
@@ -29,9 +30,14 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val btnEditProfile = view.findViewById<Button>(R.id.btnEditProfile)
+        val btnSignOut = view.findViewById<Button>(R.id.btnSignOut)
         loadProfileData(view)
         btnEditProfile.setOnClickListener {
             goToEditProfileActivity(view)
+        }
+        btnSignOut.setOnClickListener {
+            val homeActivity = activity as HomeActivity
+            homeActivity.signOut()
         }
     }
     private fun loadProfileData(view: View) {
@@ -49,6 +55,5 @@ class ProfileFragment : Fragment() {
     private fun goToEditProfileActivity(view: View) {
         val intent = Intent(view.context, EditProfileActivity::class.java)
         startActivity(intent)
-
     }
 }
