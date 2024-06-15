@@ -7,13 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.project.medibox.R
-import com.project.medibox.profile.controller.activities.EditProfileActivity
+import com.project.medibox.identitymanagement.controller.activities.EditProfileActivity
 import com.project.medibox.shared.StateManager
 
 class ProfileFragment : Fragment() {
@@ -23,6 +19,11 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_profile, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadProfileData(requireView())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,5 +49,6 @@ class ProfileFragment : Fragment() {
     private fun goToEditProfileActivity(view: View) {
         val intent = Intent(view.context, EditProfileActivity::class.java)
         startActivity(intent)
+
     }
 }

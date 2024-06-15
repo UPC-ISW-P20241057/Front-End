@@ -8,7 +8,7 @@
       android:id="@+id/main"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      tools:context=".profile.controller.activities.EditProfileActivity">
+      tools:context=".identitymanagement.controller.activities.EditProfileActivity">
 
 
 

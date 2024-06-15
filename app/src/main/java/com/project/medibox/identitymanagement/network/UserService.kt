@@ -5,6 +5,7 @@ import com.project.medibox.identitymanagement.models.AuthenticationResponse
 import com.project.medibox.identitymanagement.models.RegisterRequest
 import com.project.medibox.identitymanagement.models.RegisterResponse
 import com.project.medibox.identitymanagement.models.UpdateRequest
+import com.project.medibox.identitymanagement.models.UpdateResponse
 import com.project.medibox.identitymanagement.models.User
 import retrofit2.Call
 import retrofit2.http.Body
@@ -19,5 +20,5 @@ interface UserService {
     @POST("gateway/v1/users/sign-up")
     fun signUp(@Body request: RegisterRequest): Call<RegisterResponse>
     @PUT("gateway/v1/users/{id}")
-    fun updateUser(@Header("Authorization") token: String, @Path("id") id: Long, @Body updateRequest: UpdateRequest): Call<User>
+    fun updateUser(@Header("Authorization") token: String, @Path("id") id: Long, @Body updateRequest: UpdateRequest): Call<UpdateResponse>
 }

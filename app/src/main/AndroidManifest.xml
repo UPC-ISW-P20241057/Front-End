@@ -49,7 +49,7 @@
             android:name=".identitymanagement.controller.activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".profile.controller.activities.EditProfileActivity"
+            android:name=".identitymanagement.controller.activities.EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".controllers.activities.MainActivity"

@@ -1,7 +1,6 @@
-package com.project.medibox.profile.controller.activities
+package com.project.medibox.identitymanagement.controller.activities
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -10,9 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.project.medibox.R
+import com.project.medibox.identitymanagement.models.LoginCredentials
 import com.project.medibox.identitymanagement.models.UpdateRequest
+import com.project.medibox.identitymanagement.models.UpdateResponse
 import com.project.medibox.identitymanagement.models.User
 import com.project.medibox.identitymanagement.network.UserService
+import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
 import retrofit2.Call
@@ -60,33 +62,38 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun saveChanges() {
-
-
-
-
         val userService = SharedMethods.retrofitServiceBuilder(UserService::class.java)
-
-
 
         val request = userService.updateUser(StateManager.authToken, StateManager.loggedUserId, UpdateRequest(
             etEditEmail.text.toString(),
             etEditPassword.text.toString(),
-            "User",
             etEditCellphone.text.toString(),
             etEditName.text.toString(),
             etEditLastname.text.toString(),
         ))
 
-        request.enqueue(object : Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
-                if (response.isSuccessful) {
+        request.enqueue(object : Callback<UpdateResponse> {
+            override fun onResponse(call: Call<UpdateResponse>, response: Response<UpdateResponse>) {
+                if (response.isSuccessful && response.body()!!.message == "User updated successfully.") {
                     Toast.makeText(this@EditProfileActivity, "User updated successfully!", Toast.LENGTH_SHORT).show()
+                    StateManager.loggedUser = User(
+                        StateManager.loggedUserId,
+                        etEditEmail.text.toString(),
+                        "User",
+                        etEditCellphone.text.toString(),
+                        etEditName.text.toString(),
+                        etEditLastname.text.toString()
+                    )
+                    AppDatabase.getInstance(this@EditProfileActivity).getLoginCredentialsDao().cleanTable()
+                    AppDatabase.getInstance(this@EditProfileActivity).getLoginCredentialsDao().insertCredentials(
+                        LoginCredentials(null, etEditEmail.text.toString(), etEditPassword.text.toString())
+                    )
                     finish()
                 }
                 else Toast.makeText(this@EditProfileActivity, "Error while updating user.", Toast.LENGTH_SHORT).show()
             }
 
-            override fun onFailure(p0: Call<User>, p1: Throwable) {
+            override fun onFailure(p0: Call<UpdateResponse>, p1: Throwable) {
                 Toast.makeText(this@EditProfileActivity, "Error while updating user..", Toast.LENGTH_SHORT).show()
             }
 
