@@ -1,5 +1,12 @@
 package com.project.medibox.shared
 
+import android.app.ActivityManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
@@ -47,4 +54,5 @@ object SharedMethods {
     fun <T> retrofitServiceBuilder(service: Class<T>): T {
         return retrofitBuilder().create(service)
     }
+
 }
