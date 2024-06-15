@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.project.medibox.R
 import com.project.medibox.identitymanagement.models.RegisterRequest
 import com.project.medibox.identitymanagement.models.RegisterResponse
-import com.project.medibox.identitymanagement.network.UserService
+import com.project.medibox.identitymanagement.network.UserApiService
 import com.project.medibox.shared.SharedMethods
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,10 +36,10 @@ class RegistrationActivity : AppCompatActivity() {
         val etRegPhone = findViewById<EditText>(R.id.etRegPhone)
         val etRegPassword = findViewById<EditText>(R.id.etRegPassword)
         val etRepeatRegPassword = findViewById<EditText>(R.id.etRepeatRegPassword)
-        val userService = SharedMethods.retrofitServiceBuilder(UserService::class.java)
+        val userApiService = SharedMethods.retrofitServiceBuilder(UserApiService::class.java)
 
         if (etRegPassword.text.toString() == etRepeatRegPassword.text.toString()) {
-            val request = userService.signUp(RegisterRequest(
+            val request = userApiService.signUp(RegisterRequest(
                 etRegEmail.text.toString(),
                 etRegPassword.text.toString(),
                 "User",

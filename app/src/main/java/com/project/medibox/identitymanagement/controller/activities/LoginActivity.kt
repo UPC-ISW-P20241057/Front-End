@@ -15,7 +15,7 @@ import com.project.medibox.identitymanagement.models.AuthenticationRequest
 import com.project.medibox.identitymanagement.models.AuthenticationResponse
 import com.project.medibox.identitymanagement.models.LoginCredentials
 import com.project.medibox.identitymanagement.models.User
-import com.project.medibox.identitymanagement.network.UserService
+import com.project.medibox.identitymanagement.network.UserApiService
 import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
@@ -41,9 +41,9 @@ class LoginActivity : AppCompatActivity() {
     fun signIn(view: View){
         val etLoginEmail = findViewById<EditText>(R.id.etLoginEmail)
         val etLoginPassword = findViewById<EditText>(R.id.etLoginPassword)
-        val userService: UserService = SharedMethods.retrofitServiceBuilder(UserService::class.java)
+        val userApiService: UserApiService = SharedMethods.retrofitServiceBuilder(UserApiService::class.java)
 
-        val request = userService.signIn(AuthenticationRequest(
+        val request = userApiService.signIn(AuthenticationRequest(
             etLoginEmail.text.toString(),
             etLoginPassword.text.toString()
         ))

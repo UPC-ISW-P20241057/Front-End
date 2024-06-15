@@ -11,10 +11,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.transition.Visibility
 import com.project.medibox.R
 import com.project.medibox.medication.models.Medicine
-import com.project.medibox.medication.network.MedicationService
+import com.project.medibox.medication.network.MedicationApiService
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
 import com.project.medibox.shared.StateManager.selectedMedicine
@@ -38,8 +37,8 @@ class NewScheduleActivity : AppCompatActivity() {
             insets
         }
         optionsSpinner = findViewById(R.id.osMedicines)
-        val medicationService = SharedMethods.retrofitServiceBuilder(MedicationService::class.java)
-        val request = medicationService.getAllMedicines(StateManager.authToken)
+        val medicationApiService = SharedMethods.retrofitServiceBuilder(MedicationApiService::class.java)
+        val request = medicationApiService.getAllMedicines(StateManager.authToken)
         request.enqueue(object : Callback<List<Medicine>> {
             override fun onResponse(call: Call<List<Medicine>>, response: Response<List<Medicine>>) {
                 if (response.isSuccessful) {

@@ -6,7 +6,6 @@ import com.project.medibox.identitymanagement.models.RegisterRequest
 import com.project.medibox.identitymanagement.models.RegisterResponse
 import com.project.medibox.identitymanagement.models.UpdateRequest
 import com.project.medibox.identitymanagement.models.UpdateResponse
-import com.project.medibox.identitymanagement.models.User
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -14,7 +13,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
-interface UserService {
+interface UserApiService {
     @POST("gateway/v1/users/sign-in")
     fun signIn(@Body request: AuthenticationRequest): Call<AuthenticationResponse>
     @POST("gateway/v1/users/sign-up")

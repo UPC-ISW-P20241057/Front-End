@@ -19,7 +19,7 @@ import com.project.medibox.R
 import com.project.medibox.medication.models.Frequency
 import com.project.medibox.medication.models.Interval
 import com.project.medibox.medication.models.Reminder
-import com.project.medibox.medication.network.MedicationService
+import com.project.medibox.medication.network.MedicationApiService
 import com.project.medibox.medication.resources.CreateFrequencyResource
 import com.project.medibox.medication.resources.CreateIntervalResource
 import com.project.medibox.medication.resources.CreateReminderResource
@@ -257,7 +257,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
     private fun createSchedule() {
         val etPills = findViewById<EditText>(R.id.etPills)
         val rgrpFood = findViewById<RadioGroup>(R.id.rgrpFood)
-        val medicationService = SharedMethods.retrofitServiceBuilder(MedicationService::class.java)
+        val medicationApiService = SharedMethods.retrofitServiceBuilder(MedicationApiService::class.java)
         val now = LocalDateTime.now()
 
         var endDateString: String? = null
@@ -284,7 +284,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
             false -> null
         }
 
-        val postReminderRequest = medicationService.createReminder(StateManager.authToken, CreateReminderResource(
+        val postReminderRequest = medicationApiService.createReminder(StateManager.authToken, CreateReminderResource(
             SharedMethods.getJSDateFromLocalDateTime(now),
             pills,
             endDateString,
@@ -298,7 +298,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val reminderId = response.body()!!.id
                     if (swInterval.isChecked) {
-                        val postIntervalRequest = medicationService.createInterval(StateManager.authToken, CreateIntervalResource(
+                        val postIntervalRequest = medicationApiService.createInterval(StateManager.authToken, CreateIntervalResource(
                             spnIntervalTimeType.selectedItem.toString(),
                             spnIntervalTime.selectedItem.toString().toInt(),
                             reminderId
@@ -309,19 +309,19 @@ class NextNewScheduleActivity : AppCompatActivity() {
                                     Toast.makeText(this@NextNewScheduleActivity, "Reminder with interval created successfully", Toast.LENGTH_SHORT).show()
                                 else {
                                     Toast.makeText(this@NextNewScheduleActivity, "Error while creating interval of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
-                                    medicationService.deleteReminder(StateManager.authToken, reminderId)
+                                    medicationApiService.deleteReminder(StateManager.authToken, reminderId)
                                 }
                             }
 
                             override fun onFailure(p0: Call<Interval>, p1: Throwable) {
                                 Toast.makeText(this@NextNewScheduleActivity, "Error while creating interval of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
-                                medicationService.deleteReminder(StateManager.authToken, reminderId)
+                                medicationApiService.deleteReminder(StateManager.authToken, reminderId)
                             }
 
                         })
                     }
                     else if (swFrequency.isChecked) {
-                        val postFrequencyRequest = medicationService.createFrequency(StateManager.authToken, CreateFrequencyResource(
+                        val postFrequencyRequest = medicationApiService.createFrequency(StateManager.authToken, CreateFrequencyResource(
                             spnPer.selectedItem.toString(),
                             spnFreqTimes.selectedItem.toString().toInt(),
                             reminderId
@@ -332,13 +332,13 @@ class NextNewScheduleActivity : AppCompatActivity() {
                                     Toast.makeText(this@NextNewScheduleActivity, "Reminder with frequency created successfully", Toast.LENGTH_SHORT).show()
                                 else {
                                     Toast.makeText(this@NextNewScheduleActivity, "Error while creating frequency of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
-                                    medicationService.deleteReminder(StateManager.authToken, reminderId)
+                                    medicationApiService.deleteReminder(StateManager.authToken, reminderId)
                                 }
                             }
 
                             override fun onFailure(p0: Call<Frequency>, p1: Throwable) {
                                 Toast.makeText(this@NextNewScheduleActivity, "Error while creating frequency of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
-                                medicationService.deleteReminder(StateManager.authToken, reminderId)
+                                medicationApiService.deleteReminder(StateManager.authToken, reminderId)
                             }
 
                         })
