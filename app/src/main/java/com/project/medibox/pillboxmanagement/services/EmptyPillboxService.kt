@@ -71,6 +71,7 @@ class EmptyPillboxService : Service() {
             .setContentText("Please refill your medications.")
             .setSmallIcon(R.drawable.ic_test_notification)
             .setContentIntent(createPendingIntent(EmptyAlarmActivity::class.java))
+            .setAutoCancel(true)
             .build()
 
 
@@ -79,6 +80,7 @@ class EmptyPillboxService : Service() {
             .setContentText("Don't forget to refill your medications.")
             .setSmallIcon(R.drawable.ic_test_notification)
             .setContentIntent(createPendingIntent(AlmostEmptyAlarmActivity::class.java))
+            .setAutoCancel(true)
             .build()
 
     }
@@ -116,10 +118,10 @@ class EmptyPillboxService : Service() {
                         })
                     }
                     else Log.d(TAG, "Notification made. Aborting request...")
-                    postDelayed(this, 10000)
+                    postDelayed(this, 120000)
                 }
             }
-            postDelayed(runnable, 10000)
+            postDelayed(runnable, 120000)
         }
     }
 

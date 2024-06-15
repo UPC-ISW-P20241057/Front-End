@@ -64,7 +64,7 @@
             android:textSize="34sp" />
 
         <Button
-            android:id="@+id/button9"
+            android:id="@+id/btnAcceptEmpty"
             android:layout_width="142dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
