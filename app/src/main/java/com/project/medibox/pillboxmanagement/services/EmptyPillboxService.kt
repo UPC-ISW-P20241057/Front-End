@@ -69,6 +69,8 @@ class EmptyPillboxService : Service() {
             .setSmallIcon(R.drawable.ic_test_notification)
             .build()
 
+
+
         almostEmptyNotification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Your pillbox is near to be empty")
             .setContentText("Don't forget to refill your medications.")

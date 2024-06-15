@@ -27,10 +27,10 @@
             android:name=".controllers.activities.MedicationAlarm2"
             android:exported="false" />
         <activity
-            android:name=".controllers.activities.EmptyAlarm"
+            android:name=".pillboxmanagement.controller.activities.EmptyAlarm"
             android:exported="false" />
         <activity
-            android:name=".controllers.activities.AlmostEmptyAlarm"
+            android:name=".pillboxmanagement.controller.activities.AlmostEmptyAlarm"
             android:exported="false" />
         <activity
             android:name=".controllers.activities.MedicationAlarm"
