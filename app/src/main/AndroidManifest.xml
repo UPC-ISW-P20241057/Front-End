@@ -49,16 +49,8 @@
             android:name=".identitymanagement.controller.activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".controllers.activities.EditProfileActivity"
-            android:exported="false" /> <!-- Eliminar las siguientes líneas -->
-        <!--
-        <activity
-            android:name=".home.controller.fragments.ProfileFragment"
+            android:name=".identitymanagement.controller.activities.EditProfileActivity"
             android:exported="false" />
-        <activity
-            android:name=".home.controller.fragments.DashboardFragment"
-            android:exported="false" />
-        -->
         <activity
             android:name=".controllers.activities.MainActivity"
             android:exported="true">

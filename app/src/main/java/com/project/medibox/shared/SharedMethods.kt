@@ -4,6 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.Date
@@ -27,10 +28,14 @@ object SharedMethods {
         return date
     }
     private fun retrofitBuilder(): Retrofit {
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
         val okHttpClient = OkHttpClient.Builder()
             .readTimeout(90, TimeUnit.SECONDS) // Tiempo de espera para leer
             .writeTimeout(90, TimeUnit.SECONDS) // Tiempo de espera para escribir
             .connectTimeout(90, TimeUnit.SECONDS) // Tiempo de espera para conectar
+            .addInterceptor(logging)
             .build()
 
         return Retrofit.Builder()
