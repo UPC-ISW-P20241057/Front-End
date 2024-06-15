@@ -11,7 +11,10 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.TaskStackBuilder
 import com.project.medibox.R
+import com.project.medibox.pillboxmanagement.controller.activities.AlmostEmptyAlarmActivity
+import com.project.medibox.pillboxmanagement.controller.activities.EmptyAlarmActivity
 import com.project.medibox.pillboxmanagement.models.Pillbox
 import com.project.medibox.pillboxmanagement.network.PillboxApiService
 import com.project.medibox.shared.SharedMethods
@@ -67,15 +70,17 @@ class EmptyPillboxService : Service() {
             .setContentTitle("Oh no! Your pillbox is empty")
             .setContentText("Please refill your medications.")
             .setSmallIcon(R.drawable.ic_test_notification)
+            .setContentIntent(createPendingIntent(EmptyAlarmActivity::class.java))
             .build()
-
 
 
         almostEmptyNotification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Your pillbox is near to be empty")
             .setContentText("Don't forget to refill your medications.")
             .setSmallIcon(R.drawable.ic_test_notification)
+            .setContentIntent(createPendingIntent(AlmostEmptyAlarmActivity::class.java))
             .build()
+
     }
 
     private fun createServiceNotificationChannel() {
@@ -91,30 +96,30 @@ class EmptyPillboxService : Service() {
         handler.apply {
             val runnable = object : Runnable {
                 override fun run() {
-                    Log.d(TAG, "Making http request to pillbox endpoint...")
-
-                    val request = pillboxService.getPillboxData()
-                    request.enqueue(object : Callback<Pillbox> {
-                        override fun onResponse(call: Call<Pillbox>, response: Response<Pillbox>) {
-                            if (response.isSuccessful) {
-                                if (response.body()!!.isEmpty && !isNotificationVisible(EMPTY_NOTIFICATION_ID)) {
-                                    notificationManager.notify(EMPTY_NOTIFICATION_ID, emptyNotification)
-                                }
-                                else if (response.body()!!.almostEmpty && !isNotificationVisible(ALMOST_EMPTY_NOTIFICATION_ID)) {
-                                    notificationManager.notify(ALMOST_EMPTY_NOTIFICATION_ID, almostEmptyNotification)
+                    if (!isNotificationVisible(EMPTY_NOTIFICATION_ID) && !isNotificationVisible(ALMOST_EMPTY_NOTIFICATION_ID)) {
+                        Log.d(TAG, "Making http request to pillbox endpoint...")
+                        val request = pillboxService.getPillboxData(1)
+                        request.enqueue(object : Callback<Pillbox> {
+                            override fun onResponse(call: Call<Pillbox>, response: Response<Pillbox>) {
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.isEmpty) {
+                                        notificationManager.notify(EMPTY_NOTIFICATION_ID, emptyNotification)
+                                    }
+                                    else if (response.body()!!.almostEmpty) {
+                                        notificationManager.notify(ALMOST_EMPTY_NOTIFICATION_ID, almostEmptyNotification)
+                                    }
                                 }
                             }
-                        }
+                            override fun onFailure(p0: Call<Pillbox>, p1: Throwable) {
 
-                        override fun onFailure(p0: Call<Pillbox>, p1: Throwable) {
-
-                        }
-
-                    })
-                    postDelayed(this, 120000)
+                            }
+                        })
+                    }
+                    else Log.d(TAG, "Notification made. Aborting request...")
+                    postDelayed(this, 10000)
                 }
             }
-            postDelayed(runnable, 120000)
+            postDelayed(runnable, 10000)
         }
     }
 
@@ -131,6 +136,15 @@ class EmptyPillboxService : Service() {
         val foundNotification = activeNotifications.find { it.id == notificationId }
 
         return foundNotification != null
+    }
+
+    private fun <T> createPendingIntent(clsActivity: Class<T>): PendingIntent? {
+        val intent = Intent(this, clsActivity)
+        val stackBuilder = TaskStackBuilder.create(this)
+        stackBuilder.addParentStack(clsActivity)
+        stackBuilder.addNextIntent(intent)
+        val pendingIntent = stackBuilder.getPendingIntent(1, PendingIntent.FLAG_IMMUTABLE)
+        return pendingIntent
     }
 
 
