@@ -19,7 +19,7 @@
         android:theme="@style/Theme.MediBox"
         tools:targetApi="31">
         <service
-            android:name=".pillbox.services.EmptyPillboxService"
+            android:name=".pillboxmanagement.services.EmptyPillboxService"
             android:exported="false"
             android:foregroundServiceType="dataSync"/>
 

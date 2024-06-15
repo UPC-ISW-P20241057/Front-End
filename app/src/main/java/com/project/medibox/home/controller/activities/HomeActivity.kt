@@ -16,7 +16,7 @@ import com.project.medibox.home.controller.fragments.CalendarFragment
 import com.project.medibox.home.controller.fragments.DashboardFragment
 import com.project.medibox.home.controller.fragments.HomeFragment
 import com.project.medibox.home.controller.fragments.ProfileFragment
-import com.project.medibox.pillbox.services.EmptyPillboxService
+import com.project.medibox.pillboxmanagement.services.EmptyPillboxService
 
 class HomeActivity : AppCompatActivity() {
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
