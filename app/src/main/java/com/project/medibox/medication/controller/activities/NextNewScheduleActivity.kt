@@ -28,7 +28,6 @@ import com.project.medibox.medication.models.Frequency
 import com.project.medibox.medication.models.Interval
 import com.project.medibox.medication.models.Reminder
 import com.project.medibox.medication.network.MedicationApiService
-import com.project.medibox.medication.receivers.MedicineAlarmReceiver
 import com.project.medibox.medication.resources.CreateFrequencyResource
 import com.project.medibox.medication.resources.CreateIntervalResource
 import com.project.medibox.medication.resources.CreateReminderResource

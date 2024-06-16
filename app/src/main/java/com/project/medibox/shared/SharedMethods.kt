@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.concurrent.TimeUnit
 
@@ -28,6 +29,10 @@ object SharedMethods {
         val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
         val date = Date.from(instant)
         return formatter.format(date)
+    }
+    fun getLocalDateTimeFromJSDate(jsDate: String): LocalDateTime {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd['T'HH:mm]")
+        return LocalDateTime.parse(jsDate, formatter)
     }
     fun localDateTimeToDate(localDateTime: LocalDateTime): Date {
         val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()

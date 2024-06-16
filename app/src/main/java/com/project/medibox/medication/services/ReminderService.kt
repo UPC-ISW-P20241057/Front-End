@@ -14,6 +14,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import com.project.medibox.R
 import com.project.medibox.medication.controller.activities.MedicationAlarmActivity
+import com.project.medibox.shared.AppDatabase
+import com.project.medibox.shared.SharedMethods
+import java.time.LocalDateTime
 
 class ReminderService : Service() {
 
@@ -22,6 +25,11 @@ class ReminderService : Service() {
     private lateinit var notificationManager: NotificationManager
     private lateinit var reminderNotification: Notification
     private var isStarted = false
+
+    override fun onCreate() {
+        super.onCreate()
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
 
     override fun onBind(intent: Intent): IBinder {
         throw UnsupportedOperationException()
@@ -67,7 +75,21 @@ class ReminderService : Service() {
         handler.apply {
             val runnable = object : Runnable {
                 override fun run() {
-
+                    val now = LocalDateTime.now()
+                    val upcomingAlarmDAO = AppDatabase.getInstance(this@ReminderService).getUpcomingReminderDao()
+                    val query = upcomingAlarmDAO.getAll()
+                    val upcomingAlarm = query.find {
+                        SharedMethods.getLocalDateTimeFromJSDate(it.activateDateString).hour == now.hour &&
+                                SharedMethods.getLocalDateTimeFromJSDate(it.activateDateString).minute == now.minute
+                    }
+                    if (upcomingAlarm != null) {
+                        if (!isNotificationVisible(upcomingAlarm.notificationId)) {
+                            Log.d(TAG, "Sending reminder notification...")
+                            defineNotification(upcomingAlarm.medicineName)
+                            notificationManager.notify(upcomingAlarm.notificationId, reminderNotification)
+                        }
+                        else Log.d(TAG, "Reminder notification is present.")
+                    }
                     postDelayed(this, 1000)
                 }
             }

@@ -13,7 +13,11 @@ data class UpcomingReminderAlarm(
     @ColumnInfo
     var activateDateString: String,
     @ColumnInfo
+    var pills: Int?,
+    @ColumnInfo
     var consumeFood: Boolean?,
+    @ColumnInfo
+    var notificationId: Int,
     @ColumnInfo
     var reminderId: Long
 )
