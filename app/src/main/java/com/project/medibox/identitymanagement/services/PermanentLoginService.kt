@@ -74,10 +74,10 @@ class PermanentLoginService : Service() {
                             override fun onFailure(call: Call<AuthenticationResponse>, t: Throwable) {}
                         })
                     }
-                    postDelayed(this, 1140000)
+                    postDelayed(this, 1230000)
                 }
             }
-            postDelayed(runnable, 1140000)
+            postDelayed(runnable, 1230000)
         }
     }
 
