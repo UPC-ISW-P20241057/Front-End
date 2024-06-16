@@ -28,7 +28,7 @@
             android:foregroundServiceType="dataSync" />
 
         <activity
-            android:name=".medication.controller.activities.MedicationAlarm2"
+            android:name=".medication.controller.activities.MedicationAlarmWithImageActivity"
             android:exported="false" />
         <activity
             android:name=".pillboxmanagement.controller.activities.EmptyAlarmActivity"
@@ -37,7 +37,7 @@
             android:name=".pillboxmanagement.controller.activities.AlmostEmptyAlarmActivity"
             android:exported="false" />
         <activity
-            android:name=".medication.controller.activities.MedicationAlarm"
+            android:name=".medication.controller.activities.MedicationAlarmActivity"
             android:exported="false" />
         <activity
             android:name=".medication.controller.activities.NextNewScheduleActivity"
