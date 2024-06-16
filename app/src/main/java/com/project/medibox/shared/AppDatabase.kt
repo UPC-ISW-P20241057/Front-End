@@ -6,8 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.project.medibox.identitymanagement.models.LoginCredentials
 import com.project.medibox.identitymanagement.persistence.LoginCredentialsDAO
+import com.project.medibox.medication.models.UpcomingReminderAlarm
 
-@Database(entities = [LoginCredentials::class], version = 1)
+@Database(entities = [LoginCredentials::class, UpcomingReminderAlarm::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun getLoginCredentialsDao(): LoginCredentialsDAO
