@@ -19,9 +19,13 @@
         android:theme="@style/Theme.MediBox"
         tools:targetApi="31">
         <service
+            android:name=".medication.services.ReminderService"
+            android:enabled="false"
+            android:exported="false"></service>
+        <service
             android:name=".identitymanagement.services.PermanentLoginService"
             android:exported="false"
-            android:foregroundServiceType="dataSync"/>
+            android:foregroundServiceType="dataSync" />
         <service
             android:name=".pillboxmanagement.services.EmptyPillboxService"
             android:exported="false"

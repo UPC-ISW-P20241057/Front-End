@@ -1,5 +1,10 @@
 package com.project.medibox.medication.controller.activities
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -10,16 +15,20 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.Switch
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.project.medibox.R
 import com.project.medibox.medication.models.Frequency
 import com.project.medibox.medication.models.Interval
 import com.project.medibox.medication.models.Reminder
 import com.project.medibox.medication.network.MedicationApiService
+import com.project.medibox.medication.receivers.MedicineAlarmReceiver
 import com.project.medibox.medication.resources.CreateFrequencyResource
 import com.project.medibox.medication.resources.CreateIntervalResource
 import com.project.medibox.medication.resources.CreateReminderResource
@@ -52,6 +61,9 @@ class NextNewScheduleActivity : AppCompatActivity() {
     private var lapseTime: Int = -1
     private var lapseType: String = ""
 
+    private lateinit var timePicker: MaterialTimePicker
+    private lateinit var calendar: Calendar
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +74,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         swInterval = findViewById(R.id.swInterval)
         spnIntervalTime = findViewById(R.id.spnIntervalTime)
         spnIntervalTimeType = findViewById(R.id.spnIntervalTimeType)
@@ -167,28 +180,15 @@ class NextNewScheduleActivity : AppCompatActivity() {
         swFrequency.isChecked = false
     }
 
-    private fun loadSpinners() {
-        val intervalTimeOptions = (1..24).map { it.toString() }
-        val intervalTimeTypeOptions = listOf("Hour(s)", "Day(s)")
-        val freqTimesOptions = (1..30).map { it.toString() }
-        val spnPerOptions = listOf("Day", "Week")
-        val spnForTimeOptions = (1..30).map { it.toString() }
-        val spnForTimeTypeOptions = listOf("Days", "Week(s)")
+    private fun setIntervalTimeSpinner(type: String) {
+        val intervalTimeOptions: List<String> = if (type == "Hours") {
+            listOf("6", "8", "12")
+        } else {
+            (1..3).map { it.toString() }
+        }
 
         val intervalTimeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, intervalTimeOptions)
-        val intervalTypeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, intervalTimeTypeOptions)
-        val freqTimesAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, freqTimesOptions)
-        val spnPerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spnPerOptions)
-        val spnForTimeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spnForTimeOptions)
-        val spnForTimeTypeAdapter= ArrayAdapter(this, android.R.layout.simple_spinner_item, spnForTimeTypeOptions)
-
         spnIntervalTime.adapter = intervalTimeAdapter
-        spnIntervalTimeType.adapter = intervalTypeAdapter
-        spnFreqTimes.adapter = freqTimesAdapter
-        spnPer.adapter = spnPerAdapter
-        spnForTime.adapter = spnForTimeAdapter
-        spnForTimeType.adapter = spnForTimeTypeAdapter
-
         spnIntervalTime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 interval.quantity = parent.getItemAtPosition(position).toString().toInt()
@@ -199,10 +199,34 @@ class NextNewScheduleActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun loadSpinners() {
+
+        val intervalTimeTypeOptions = listOf("Hours", "Days")
+        val freqTimesOptions = (1..3).map { it.toString() }
+        val spnPerOptions = listOf("Day", "Week")
+        val spnForTimeOptions = (1..30).map { it.toString() }
+        val spnForTimeTypeOptions = listOf("Days", "Week(s)")
+
+
+        val intervalTypeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, intervalTimeTypeOptions)
+        val freqTimesAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, freqTimesOptions)
+        val spnPerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spnPerOptions)
+        val spnForTimeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spnForTimeOptions)
+        val spnForTimeTypeAdapter= ArrayAdapter(this, android.R.layout.simple_spinner_item, spnForTimeTypeOptions)
+
+
+        spnIntervalTimeType.adapter = intervalTypeAdapter
+        spnFreqTimes.adapter = freqTimesAdapter
+        spnPer.adapter = spnPerAdapter
+        spnForTime.adapter = spnForTimeAdapter
+        spnForTimeType.adapter = spnForTimeTypeAdapter
 
         spnIntervalTimeType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 interval.type = parent.getItemAtPosition(position) as String
+                setIntervalTimeSpinner(parent.getItemAtPosition(position) as String)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -254,38 +278,10 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
         }
     }
-    private fun createSchedule() {
-        val etPills = findViewById<EditText>(R.id.etPills)
-        val rgrpFood = findViewById<RadioGroup>(R.id.rgrpFood)
+    private fun makeHttpRequest(pills: Int?, startDate: LocalDateTime, endDateString: String?, consumedFood: Boolean?) {
         val medicationApiService = SharedMethods.retrofitServiceBuilder(MedicationApiService::class.java)
-        val now = LocalDateTime.now()
-
-        var endDateString: String? = null
-
-        if (swLapse.isChecked) {
-            endDateString = when(lapseType) {
-                "Days" -> SharedMethods.getJSDateFromLocalDateTime(now.plusDays(lapseTime.toLong()))
-                "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(now.plusWeeks(lapseTime.toLong()))
-                else -> null
-            }
-        }
-
-        val selectedFoodRadio = findViewById<RadioButton>(rgrpFood.checkedRadioButtonId)
-        val foodOption = selectedFoodRadio.text.toString()
-        val consumedFood: Boolean? = when(foodOption) {
-            "Yes" -> true
-            "No" -> false
-            "It doesn't matter" -> null
-            else -> null
-        }
-
-        val pills: Int? = when(swPills.isChecked) {
-            true -> etPills.text.toString().toInt()
-            false -> null
-        }
-
         val postReminderRequest = medicationApiService.createReminder(StateManager.authToken, CreateReminderResource(
-            SharedMethods.getJSDateFromLocalDateTime(now),
+            SharedMethods.getJSDateFromLocalDateTime(startDate),
             pills,
             endDateString,
             StateManager.selectedMedicine!!.id,
@@ -305,8 +301,10 @@ class NextNewScheduleActivity : AppCompatActivity() {
                         ))
                         postIntervalRequest.enqueue(object : Callback<Interval> {
                             override fun onResponse(p0: Call<Interval>, p1: Response<Interval>) {
-                                if (response.isSuccessful)
+                                if (response.isSuccessful) {
                                     Toast.makeText(this@NextNewScheduleActivity, "Reminder with interval created successfully", Toast.LENGTH_SHORT).show()
+                                }
+
                                 else {
                                     Toast.makeText(this@NextNewScheduleActivity, "Error while creating interval of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
                                     medicationApiService.deleteReminder(StateManager.authToken, reminderId)
@@ -353,5 +351,60 @@ class NextNewScheduleActivity : AppCompatActivity() {
             }
 
         })
+    }
+    private fun createSchedule() {
+        val now = LocalDateTime.now()
+
+        timePicker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setHour(12)
+            .setMinute(0)
+            .setTitleText("Select reminder start time")
+            .build()
+
+        timePicker.show(supportFragmentManager, "Reminder time")
+        timePicker.addOnNegativeButtonClickListener {
+            Toast.makeText(this@NextNewScheduleActivity, "You need to indicate the reminder start time.", Toast.LENGTH_SHORT).show()
+        }
+        timePicker.addOnPositiveButtonClickListener {
+            val etPills = findViewById<EditText>(R.id.etPills)
+            val rgrpFood = findViewById<RadioGroup>(R.id.rgrpFood)
+            var endDateString: String? = null
+
+            calendar = Calendar.getInstance()
+            calendar.set(Calendar.HOUR_OF_DAY, timePicker.hour)
+            calendar.set(Calendar.MINUTE, timePicker.minute)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
+
+            if (swLapse.isChecked) {
+                endDateString = when(lapseType) {
+                    "Days" -> SharedMethods.getJSDateFromLocalDateTime(now.plusDays(lapseTime.toLong()))
+                    "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(now.plusWeeks(lapseTime.toLong()))
+                    else -> null
+                }
+            }
+
+            val selectedFoodRadio = findViewById<RadioButton>(rgrpFood.checkedRadioButtonId)
+            val foodOption = selectedFoodRadio.text.toString()
+            val consumedFood: Boolean? = when(foodOption) {
+                "Yes" -> true
+                "No" -> false
+                "It doesn't matter" -> null
+                else -> null
+            }
+
+            val pills: Int? = when(swPills.isChecked) {
+                true -> etPills.text.toString().toInt()
+                false -> null
+            }
+
+            makeHttpRequest(pills, now, endDateString, consumedFood)
+
+        }
+
+
+
+
     }
 }
