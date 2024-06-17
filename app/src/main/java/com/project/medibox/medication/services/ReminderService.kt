@@ -91,13 +91,15 @@ class ReminderService : Service() {
                     val query = upcomingAlarmDAO.getAll()
                     val upcomingAlarm = query.find {
                         it.activateDateString == dateString &&
-                                LocalTime.of(now.hour, now.minute) >= LocalTime.of(it.activateHour, it.activateMinute)
+                                LocalTime.of(now.hour, now.minute) >= LocalTime.of(it.activateHour, it.activateMinute) &&
+                                !it.notified
                     }
                     if (upcomingAlarm != null) {
                         if (!isNotificationVisible(upcomingAlarm.notificationId)) {
                             Log.d(TAG, "Sending reminder notification...")
                             defineNotification(upcomingAlarm.medicineName)
                             notificationManager.notify(upcomingAlarm.notificationId, reminderNotification)
+                            upcomingAlarmDAO.setNotifiedById(upcomingAlarm.id)
                             Log.d(TAG, "Notification data: ${upcomingAlarm.activateDateString}, ${upcomingAlarm.activateHour}, ${upcomingAlarm.activateMinute}")
                         }
                         else Log.d(TAG, "Reminder notification is present.")

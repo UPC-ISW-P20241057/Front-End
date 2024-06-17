@@ -13,6 +13,11 @@ interface UpcomingReminderAlarmDAO {
     @Insert
     fun insertAlarm(vararg alarm: UpcomingReminderAlarm)
 
+    @Query("UPDATE UpcomingReminderAlarm " +
+            "SET notified = 1 " +
+            "WHERE id = :id")
+    fun setNotifiedById(id: Short)
+
     @Query("DELETE FROM UpcomingReminderAlarm WHERE reminderId = :reminderId")
     fun deleteAllByReminderId(reminderId: Long)
 }
