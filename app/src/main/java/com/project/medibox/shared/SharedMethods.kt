@@ -62,5 +62,18 @@ object SharedMethods {
     fun <T> retrofitServiceBuilder(service: Class<T>): T {
         return retrofitBuilder().create(service)
     }
-
+    fun formatHourMinute24H(hour: Int, minute: Int): String {
+        val formattedHour = hour.toString().padStart(2, '0')
+        val formattedMinute = minute.toString().padStart(2, '0')
+        return "$formattedHour:$formattedMinute"
+    }
+    fun formatHourMinute12H(hour: Int, minute: Int): String {
+        val formattedHour = if (hour >= 12) {
+            val adjustedHour = if (hour > 12) hour - 12 else hour
+            "$adjustedHour:$minute PM"
+        } else {
+            "$hour:$minute AM"
+        }
+        return formattedHour.padStart(8, '0')
+    }
 }
