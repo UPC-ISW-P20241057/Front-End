@@ -1,9 +1,5 @@
 package com.project.medibox.medication.controller.activities
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.View
@@ -15,7 +11,6 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.Switch
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -31,12 +26,14 @@ import com.project.medibox.medication.network.MedicationApiService
 import com.project.medibox.medication.resources.CreateFrequencyResource
 import com.project.medibox.medication.resources.CreateIntervalResource
 import com.project.medibox.medication.resources.CreateReminderResource
+import com.project.medibox.medication.services.ReminderService
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 class NextNewScheduleActivity : AppCompatActivity() {
     private lateinit var swInterval: Switch
@@ -203,10 +200,10 @@ class NextNewScheduleActivity : AppCompatActivity() {
     private fun loadSpinners() {
 
         val intervalTimeTypeOptions = listOf("Hours", "Days")
-        val freqTimesOptions = (1..3).map { it.toString() }
-        val spnPerOptions = listOf("Day", "Week")
+        val freqTimesOptions = (1..2).map { it.toString() }
+        val spnPerOptions = listOf("Day")
         val spnForTimeOptions = (1..30).map { it.toString() }
-        val spnForTimeTypeOptions = listOf("Days", "Week(s)")
+        val spnForTimeTypeOptions = listOf("Days", "Weeks")
 
 
         val intervalTypeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, intervalTimeTypeOptions)
@@ -245,16 +242,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
         }
 
-        spnPer.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                frequency.type = parent.getItemAtPosition(position) as String
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                frequency.type = ""
-            }
-
-        }
+        spnPer.isEnabled = false
+        frequency.type = "Days"
 
         spnForTime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
@@ -289,30 +278,31 @@ class NextNewScheduleActivity : AppCompatActivity() {
         ))
 
         postReminderRequest.enqueue(object : Callback<Reminder> {
-            override fun onResponse(call: Call<Reminder>, response: Response<Reminder>) {
-                if (response.isSuccessful) {
-                    val reminderId = response.body()!!.id
+            override fun onResponse(call: Call<Reminder>, reminderResponse: Response<Reminder>) {
+                if (reminderResponse.isSuccessful) {
+                    val reminder = reminderResponse.body()!!
                     if (swInterval.isChecked) {
                         val postIntervalRequest = medicationApiService.createInterval(StateManager.authToken, CreateIntervalResource(
                             spnIntervalTimeType.selectedItem.toString(),
                             spnIntervalTime.selectedItem.toString().toInt(),
-                            reminderId
+                            reminder.id
                         ))
                         postIntervalRequest.enqueue(object : Callback<Interval> {
-                            override fun onResponse(p0: Call<Interval>, p1: Response<Interval>) {
+                            override fun onResponse(call: Call<Interval>, response: Response<Interval>) {
                                 if (response.isSuccessful) {
+                                    ReminderService.createAlarms(this@NextNewScheduleActivity, reminder, response.body()!!)
                                     Toast.makeText(this@NextNewScheduleActivity, "Reminder with interval created successfully", Toast.LENGTH_SHORT).show()
                                 }
 
                                 else {
                                     Toast.makeText(this@NextNewScheduleActivity, "Error while creating interval of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
-                                    medicationApiService.deleteReminder(StateManager.authToken, reminderId)
+                                    medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                                 }
                             }
 
                             override fun onFailure(p0: Call<Interval>, p1: Throwable) {
                                 Toast.makeText(this@NextNewScheduleActivity, "Error while creating interval of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
-                                medicationApiService.deleteReminder(StateManager.authToken, reminderId)
+                                medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                             }
 
                         })
@@ -321,21 +311,23 @@ class NextNewScheduleActivity : AppCompatActivity() {
                         val postFrequencyRequest = medicationApiService.createFrequency(StateManager.authToken, CreateFrequencyResource(
                             spnPer.selectedItem.toString(),
                             spnFreqTimes.selectedItem.toString().toInt(),
-                            reminderId
+                            reminder.id
                         ))
                         postFrequencyRequest.enqueue(object : Callback<Frequency> {
-                            override fun onResponse(p0: Call<Frequency>, p1: Response<Frequency>) {
-                                if (response.isSuccessful)
+                            override fun onResponse(call: Call<Frequency>, response: Response<Frequency>) {
+                                if (response.isSuccessful) {
+                                    ReminderService.createAlarms(this@NextNewScheduleActivity, reminder, response.body()!!)
                                     Toast.makeText(this@NextNewScheduleActivity, "Reminder with frequency created successfully", Toast.LENGTH_SHORT).show()
+                                }
                                 else {
                                     Toast.makeText(this@NextNewScheduleActivity, "Error while creating frequency of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
-                                    medicationApiService.deleteReminder(StateManager.authToken, reminderId)
+                                    medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                                 }
                             }
 
                             override fun onFailure(p0: Call<Frequency>, p1: Throwable) {
                                 Toast.makeText(this@NextNewScheduleActivity, "Error while creating frequency of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
-                                medicationApiService.deleteReminder(StateManager.authToken, reminderId)
+                                medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                             }
 
                         })
@@ -361,49 +353,59 @@ class NextNewScheduleActivity : AppCompatActivity() {
             .setTitleText("Select reminder start time")
             .build()
 
-        timePicker.show(supportFragmentManager, "Reminder time")
-        timePicker.addOnNegativeButtonClickListener {
-            Toast.makeText(this@NextNewScheduleActivity, "You need to indicate the reminder start time.", Toast.LENGTH_SHORT).show()
+
+        val etPills = findViewById<EditText>(R.id.etPills)
+        val rgrpFood = findViewById<RadioGroup>(R.id.rgrpFood)
+
+
+        val selectedFoodRadio = findViewById<RadioButton>(rgrpFood.checkedRadioButtonId)
+        val foodOption = selectedFoodRadio.text.toString()
+        val consumedFood: Boolean? = when(foodOption) {
+            "Yes" -> true
+            "No" -> false
+            "It doesn't matter" -> null
+            else -> null
         }
-        timePicker.addOnPositiveButtonClickListener {
-            val etPills = findViewById<EditText>(R.id.etPills)
-            val rgrpFood = findViewById<RadioGroup>(R.id.rgrpFood)
-            var endDateString: String? = null
 
-            calendar = Calendar.getInstance()
-            calendar.set(Calendar.HOUR_OF_DAY, timePicker.hour)
-            calendar.set(Calendar.MINUTE, timePicker.minute)
-            calendar.set(Calendar.SECOND, 0)
-            calendar.set(Calendar.MILLISECOND, 0)
+        val pills: Int? = when(swPills.isChecked) {
+            true -> etPills.text.toString().toInt()
+            false -> null
+        }
 
-            if (swLapse.isChecked) {
-                endDateString = when(lapseType) {
-                    "Days" -> SharedMethods.getJSDateFromLocalDateTime(now.plusDays(lapseTime.toLong()))
-                    "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(now.plusWeeks(lapseTime.toLong()))
-                    else -> null
-                }
-            }
-
-            val selectedFoodRadio = findViewById<RadioButton>(rgrpFood.checkedRadioButtonId)
-            val foodOption = selectedFoodRadio.text.toString()
-            val consumedFood: Boolean? = when(foodOption) {
-                "Yes" -> true
-                "No" -> false
-                "It doesn't matter" -> null
+        if ((swInterval.isChecked && (spnIntervalTime.selectedItem.toString() == "6" || spnIntervalTime.selectedItem.toString() == "8") && spnIntervalTimeType.selectedItem.toString() == "Hours") ||
+            swFrequency.isChecked && spnFreqTimes.selectedItem.toString() == "2" && spnPer.selectedItem.toString() == "Day") {
+            val createdDate = now.plusDays(1)
+            val endDateString: String? = when(lapseType) {
+                "Days" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusDays(lapseTime.toLong()))
+                "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
                 else -> null
             }
-
-            val pills: Int? = when(swPills.isChecked) {
-                true -> etPills.text.toString().toInt()
-                false -> null
-            }
-
-            makeHttpRequest(pills, now, endDateString, consumedFood)
-
+            makeHttpRequest(pills, createdDate, endDateString, consumedFood)
         }
+        else if ((swInterval.isChecked && spnIntervalTime.selectedItem.toString() == "12" && spnIntervalTimeType.selectedItem.toString() == "Hours") ||
+            (swInterval.isChecked && spnIntervalTimeType.selectedItem.toString() == "Days") ||
+            (swFrequency.isChecked && spnFreqTimes.selectedItem.toString() == "1" && spnPer.selectedItem.toString() == "Day")) {
 
 
-
+            timePicker.show(supportFragmentManager, "Reminder time")
+            timePicker.addOnNegativeButtonClickListener {
+                Toast.makeText(this@NextNewScheduleActivity, "You need to indicate the reminder start time.", Toast.LENGTH_SHORT).show()
+            }
+            timePicker.addOnPositiveButtonClickListener {
+                val nowHour = LocalTime.of(now.hour, now.minute)
+                val createHour = LocalTime.of(timePicker.hour, timePicker.minute)
+                var createdDate = LocalDateTime.of(now.toLocalDate(), createHour)
+                if (nowHour >= createHour) {
+                    createdDate = createdDate.plusDays(1)
+                }
+                val endDateString: String? = when(lapseType) {
+                    "Days" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusDays(lapseTime.toLong()))
+                    "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
+                    else -> null
+                }
+                makeHttpRequest(pills, createdDate, endDateString, consumedFood)
+            }
+        }
 
     }
 }

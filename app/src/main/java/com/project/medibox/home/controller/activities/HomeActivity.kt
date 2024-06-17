@@ -17,6 +17,7 @@ import com.project.medibox.home.controller.fragments.DashboardFragment
 import com.project.medibox.home.controller.fragments.HomeFragment
 import com.project.medibox.home.controller.fragments.ProfileFragment
 import com.project.medibox.identitymanagement.services.PermanentLoginService
+import com.project.medibox.medication.services.ReminderService
 import com.project.medibox.pillboxmanagement.services.EmptyPillboxService
 import com.project.medibox.shared.AppDatabase
 
@@ -61,11 +62,13 @@ class HomeActivity : AppCompatActivity() {
     private fun startServices() {
         EmptyPillboxService.startService(this)
         PermanentLoginService.startService(this)
+        ReminderService.startService(this)
     }
 
     private fun stopServices() {
         EmptyPillboxService.stopService(this)
         PermanentLoginService.stopService(this)
+        ReminderService.stopService(this)
     }
 
     private fun navigateTo(item: MenuItem): Boolean {

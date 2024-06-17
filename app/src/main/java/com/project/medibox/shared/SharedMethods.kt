@@ -1,18 +1,13 @@
 package com.project.medibox.shared
 
-import android.app.ActivityManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.os.Build
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -31,13 +26,21 @@ object SharedMethods {
         return formatter.format(date)
     }
     fun getLocalDateTimeFromJSDate(jsDate: String): LocalDateTime {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd['T'HH:mm]")
-        return LocalDateTime.parse(jsDate, formatter)
+        val offsetDate = OffsetDateTime.parse(jsDate, DateTimeFormatter.ISO_DATE_TIME)
+        return offsetDate.toLocalDateTime()
     }
     fun localDateTimeToDate(localDateTime: LocalDateTime): Date {
         val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
         val date = Date.from(instant)
         return date
+    }
+    fun getDDMMYYStringFromDate(localDateTime: LocalDateTime): String {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        return localDateTime.format(formatter)
+    }
+    fun getDDMMYYStringFromDate(localDate: LocalDate): String {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        return localDate.format(formatter)
     }
     private fun retrofitBuilder(): Retrofit {
         val logging = HttpLoggingInterceptor().apply {

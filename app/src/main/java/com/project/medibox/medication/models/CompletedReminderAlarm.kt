@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class UpcomingReminderAlarm(
+data class CompletedReminderAlarm(
     @PrimaryKey(autoGenerate = true)
     var id: Short,
     @ColumnInfo
@@ -17,13 +17,5 @@ data class UpcomingReminderAlarm(
     @ColumnInfo
     var activateMinute: Int,
     @ColumnInfo
-    var pills: Int?,
-    @ColumnInfo
-    var consumeFood: Boolean?,
-    @ColumnInfo
-    var notificationId: Int,
-    @ColumnInfo
-    var reminderId: Long,
-    @ColumnInfo
-    var notified: Boolean = false
+    var consumeFood: Boolean?
 )
