@@ -19,16 +19,20 @@
         android:theme="@style/Theme.MediBox"
         tools:targetApi="31">
         <service
-            android:name=".identitymanagement.services.PermanentLoginService"
+            android:name=".medication.services.ReminderService"
             android:exported="false"
             android:foregroundServiceType="dataSync"/>
+        <service
+            android:name=".identitymanagement.services.PermanentLoginService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
         <service
             android:name=".pillboxmanagement.services.EmptyPillboxService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
 
         <activity
-            android:name=".controllers.activities.MedicationAlarm2"
+            android:name=".medication.controller.activities.MedicationAlarmWithImageActivity"
             android:exported="false" />
         <activity
             android:name=".pillboxmanagement.controller.activities.EmptyAlarmActivity"
@@ -37,7 +41,7 @@
             android:name=".pillboxmanagement.controller.activities.AlmostEmptyAlarmActivity"
             android:exported="false" />
         <activity
-            android:name=".controllers.activities.MedicationAlarm"
+            android:name=".medication.controller.activities.MedicationAlarmActivity"
             android:exported="false" />
         <activity
             android:name=".medication.controller.activities.NextNewScheduleActivity"

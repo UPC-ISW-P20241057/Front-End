@@ -1,19 +1,15 @@
 package com.project.medibox.shared
 
-import android.app.ActivityManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.os.Build
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.concurrent.TimeUnit
 
@@ -29,10 +25,22 @@ object SharedMethods {
         val date = Date.from(instant)
         return formatter.format(date)
     }
+    fun getLocalDateTimeFromJSDate(jsDate: String): LocalDateTime {
+        val offsetDate = OffsetDateTime.parse(jsDate, DateTimeFormatter.ISO_DATE_TIME)
+        return offsetDate.toLocalDateTime()
+    }
     fun localDateTimeToDate(localDateTime: LocalDateTime): Date {
         val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
         val date = Date.from(instant)
         return date
+    }
+    fun getDDMMYYStringFromDate(localDateTime: LocalDateTime): String {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        return localDateTime.format(formatter)
+    }
+    fun getDDMMYYStringFromDate(localDate: LocalDate): String {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        return localDate.format(formatter)
     }
     private fun retrofitBuilder(): Retrofit {
         val logging = HttpLoggingInterceptor().apply {
@@ -54,5 +62,18 @@ object SharedMethods {
     fun <T> retrofitServiceBuilder(service: Class<T>): T {
         return retrofitBuilder().create(service)
     }
-
+    fun formatHourMinute24H(hour: Int, minute: Int): String {
+        val formattedHour = hour.toString().padStart(2, '0')
+        val formattedMinute = minute.toString().padStart(2, '0')
+        return "$formattedHour:$formattedMinute"
+    }
+    fun formatHourMinute12H(hour: Int, minute: Int): String {
+        val formattedHour = if (hour >= 12) {
+            val adjustedHour = if (hour > 12) hour - 12 else hour
+            "$adjustedHour:$minute PM"
+        } else {
+            "$hour:$minute AM"
+        }
+        return formattedHour.padStart(8, '0')
+    }
 }

@@ -1,4 +1,4 @@
-package com.project.medibox.controllers.activities
+package com.project.medibox.medication.controller.activities
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -7,7 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.project.medibox.R
 
-class MedicationAlarm : AppCompatActivity() {
+class MedicationAlarmActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

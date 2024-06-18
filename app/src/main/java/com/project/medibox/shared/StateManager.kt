@@ -8,4 +8,5 @@ object StateManager {
     var loggedUserId: Long = -1
     lateinit var loggedUser: User
     var selectedMedicine: Medicine? = null
+    var isAlarmChannelCreated: Boolean = false
 }
