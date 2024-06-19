@@ -98,6 +98,7 @@ class ReminderService : Service() {
                         if (!isNotificationVisible(upcomingAlarm.notificationId)) {
                             Log.d(TAG, "Sending reminder notification...")
                             defineNotification(upcomingAlarm.medicineName)
+                            StateManager.selectedUpcomingAlarm = upcomingAlarm
                             notificationManager.notify(upcomingAlarm.notificationId, reminderNotification)
                             upcomingAlarmDAO.setNotifiedById(upcomingAlarm.id)
                             Log.d(TAG, "Notification data: ${upcomingAlarm.activateDateString}, ${upcomingAlarm.activateHour}, ${upcomingAlarm.activateMinute}")

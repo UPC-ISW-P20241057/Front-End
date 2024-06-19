@@ -20,4 +20,7 @@ interface UpcomingReminderAlarmDAO {
 
     @Query("DELETE FROM UpcomingReminderAlarm WHERE reminderId = :reminderId")
     fun deleteAllByReminderId(reminderId: Long)
+
+    @Query("DELETE FROM UpcomingReminderAlarm WHERE id = :id")
+    fun deleteById(id: Short)
 }
