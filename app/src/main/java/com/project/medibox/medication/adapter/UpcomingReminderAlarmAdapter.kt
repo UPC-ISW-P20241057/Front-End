@@ -1,6 +1,8 @@
 package com.project.medibox.medication.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,9 +23,17 @@ class UpcomingReminderAlarmAdapter(private val alarms: List<UpcomingReminderAlar
         private val ivClock = itemView.findViewById<ImageView>(R.id.ivClock)
         private val tvTimeToTake = itemView.findViewById<TextView>(R.id.tvTimeToTake)
 
+        @SuppressLint("ResourceAsColor")
         fun bind(alarm: UpcomingReminderAlarm, itemClickListener: OnItemClickListener<UpcomingReminderAlarm>) {
             tvMedicineName.text = alarm.medicineName
             tvTimeToTake.text = "${alarm.activateDateString} ${SharedMethods.formatHourMinute12H(alarm.activateHour, alarm.activateMinute)}"
+            if (alarm.notified) {
+                cvUpcomingMedicine.setCardBackgroundColor(R.color.medibox_default)
+                ivClock.setImageDrawable(null)
+                ivClock.setBackgroundResource(R.mipmap.alarm_on)
+                tvMedicineName.setTextColor(Color.WHITE)
+                tvTimeToTake.setTextColor(Color.WHITE)
+            }
             cvUpcomingMedicine.setOnClickListener {
                 itemClickListener.onItemClicked(alarm)
             }

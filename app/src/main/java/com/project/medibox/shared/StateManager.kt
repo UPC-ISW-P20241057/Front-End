@@ -14,5 +14,5 @@ object StateManager {
     var isAlarmChannelCreated: Boolean = false
     lateinit var selectedUpcomingAlarm: UpcomingReminderAlarm
     lateinit var selectedCompletedAlarm: CompletedReminderAlarm
-    lateinit var missedUpcomingAlarm: MissedReminderAlarm
+    lateinit var selectedMissedAlarm: MissedReminderAlarm
 }

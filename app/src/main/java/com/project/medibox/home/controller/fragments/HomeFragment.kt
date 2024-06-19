@@ -88,9 +88,11 @@ class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnI
     }
 
     override fun onItemClicked(value: UpcomingReminderAlarm) {
-        StateManager.selectedUpcomingAlarm = value
-        val intent = Intent(requireContext(), MedicationAlarmActivity::class.java)
-        startActivity(intent)
+        if (value.notified) {
+            StateManager.selectedUpcomingAlarm = value
+            val intent = Intent(requireContext(), MedicationAlarmActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onItemClicked2(value: CompletedReminderAlarm) {
@@ -98,7 +100,7 @@ class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnI
     }
 
     override fun onItemClicked3(value: MissedReminderAlarm) {
-
+        StateManager.selectedMissedAlarm = value
     }
 
     /*private fun navigateTo(fragment: Fragment): Boolean {
