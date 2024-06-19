@@ -67,7 +67,7 @@ object SharedMethods {
         val formattedMinute = minute.toString().padStart(2, '0')
         return "$formattedHour:$formattedMinute"
     }
-    fun formatHourMinute12H(hour: Int, minute: Int): String {
+    fun formatHourMinute12He(hour: Int, minute: Int): String {
         val formattedHour = if (hour >= 12) {
             val adjustedHour = if (hour > 12) hour - 12 else hour
             "$adjustedHour:$minute PM"
@@ -75,5 +75,21 @@ object SharedMethods {
             "$hour:$minute AM"
         }
         return formattedHour.padStart(8, '0')
+    }
+    fun formatHourMinute12H(hour: Int, minute: Int): String {
+        val finalHour: Int
+        val moment: String
+        if (hour >= 12) {
+            finalHour = if (hour > 12) hour - 12 else hour
+            moment = "PM"
+        }
+        else {
+            finalHour = if (hour == 0) 12 else hour
+            moment = "PM"
+        }
+        val hourStr = if (finalHour < 10) "0${finalHour}" else finalHour.toString()
+        val minuteStr = if (minute < 10) "0${minute}" else minute.toString()
+
+        return "$hourStr:$minuteStr $moment"
     }
 }

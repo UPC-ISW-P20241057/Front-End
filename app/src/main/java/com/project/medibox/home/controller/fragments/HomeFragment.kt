@@ -26,6 +26,11 @@ import com.project.medibox.shared.OnItemClickListener
 import com.project.medibox.shared.OnItemClickListener2
 import com.project.medibox.shared.OnItemClickListener3
 import com.project.medibox.shared.StateManager
+import okhttp3.internal.notifyAll
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnItemClickListener2<CompletedReminderAlarm>, OnItemClickListener3<MissedReminderAlarm> {
 
@@ -40,13 +45,20 @@ class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnI
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val tvHiUser = view.findViewById<TextView>(R.id.tvHiUser)
         tvHiUser.text = "Hi ${StateManager.loggedUser.name}"
         val rvReminderAlarms = view.findViewById<RecyclerView>(R.id.rvReminderAlarms)
         var upcomingAlarms = AppDatabase.getInstance(requireContext()).getUpcomingReminderAlarmDao().getAll()
         Log.d("Database", upcomingAlarms.toString())
         rvReminderAlarms.layoutManager = LinearLayoutManager(requireContext())
-        rvReminderAlarms.adapter = UpcomingReminderAlarmAdapter(upcomingAlarms, this)
+        var sortedAlarms = upcomingAlarms.sortedBy { alarm ->
+            val date = LocalDate.parse(alarm.activateDateString, dateFormatter)
+            val dateTime = LocalDateTime.of(date, LocalTime.of(alarm.activateHour, alarm.activateMinute))
+            dateTime
+        }
+        Log.d("HomeFragment", "Database sortedAlarms: $sortedAlarms")
+        rvReminderAlarms.adapter = UpcomingReminderAlarmAdapter(sortedAlarms, this)
 
         /*if (savedInstanceState == null) {
             childFragmentManager.beginTransaction()
@@ -65,7 +77,13 @@ class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnI
             Log.d("Database", upcomingAlarms.toString())
             upcomingAlarms = AppDatabase.getInstance(requireContext()).getUpcomingReminderAlarmDao().getAll()
             rvReminderAlarms.layoutManager = LinearLayoutManager(requireContext())
-            rvReminderAlarms.adapter = UpcomingReminderAlarmAdapter(upcomingAlarms, this)
+            sortedAlarms = upcomingAlarms.sortedBy { alarm ->
+                val date = LocalDate.parse(alarm.activateDateString, dateFormatter)
+                val dateTime = LocalDateTime.of(date, LocalTime.of(alarm.activateHour, alarm.activateMinute))
+                dateTime
+            }
+            Log.d("HomeFragment", "Database sortedAlarms: $sortedAlarms")
+            rvReminderAlarms.adapter = UpcomingReminderAlarmAdapter(sortedAlarms, this)
         }
         cvCompleted.setOnClickListener {
             cvUpcoming.setCardBackgroundColor(ContextCompat.getColor(view.context, R.color.menu_bar_background))
@@ -74,7 +92,13 @@ class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnI
             //navigateTo(CompletedFragment())
             val completedAlarms = AppDatabase.getInstance(requireContext()).getCompletedReminderAlarmDao().getAll()
             rvReminderAlarms.layoutManager = LinearLayoutManager(requireContext())
-            rvReminderAlarms.adapter = CompletedReminderAlarmAdapter(completedAlarms, this)
+            val completedSortedAlarms = completedAlarms.sortedBy { alarm ->
+                val date = LocalDate.parse(alarm.activateDateString, dateFormatter)
+                val dateTime = LocalDateTime.of(date, LocalTime.of(alarm.activateHour, alarm.activateMinute))
+                dateTime
+            }
+            Log.d("HomeFragment", "Database completedSortedAlarms: $completedSortedAlarms")
+            rvReminderAlarms.adapter = CompletedReminderAlarmAdapter(completedSortedAlarms, this)
         }
         cvMissed.setOnClickListener {
             cvUpcoming.setCardBackgroundColor(ContextCompat.getColor(view.context, R.color.menu_bar_background))
@@ -82,8 +106,14 @@ class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnI
             cvMissed.setCardBackgroundColor(ContextCompat.getColor(view.context, R.color.dark_menu_purple))
             //navigateTo(MissedFragment())
             val missedAlarms = AppDatabase.getInstance(requireContext()).getMissedReminderAlarmDao().getAll()
+            val missedSortedAlarms = missedAlarms.sortedBy { alarm ->
+                val date = LocalDate.parse(alarm.activateDateString, dateFormatter)
+                val dateTime = LocalDateTime.of(date, LocalTime.of(alarm.activateHour, alarm.activateMinute))
+                dateTime
+            }
             rvReminderAlarms.layoutManager = LinearLayoutManager(requireContext())
-            rvReminderAlarms.adapter = MissedReminderAlarmAdapter(missedAlarms, this)
+            Log.d("HomeFragment", "Database missedSortedAlarms: $missedSortedAlarms")
+            rvReminderAlarms.adapter = MissedReminderAlarmAdapter(missedSortedAlarms, this)
         }
     }
 

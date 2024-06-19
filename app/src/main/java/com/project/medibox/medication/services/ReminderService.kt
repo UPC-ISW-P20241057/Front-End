@@ -315,9 +315,9 @@ class ReminderService : Service() {
             for (dayMore in 0L..dayDiff) {
                 val alarmDate = createdDate.plusDays(dayMore)
                 val alarmDateString = SharedMethods.getDDMMYYStringFromDate(alarmDate)
-                when(frequency.time) {
+                when(frequency.times) {
                     1 -> {
-                        upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                        val upc1 = UpcomingReminderAlarm(
                             0,
                             StateManager.selectedMedicine!!.name,
                             alarmDateString,
@@ -327,10 +327,12 @@ class ReminderService : Service() {
                             reminder.consumeFood,
                             generateNotificationId(upcomingReminderAlarmDAO),
                             reminder.id
-                        ))
+                        )
+                        upcomingReminderAlarmDAO.insertAlarm(upc1)
+                        Log.d("Database", upc1.toString())
                     }
                     2 -> {
-                        upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                        val upc1 = UpcomingReminderAlarm(
                             0,
                             StateManager.selectedMedicine!!.name,
                             alarmDateString,
@@ -340,8 +342,10 @@ class ReminderService : Service() {
                             reminder.consumeFood,
                             generateNotificationId(upcomingReminderAlarmDAO),
                             reminder.id
-                        ))
-                        upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                        )
+                        upcomingReminderAlarmDAO.insertAlarm(upc1)
+                        Log.d("Database", upc1.toString())
+                        val upc2 = UpcomingReminderAlarm(
                             0,
                             StateManager.selectedMedicine!!.name,
                             alarmDateString,
@@ -351,7 +355,9 @@ class ReminderService : Service() {
                             reminder.consumeFood,
                             generateNotificationId(upcomingReminderAlarmDAO),
                             reminder.id
-                        ))
+                        )
+                        upcomingReminderAlarmDAO.insertAlarm(upc2)
+                        Log.d("Database", upc2.toString())
                     }
                 }
             }
