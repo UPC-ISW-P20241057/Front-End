@@ -22,6 +22,7 @@ import com.project.medibox.identitymanagement.services.PermanentLoginService
 import com.project.medibox.medication.services.ReminderService
 import com.project.medibox.pillboxmanagement.services.EmptyPillboxService
 import com.project.medibox.shared.AppDatabase
+import com.project.medibox.voice.controller.fragments.VoiceCommandsFragment
 
 class HomeActivity : AppCompatActivity() {
 
@@ -114,6 +115,7 @@ class HomeActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.menu_home -> HomeFragment()
             R.id.menu_dashboard -> DashboardFragment()
+            R.id.menu_voice -> VoiceCommandsFragment()
             R.id.menu_calendar -> CalendarFragment()
             R.id.menu_profile -> ProfileFragment()
             else -> HomeFragment()
