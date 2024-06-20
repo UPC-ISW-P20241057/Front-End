@@ -1,6 +1,5 @@
 package com.project.medibox.medication.controller.activities
 
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -58,7 +57,6 @@ class NextNewScheduleActivity : AppCompatActivity() {
     private var lapseType: String = ""
 
     private lateinit var timePicker: MaterialTimePicker
-    private lateinit var calendar: Calendar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -282,11 +280,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
                 if (reminderResponse.isSuccessful) {
                     val reminder = reminderResponse.body()!!
                     if (swInterval.isChecked) {
-                        val postIntervalRequest = medicationApiService.createInterval(StateManager.authToken, CreateIntervalResource(
-                            spnIntervalTimeType.selectedItem.toString(),
-                            spnIntervalTime.selectedItem.toString().toInt(),
-                            reminder.id
-                        ))
+                        interval.reminderId = reminder.id
+                        val postIntervalRequest = medicationApiService.createInterval(StateManager.authToken, interval)
                         postIntervalRequest.enqueue(object : Callback<Interval> {
                             override fun onResponse(call: Call<Interval>, response: Response<Interval>) {
                                 if (response.isSuccessful) {
@@ -308,11 +303,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
                         })
                     }
                     else if (swFrequency.isChecked) {
-                        val postFrequencyRequest = medicationApiService.createFrequency(StateManager.authToken, CreateFrequencyResource(
-                            spnPer.selectedItem.toString(),
-                            spnFreqTimes.selectedItem.toString().toInt(),
-                            reminder.id
-                        ))
+                        frequency.reminderId = reminder.id
+                        val postFrequencyRequest = medicationApiService.createFrequency(StateManager.authToken, frequency)
                         postFrequencyRequest.enqueue(object : Callback<Frequency> {
                             override fun onResponse(call: Call<Frequency>, response: Response<Frequency>) {
                                 if (response.isSuccessful) {

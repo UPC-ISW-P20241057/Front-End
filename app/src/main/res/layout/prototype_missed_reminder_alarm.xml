@@ -2,13 +2,13 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cvUpcomingMedicine"
+    android:id="@+id/cvMissedMedicine"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
-    app:cardBackgroundColor="@color/medibox_default"
+    app:cardBackgroundColor="@color/menu_bar_background"
     app:cardCornerRadius="20dp"
-    app:cardElevation="2dp">
+    app:cardElevation="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,6 +21,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/palanquin_dark"
+            android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintStart_toEndOf="@+id/ivClock"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +34,8 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/unhappy" />
 
         <TextView
             android:id="@+id/tvTimeToTake"

@@ -38,7 +38,7 @@ class UpcomingFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm> 
         alarms = AppDatabase.getInstance(requireContext()).getUpcomingReminderAlarmDao().getAll()
         Log.d("Database", alarms.toString())
         rvUpcomingAlarms.layoutManager = LinearLayoutManager(requireContext())
-        rvUpcomingAlarms.adapter = UpcomingReminderAlarmAdapter(alarms, requireContext(), this)
+        rvUpcomingAlarms.adapter = UpcomingReminderAlarmAdapter(alarms, this)
     }
 
     override fun onItemClicked(value: UpcomingReminderAlarm) {

@@ -19,9 +19,15 @@ import com.project.medibox.medication.models.Interval
 import com.project.medibox.medication.models.Reminder
 import com.project.medibox.medication.models.UpcomingReminderAlarm
 import com.project.medibox.medication.persistence.UpcomingReminderAlarmDAO
+import com.project.medibox.pillboxmanagement.models.BoxData
+import com.project.medibox.pillboxmanagement.models.BoxDataResponse
+import com.project.medibox.pillboxmanagement.network.PillboxApiService
 import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -98,7 +104,9 @@ class ReminderService : Service() {
                         if (!isNotificationVisible(upcomingAlarm.notificationId)) {
                             Log.d(TAG, "Sending reminder notification...")
                             defineNotification(upcomingAlarm.medicineName)
+                            StateManager.selectedUpcomingAlarm = upcomingAlarm
                             notificationManager.notify(upcomingAlarm.notificationId, reminderNotification)
+                            sendDataToPillbox()
                             upcomingAlarmDAO.setNotifiedById(upcomingAlarm.id)
                             Log.d(TAG, "Notification data: ${upcomingAlarm.activateDateString}, ${upcomingAlarm.activateHour}, ${upcomingAlarm.activateMinute}")
                         }
@@ -109,6 +117,21 @@ class ReminderService : Service() {
             }
             postDelayed(runnable, 1000)
         }
+    }
+
+    private fun sendDataToPillbox() {
+        val pillboxService = SharedMethods.retrofitServiceBuilder(PillboxApiService::class.java)
+        val request = pillboxService.updatePillboxData(1, BoxData(1, true))
+        request.enqueue(object : Callback<BoxDataResponse> {
+            override fun onResponse(p0: Call<BoxDataResponse>, p1: Response<BoxDataResponse>) {
+
+            }
+
+            override fun onFailure(p0: Call<BoxDataResponse>, p1: Throwable) {
+
+            }
+
+        })
     }
 
 
@@ -314,9 +337,9 @@ class ReminderService : Service() {
             for (dayMore in 0L..dayDiff) {
                 val alarmDate = createdDate.plusDays(dayMore)
                 val alarmDateString = SharedMethods.getDDMMYYStringFromDate(alarmDate)
-                when(frequency.time) {
+                when(frequency.times) {
                     1 -> {
-                        upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                        val upc1 = UpcomingReminderAlarm(
                             0,
                             StateManager.selectedMedicine!!.name,
                             alarmDateString,
@@ -326,10 +349,12 @@ class ReminderService : Service() {
                             reminder.consumeFood,
                             generateNotificationId(upcomingReminderAlarmDAO),
                             reminder.id
-                        ))
+                        )
+                        upcomingReminderAlarmDAO.insertAlarm(upc1)
+                        Log.d("Database", upc1.toString())
                     }
                     2 -> {
-                        upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                        val upc1 = UpcomingReminderAlarm(
                             0,
                             StateManager.selectedMedicine!!.name,
                             alarmDateString,
@@ -339,8 +364,10 @@ class ReminderService : Service() {
                             reminder.consumeFood,
                             generateNotificationId(upcomingReminderAlarmDAO),
                             reminder.id
-                        ))
-                        upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                        )
+                        upcomingReminderAlarmDAO.insertAlarm(upc1)
+                        Log.d("Database", upc1.toString())
+                        val upc2 = UpcomingReminderAlarm(
                             0,
                             StateManager.selectedMedicine!!.name,
                             alarmDateString,
@@ -350,7 +377,9 @@ class ReminderService : Service() {
                             reminder.consumeFood,
                             generateNotificationId(upcomingReminderAlarmDAO),
                             reminder.id
-                        ))
+                        )
+                        upcomingReminderAlarmDAO.insertAlarm(upc2)
+                        Log.d("Database", upc2.toString())
                     }
                 }
             }
