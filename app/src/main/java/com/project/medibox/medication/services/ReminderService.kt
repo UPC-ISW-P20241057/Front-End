@@ -15,6 +15,7 @@ import androidx.core.app.TaskStackBuilder
 import com.project.medibox.R
 import com.project.medibox.medication.controller.activities.MedicationAlarmActivity
 import com.project.medibox.medication.models.Frequency
+import com.project.medibox.medication.models.HistoricalReminder
 import com.project.medibox.medication.models.Interval
 import com.project.medibox.medication.models.Medicine
 import com.project.medibox.medication.models.Reminder
@@ -178,6 +179,34 @@ class ReminderService : Service() {
             return uniqueDates
         }
 
+        private fun saveHistoricalReminder(context: Context, reminder: Reminder) {
+            val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
+            val createdDateParsed = SharedMethods.getDDMMYYStringFromDate(createdDate)
+            val endDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.endDateString!!)
+            val endDateParsed = SharedMethods.getDDMMYYStringFromDate(endDate)
+            val type: String
+            val typeId: Long
+            if (reminder.interval != null) {
+                type = "Interval"
+                typeId = reminder.interval!!.id
+            }
+            else {
+                type = "Frequency"
+                typeId = reminder.frequency!!.id
+            }
+            AppDatabase.getInstance(context).getHistoricalReminderDao().insertReminder(HistoricalReminder(
+                0,
+                createdDateParsed,
+                reminder.pills,
+                endDateParsed,
+                reminder.medicine.name,
+                type,
+                typeId,
+                reminder.consumeFood,
+                reminder.id
+            ))
+        }
+
         fun loadAlarmsFromApi(context: Context) {
             val medicationApiService = SharedMethods.retrofitServiceBuilder(MedicationApiService::class.java)
             val request = medicationApiService.getRemindersByUserId(StateManager.authToken, StateManager.loggedUserId)
@@ -186,6 +215,7 @@ class ReminderService : Service() {
                 override fun onResponse(call: Call<List<Reminder>>, response: Response<List<Reminder>>) {
                     if (response.isSuccessful) {
                         response.body()!!.forEach {
+                            saveHistoricalReminder(context, it)
                             val createdDate = SharedMethods.getLocalDateTimeFromJSDate(it.createdDateString)
                             val newDate = LocalDateTime.of(now, createdDate.toLocalTime())
                             it.createdDateString = SharedMethods.getJSDateFromLocalDateTime(newDate)
