@@ -1,5 +1,6 @@
 package com.project.medibox.shared
 
+import android.util.Log
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
@@ -15,6 +16,8 @@ import java.util.concurrent.TimeUnit
 
 
 object SharedMethods {
+    private const val TAG = "SharedMethods"
+
     fun getJSDate(date: Date): String {
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         return formatter.format(date)
@@ -26,8 +29,17 @@ object SharedMethods {
         return formatter.format(date)
     }
     fun getLocalDateTimeFromJSDate(jsDate: String): LocalDateTime {
-        val offsetDate = OffsetDateTime.parse(jsDate, DateTimeFormatter.ISO_DATE_TIME)
-        return offsetDate.toLocalDateTime()
+        try {
+            val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+            val date =  LocalDateTime.parse(jsDate, formatter)
+            return date
+        }
+        catch (e: Exception) {
+            val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+            val offsetDateTime = OffsetDateTime.parse(jsDate, formatter)
+            val date = offsetDateTime.toLocalDateTime()
+            return date
+        }
     }
     fun localDateTimeToDate(localDateTime: LocalDateTime): Date {
         val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
@@ -85,11 +97,12 @@ object SharedMethods {
         }
         else {
             finalHour = if (hour == 0) 12 else hour
-            moment = "PM"
+            moment = "AM"
         }
         val hourStr = if (finalHour < 10) "0${finalHour}" else finalHour.toString()
         val minuteStr = if (minute < 10) "0${minute}" else minute.toString()
 
+        Log.d(TAG, "$hourStr:$minuteStr $moment")
         return "$hourStr:$minuteStr $moment"
     }
 }

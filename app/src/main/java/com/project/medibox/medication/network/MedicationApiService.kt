@@ -13,12 +13,14 @@ import retrofit2.http.Path
 interface MedicationApiService {
     @GET("gateway/v1/medicines")
     fun getAllMedicines(@Header("Authorization") token: String): Call<List<Medicine>>
+    @GET("gateway/v1/people/{userId}/reminders")
+    fun getRemindersByUserId(@Header("Authorization") token: String, @Path("userId") userId: Long): Call<List<Reminder>>
     @POST("gateway/v1/reminders")
     fun createReminder(@Header("Authorization") token: String, @Body reminder: CreateReminderResource): Call<Reminder>
-    @DELETE("gateway/v1/reminders/{id}")
-    fun deleteReminder(@Header("Authorization") token: String, @Path("id") id: Long)
     @POST("gateway/v1/intervals")
     fun createInterval(@Header("Authorization") token: String, @Body interval: CreateIntervalResource): Call<Interval>
     @POST("gateway/v1/frequencies")
     fun createFrequency(@Header("Authorization") token: String, @Body frequency: CreateFrequencyResource): Call<Frequency>
+    @DELETE("gateway/v1/reminders/{id}")
+    fun deleteReminder(@Header("Authorization") token: String, @Path("id") id: Long)
 }

@@ -16,6 +16,7 @@ import com.project.medibox.identitymanagement.models.AuthenticationResponse
 import com.project.medibox.identitymanagement.models.LoginCredentials
 import com.project.medibox.identitymanagement.models.User
 import com.project.medibox.identitymanagement.network.UserApiService
+import com.project.medibox.medication.services.ReminderService
 import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
@@ -84,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
             authenticateResponse.lastName,
         )
         StateManager.loggedUserId = authenticateResponse.id
-
+        ReminderService.loadAlarmsFromApi(this)
         val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

@@ -1,6 +1,7 @@
 package com.project.medibox.medication.controller.activities
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Button
@@ -16,6 +17,7 @@ import com.project.medibox.medication.adapter.HistoricalReminderAdapter
 import com.project.medibox.medication.models.HistoricalReminder
 import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.OnItemClickListener
+import com.project.medibox.shared.StateManager
 
 class MedicationHistoryActivity : AppCompatActivity(), OnItemClickListener<HistoricalReminder> {
     private lateinit var rvMedHistory: RecyclerView
@@ -51,6 +53,9 @@ class MedicationHistoryActivity : AppCompatActivity(), OnItemClickListener<Histo
         val btnReminderDelete = reminderDialog.findViewById<Button>(R.id.btnReminderDelete)
 
         btnReminderEdit.setOnClickListener {
+            StateManager.selectedHistoricalReminder = value
+            val intent = Intent(this, EditReminderActivity::class.java)
+            startActivity(intent)
             reminderDialog.dismiss()
         }
         btnReminderDelete.setOnClickListener {

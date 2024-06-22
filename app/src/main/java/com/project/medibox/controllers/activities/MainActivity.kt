@@ -12,6 +12,7 @@ import com.project.medibox.identitymanagement.models.AuthenticationRequest
 import com.project.medibox.identitymanagement.models.AuthenticationResponse
 import com.project.medibox.identitymanagement.models.User
 import com.project.medibox.identitymanagement.network.UserApiService
+import com.project.medibox.medication.services.ReminderService
 import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
             authenticateResponse.lastName
         )
         StateManager.loggedUserId = authenticateResponse.id
+
 
         val intent = Intent(this, HomeActivity::class.java) // Cambia a HomeActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

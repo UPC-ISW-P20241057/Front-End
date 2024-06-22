@@ -9,7 +9,7 @@ data class Reminder(
     var pills: Int?,
     @SerializedName("endDate")
     var endDateString: String?,
-    var medicineId: Long,
+    var medicine: Medicine,
     var userId: Long,
     var frequency: Frequency?,
     var interval: Interval?,
