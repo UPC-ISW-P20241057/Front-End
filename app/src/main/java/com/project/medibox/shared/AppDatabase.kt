@@ -8,18 +8,18 @@ import com.project.medibox.identitymanagement.models.LoginCredentials
 import com.project.medibox.identitymanagement.persistence.LoginCredentialsDAO
 import com.project.medibox.medication.models.CompletedReminderAlarm
 import com.project.medibox.medication.models.MissedReminderAlarm
-import com.project.medibox.medication.models.StorableReminder
+import com.project.medibox.medication.models.HistoricalReminder
 import com.project.medibox.medication.models.UpcomingReminderAlarm
 import com.project.medibox.medication.persistence.CompletedReminderAlarmDAO
 import com.project.medibox.medication.persistence.MissedReminderAlarmDAO
-import com.project.medibox.medication.persistence.StorableReminderDAO
+import com.project.medibox.medication.persistence.HistoricalReminderDAO
 import com.project.medibox.medication.persistence.UpcomingReminderAlarmDAO
 
 @Database(entities = [LoginCredentials::class,
     UpcomingReminderAlarm::class,
     CompletedReminderAlarm::class,
     MissedReminderAlarm::class,
-    StorableReminder::class],
+    HistoricalReminder::class],
     version = 1)
 abstract class AppDatabase: RoomDatabase() {
 
@@ -27,7 +27,7 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun getUpcomingReminderAlarmDao(): UpcomingReminderAlarmDAO
     abstract fun getCompletedReminderAlarmDao(): CompletedReminderAlarmDAO
     abstract fun getMissedReminderAlarmDao(): MissedReminderAlarmDAO
-    abstract fun getStorableReminderDao(): StorableReminderDAO
+    abstract fun getHistoricalReminderDao(): HistoricalReminderDAO
     companion object {
         private var INSTANCE: AppDatabase? = null
 

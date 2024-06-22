@@ -7,18 +7,17 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.project.medibox.R
-import com.project.medibox.medication.adapter.CompletedReminderAlarmAdapter.Prototype
-import com.project.medibox.medication.models.StorableReminder
+import com.project.medibox.medication.models.HistoricalReminder
 import com.project.medibox.shared.OnItemClickListener
 
-class StorableReminderAdapter(private val reminders: List<StorableReminder>, private val itemClickListener: OnItemClickListener<StorableReminder>)
-    :RecyclerView.Adapter<StorableReminderAdapter.Prototype>(){
+class HistoricalReminderAdapter(private val reminders: List<HistoricalReminder>, private val itemClickListener: OnItemClickListener<HistoricalReminder>)
+    :RecyclerView.Adapter<HistoricalReminderAdapter.Prototype>(){
     class Prototype(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val tvStoreMedName = itemView.findViewById<TextView>(R.id.tvStoreMedName)
         private val tvStoreMedPeriod = itemView.findViewById<TextView>(R.id.tvStoreMedPeriod)
         private val cvStoreMedication = itemView.findViewById<CardView>(R.id.cvStoreMedication)
 
-        fun bind(reminder: StorableReminder, itemClickListener: OnItemClickListener<StorableReminder>) {
+        fun bind(reminder: HistoricalReminder, itemClickListener: OnItemClickListener<HistoricalReminder>) {
             tvStoreMedName.text = reminder.medicineName
             tvStoreMedPeriod.text = "${reminder.createdDateString} - ${reminder.endDateString}"
             cvStoreMedication.setOnClickListener {

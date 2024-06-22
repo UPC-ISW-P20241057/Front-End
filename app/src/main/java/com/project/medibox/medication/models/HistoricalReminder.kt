@@ -3,7 +3,7 @@ package com.project.medibox.medication.models
 import androidx.room.Entity
 
 @Entity
-class StorableReminder(
+class HistoricalReminder(
     var id: Int,
     var createdDateString: String,
     var pills: Int?,
