@@ -112,7 +112,7 @@
       </androidx.cardview.widget.CardView>
 
       <androidx.cardview.widget.CardView
-          android:id="@+id/cardView3"
+          android:id="@+id/cvDboardMedHistory"
           android:layout_width="352dp"
           android:layout_height="130dp"
           android:layout_marginTop="20dp"
@@ -150,7 +150,7 @@
           app:cardCornerRadius="20dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/cardView3">
+          app:layout_constraintTop_toBottomOf="@+id/cvDboardMedHistory">
 
         <ImageView
             android:id="@+id/imageView6"

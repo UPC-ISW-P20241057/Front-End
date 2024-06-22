@@ -19,6 +19,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.project.medibox.R
 import com.project.medibox.medication.models.Frequency
+import com.project.medibox.medication.models.HistoricalReminder
 import com.project.medibox.medication.models.Interval
 import com.project.medibox.medication.models.Reminder
 import com.project.medibox.medication.network.MedicationApiService
@@ -26,6 +27,7 @@ import com.project.medibox.medication.resources.CreateFrequencyResource
 import com.project.medibox.medication.resources.CreateIntervalResource
 import com.project.medibox.medication.resources.CreateReminderResource
 import com.project.medibox.medication.services.ReminderService
+import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
 import retrofit2.Call
@@ -286,6 +288,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
                             override fun onResponse(call: Call<Interval>, response: Response<Interval>) {
                                 if (response.isSuccessful) {
                                     ReminderService.createAlarms(this@NextNewScheduleActivity, reminder, response.body()!!)
+                                    saveHistoricalReminder(reminder, "Interval")
                                     Toast.makeText(this@NextNewScheduleActivity, "Reminder with interval created successfully", Toast.LENGTH_SHORT).show()
                                 }
 
@@ -309,6 +312,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
                             override fun onResponse(call: Call<Frequency>, response: Response<Frequency>) {
                                 if (response.isSuccessful) {
                                     ReminderService.createAlarms(this@NextNewScheduleActivity, reminder, response.body()!!)
+                                    saveHistoricalReminder(reminder, "Frequency")
                                     Toast.makeText(this@NextNewScheduleActivity, "Reminder with frequency created successfully", Toast.LENGTH_SHORT).show()
                                 }
                                 else {
@@ -335,6 +339,24 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
         })
     }
+
+    private fun saveHistoricalReminder(reminder: Reminder, type: String) {
+        val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
+        val createdDateParsed = SharedMethods.getDDMMYYStringFromDate(createdDate)
+        val endDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.endDateString!!)
+        val endDateParsed = SharedMethods.getDDMMYYStringFromDate(endDate)
+        AppDatabase.getInstance(this).getHistoricalReminderDao().insertReminder(HistoricalReminder(
+            0,
+            createdDateParsed,
+            reminder.pills,
+            endDateParsed,
+            StateManager.selectedMedicine!!.name,
+            type,
+            reminder.consumeFood,
+            reminder.id
+        ))
+    }
+
     private fun createSchedule() {
         val now = LocalDateTime.now()
 
