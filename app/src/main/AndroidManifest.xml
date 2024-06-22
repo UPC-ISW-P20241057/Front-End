@@ -19,10 +19,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MediBox"
         tools:targetApi="31">
+        <activity
+            android:name=".home.controller.activities.InstructionActivity"
+            android:exported="false" />
+
         <service
             android:name=".medication.services.ReminderService"
             android:exported="false"
-            android:foregroundServiceType="dataSync"/>
+            android:foregroundServiceType="dataSync" />
         <service
             android:name=".identitymanagement.services.PermanentLoginService"
             android:exported="false"
