@@ -132,6 +132,14 @@
             android:text="Medication History"
             android:textColor="#575757"
             android:textSize="26sp" />
+
+        <ImageView
+            android:id="@+id/imageView15"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:src="@mipmap/medication_history" />
       </androidx.cardview.widget.CardView>
 
       <androidx.cardview.widget.CardView
