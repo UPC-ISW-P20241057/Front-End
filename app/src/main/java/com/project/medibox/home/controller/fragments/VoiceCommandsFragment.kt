@@ -18,6 +18,7 @@ import com.project.medibox.controllers.activities.CustomizeAlarmActivity
 import com.project.medibox.home.controller.activities.HomeActivity
 import com.project.medibox.identitymanagement.controller.activities.EditProfileActivity
 import com.project.medibox.medication.controller.activities.NewScheduleActivity
+import com.project.medibox.pillboxmanagement.controller.activities.WiFiInstructionsActivity
 
 
 class VoiceCommandsFragment : Fragment() {
@@ -61,6 +62,7 @@ class VoiceCommandsFragment : Fragment() {
         mCommandsList.add("log out")
         mCommandsList.add("exit")
         mCommandsList.add("close")
+        mCommandsList.add("pillbox")
     }
 
     private fun createIntent(): Intent {
@@ -144,6 +146,10 @@ class VoiceCommandsFragment : Fragment() {
                 }
                 "change alarm" -> {
                     val intent = Intent(requireContext(), CustomizeAlarmActivity::class.java)
+                    startActivity(intent)
+                }
+                "pillbox" -> {
+                    val intent = Intent(requireContext(), WiFiInstructionsActivity::class.java)
                     startActivity(intent)
                 }
                 "log out" -> {
