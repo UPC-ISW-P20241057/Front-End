@@ -3,18 +3,22 @@
 
     <item
         android:id="@+id/menu_home"
-        android:icon="@android:drawable/ic_menu_info_details"
-        android:title="@string/upcoming" />
+        android:icon="@mipmap/home_grey"
+        android:title="Home" />
     <item
         android:id="@+id/menu_dashboard"
-        android:icon="@android:drawable/ic_lock_idle_low_battery"
+        android:icon="@mipmap/dashboard_grey"
         android:title="Dashboard" />
     <item
+        android:id="@+id/menu_voice"
+        android:icon="@mipmap/microphone"
+        android:title="Voice" />
+    <item
         android:id="@+id/menu_calendar"
-        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:icon="@mipmap/calendar_grey"
         android:title="Calendar" />
     <item
         android:id="@+id/menu_profile"
-        android:icon="@drawable/profile_mockup"
+        android:icon="@mipmap/profile_grey"
         android:title="Profile" />
 </menu>
