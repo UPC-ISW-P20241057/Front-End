@@ -1,4 +1,4 @@
-package com.project.medibox.home.controller.activities
+package com.project.medibox.pillboxmanagement.controller.activities
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.controller.activities.InstructionActivity">
+    tools:context=".pillboxmanagement.controller.activities.InstructionActivity">
 
     <TextView
         android:id="@+id/textView11"

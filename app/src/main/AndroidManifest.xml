@@ -20,7 +20,7 @@
         android:theme="@style/Theme.MediBox"
         tools:targetApi="31">
         <activity
-            android:name=".home.controller.activities.InstructionActivity"
+            android:name=".pillboxmanagement.controller.activities.InstructionActivity"
             android:exported="false" />
 
         <service
