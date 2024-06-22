@@ -24,7 +24,7 @@ import com.project.medibox.identitymanagement.services.PermanentLoginService
 import com.project.medibox.medication.services.ReminderService
 import com.project.medibox.pillboxmanagement.services.EmptyPillboxService
 import com.project.medibox.shared.AppDatabase
-import com.project.medibox.voice.controller.fragments.VoiceCommandsFragment
+import com.project.medibox.home.controller.fragments.VoiceCommandsFragment
 
 class HomeActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.project.medibox.voice.controller.fragments
+package com.project.medibox.home.controller.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,12 +17,7 @@ import com.project.medibox.R
 import com.project.medibox.controllers.activities.CustomizeAlarmActivity
 import com.project.medibox.home.controller.activities.HomeActivity
 import com.project.medibox.identitymanagement.controller.activities.EditProfileActivity
-import com.project.medibox.identitymanagement.controller.activities.LoginActivity
-import com.project.medibox.identitymanagement.services.PermanentLoginService
 import com.project.medibox.medication.controller.activities.NewScheduleActivity
-import com.project.medibox.medication.services.ReminderService
-import com.project.medibox.pillboxmanagement.services.EmptyPillboxService
-import com.project.medibox.shared.AppDatabase
 
 
 class VoiceCommandsFragment : Fragment() {
