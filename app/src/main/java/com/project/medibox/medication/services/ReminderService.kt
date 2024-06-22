@@ -159,9 +159,23 @@ class ReminderService : Service() {
     }
 
 
+
     companion object {
         private const val ONGOING_NOTIFICATION_ID = 105
         private const val CHANNEL_ID = "1003"
+
+
+        fun getUpcomingUniqueDateStrList(context: Context): List<String> {
+            val upcomingAlarmDAO = AppDatabase.getInstance(context).getUpcomingReminderAlarmDao()
+            val query = upcomingAlarmDAO.getAll()
+
+            val dateList = query.flatMap { listOf(it.activateDateString) }
+
+            // Obtiene los valores únicos
+            val uniqueDates = dateList.distinct()
+
+            return uniqueDates
+        }
 
         fun startService(context: Context) {
             val intent = Intent(context, ReminderService::class.java)
@@ -175,7 +189,6 @@ class ReminderService : Service() {
         private fun generateNotificationId(dao: UpcomingReminderAlarmDAO): Int {
             val existingIds = dao.getAll().map { it.notificationId }.toSet()
             val random = Random(System.nanoTime())
-
             while (true) {
                 val notificationId = random.nextInt(Int.MAX_VALUE - 200 + 1) + 200
                 if (notificationId !in existingIds) {

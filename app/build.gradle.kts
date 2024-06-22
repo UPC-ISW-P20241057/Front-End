@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     kapt(libs.androidx.room.compiler)
     implementation(libs.converter.gson)
+    implementation("com.kizitonwose.calendar:view:2.5.2")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
