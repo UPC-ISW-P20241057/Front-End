@@ -99,8 +99,10 @@ class CalendarFragment : Fragment() {
         }
         calendarView.monthScrollListener = object : MonthScrollListener {
             override fun invoke(month: CalendarMonth) {
-                tvMonth.text = month.yearMonth.month.toString().lowercase()
+                val monthStr = month.yearMonth.month.toString().lowercase()
                     .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+                val yearStr = month.yearMonth.year
+                tvMonth.text = "$monthStr $yearStr"
             }
 
         }
