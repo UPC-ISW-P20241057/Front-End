@@ -1,6 +1,7 @@
 package com.project.medibox.home.controller.activities
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +19,7 @@ import com.project.medibox.home.controller.fragments.CalendarFragment
 import com.project.medibox.home.controller.fragments.DashboardFragment
 import com.project.medibox.home.controller.fragments.HomeFragment
 import com.project.medibox.home.controller.fragments.ProfileFragment
+import com.project.medibox.identitymanagement.controller.activities.LoginActivity
 import com.project.medibox.identitymanagement.services.PermanentLoginService
 import com.project.medibox.medication.services.ReminderService
 import com.project.medibox.pillboxmanagement.services.EmptyPillboxService
@@ -25,11 +27,6 @@ import com.project.medibox.shared.AppDatabase
 import com.project.medibox.voice.controller.fragments.VoiceCommandsFragment
 
 class HomeActivity : AppCompatActivity() {
-
-    companion object {
-        private const val ASR_PERMISSION_REQUEST_CODE = 1
-        private const val NOT_PERMISSION_REQUEST_CODE = 0
-    }
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         navigateTo(item)
@@ -43,15 +40,17 @@ class HomeActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                NOT_PERMISSION_REQUEST_CODE
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.RECORD_AUDIO),
+                0
             )
         }
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.RECORD_AUDIO),
-            ASR_PERMISSION_REQUEST_CODE
-        )
+        else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                0
+            )
+        }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bnvMenu)
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
@@ -79,16 +78,8 @@ class HomeActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        when(requestCode) {
-            ASR_PERMISSION_REQUEST_CODE -> {
-                if (grantResults[0] == PackageManager.PERMISSION_DENIED)
-                    Toast.makeText(this, "You need to provide microphone permission to invoke voice commands.", Toast.LENGTH_SHORT).show()
-            }
-            NOT_PERMISSION_REQUEST_CODE -> {
-                if (grantResults[0] == PackageManager.PERMISSION_DENIED)
-                    Toast.makeText(this, "You need to provide notification permission to invoke voice commands.", Toast.LENGTH_SHORT).show()
-            }
-        }
+        if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_DENIED)
+            Toast.makeText(this, "You need to provide microphone permission to invoke voice commands.", Toast.LENGTH_SHORT).show()
     }
 
     private fun startServices() {
@@ -125,6 +116,11 @@ class HomeActivity : AppCompatActivity() {
     fun signOut() {
         stopServices()
         AppDatabase.getInstance(this).getLoginCredentialsDao().cleanTable()
+        val intent = Intent(this, LoginActivity::class.java) // Cambia a LoginActivity
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
         finish()
     }
 }
