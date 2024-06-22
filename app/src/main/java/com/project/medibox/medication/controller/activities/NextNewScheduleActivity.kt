@@ -288,7 +288,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
                             override fun onResponse(call: Call<Interval>, response: Response<Interval>) {
                                 if (response.isSuccessful) {
                                     ReminderService.createAlarms(this@NextNewScheduleActivity, reminder, response.body()!!)
-                                    saveHistoricalReminder(reminder, "Interval")
+                                    saveHistoricalReminder(reminder, "Interval", response.body()!!.id)
                                     Toast.makeText(this@NextNewScheduleActivity, "Reminder with interval created successfully", Toast.LENGTH_SHORT).show()
                                 }
 
@@ -312,7 +312,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
                             override fun onResponse(call: Call<Frequency>, response: Response<Frequency>) {
                                 if (response.isSuccessful) {
                                     ReminderService.createAlarms(this@NextNewScheduleActivity, reminder, response.body()!!)
-                                    saveHistoricalReminder(reminder, "Frequency")
+                                    saveHistoricalReminder(reminder, "Frequency", response.body()!!.id)
                                     Toast.makeText(this@NextNewScheduleActivity, "Reminder with frequency created successfully", Toast.LENGTH_SHORT).show()
                                 }
                                 else {
@@ -340,7 +340,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
         })
     }
 
-    private fun saveHistoricalReminder(reminder: Reminder, type: String) {
+    private fun saveHistoricalReminder(reminder: Reminder, type: String, typeId: Long) {
         val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
         val createdDateParsed = SharedMethods.getDDMMYYStringFromDate(createdDate)
         val endDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.endDateString!!)
@@ -352,6 +352,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
             endDateParsed,
             StateManager.selectedMedicine!!.name,
             type,
+            typeId,
             reminder.consumeFood,
             reminder.id
         ))

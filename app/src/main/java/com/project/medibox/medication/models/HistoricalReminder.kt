@@ -12,6 +12,7 @@ class HistoricalReminder(
     var endDateString: String,
     var medicineName: String,
     var type: String,
+    var typeId: Long,
     var consumeFood: Boolean?,
     var reminderId: Long
 )
