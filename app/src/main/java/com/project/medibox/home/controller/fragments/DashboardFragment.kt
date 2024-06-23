@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import com.project.medibox.R
 import com.project.medibox.medication.controller.activities.MedicationHistoryActivity
 import com.project.medibox.medication.controller.activities.NewScheduleActivity
+import com.project.medibox.pillboxmanagement.controller.activities.CustomizeAlarmActivity
 import com.project.medibox.pillboxmanagement.controller.activities.WiFiInstructionsActivity
 
 class DashboardFragment : Fragment() {
@@ -30,6 +31,7 @@ class DashboardFragment : Fragment() {
     super.onViewCreated(view, savedInstanceState)
     val cvScheduleReminder = view.findViewById<CardView>(R.id.cvScheduleReminder)
     val ivWifiInstructions = view.findViewById<ImageView>(R.id.ivWifiInstructions)
+    val cvCustomizeAlarm = view.findViewById<CardView>(R.id.cvCustomizeAlarm)
     val cvDboardMedHistory = view.findViewById<CardView>(R.id.cvDboardMedHistory)
     cvScheduleReminder.setOnClickListener {
       goToNewScheduleActivity()
@@ -39,6 +41,9 @@ class DashboardFragment : Fragment() {
     }
     cvDboardMedHistory.setOnClickListener {
       goToMedicationHistoryActivity()
+    }
+    cvCustomizeAlarm.setOnClickListener {
+      goToCustomizeAlarmActivity()
     }
   }
 
@@ -54,6 +59,10 @@ class DashboardFragment : Fragment() {
 
   private fun goToNewScheduleActivity() {
     val intent = Intent(requireContext(), NewScheduleActivity::class.java)
+    startActivity(intent)
+  }
+  private fun goToCustomizeAlarmActivity() {
+    val intent = Intent(requireContext(), CustomizeAlarmActivity::class.java)
     startActivity(intent)
   }
 }
