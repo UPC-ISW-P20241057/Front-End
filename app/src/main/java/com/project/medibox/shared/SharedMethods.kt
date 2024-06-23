@@ -100,4 +100,8 @@ object SharedMethods {
         Log.d(TAG, "$hourStr:$minuteStr $moment")
         return "$hourStr:$minuteStr $moment"
     }
+    fun convertDDMMYYYYToLocalDate(date: String): LocalDate {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        return LocalDate.parse(date, formatter)
+    }
 }

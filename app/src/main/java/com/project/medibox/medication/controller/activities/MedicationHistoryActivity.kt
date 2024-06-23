@@ -25,6 +25,7 @@ import com.project.medibox.shared.StateManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDate
 
 class MedicationHistoryActivity : AppCompatActivity(), OnItemClickListener<HistoricalReminder> {
     private lateinit var rvMedHistory: RecyclerView
@@ -51,25 +52,29 @@ class MedicationHistoryActivity : AppCompatActivity(), OnItemClickListener<Histo
     }
 
     override fun onItemClicked(value: HistoricalReminder) {
-        reminderDialog = Dialog(this)
-        reminderDialog.setContentView(R.layout.dialog_reminder_options)
-        reminderDialog.window!!.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        reminderDialog.window!!.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.bg_dialog_reminder_options))
-        reminderDialog.setCancelable(true)
-        val btnReminderEdit = reminderDialog.findViewById<Button>(R.id.btnReminderEdit)
-        val btnReminderDelete = reminderDialog.findViewById<Button>(R.id.btnReminderDelete)
+        val endDate = SharedMethods.convertDDMMYYYYToLocalDate(value.endDateStringSimply)
+        if (endDate <= LocalDate.now()) {
+            reminderDialog = Dialog(this)
+            reminderDialog.setContentView(R.layout.dialog_reminder_options)
+            reminderDialog.window!!.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            reminderDialog.window!!.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.bg_dialog_reminder_options))
+            reminderDialog.setCancelable(true)
+            val btnReminderEdit = reminderDialog.findViewById<Button>(R.id.btnReminderEdit)
+            val btnReminderDelete = reminderDialog.findViewById<Button>(R.id.btnReminderDelete)
 
-        btnReminderEdit.setOnClickListener {
-            StateManager.selectedHistoricalReminder = value
-            val intent = Intent(this, EditReminderActivity::class.java)
-            startActivity(intent)
-            reminderDialog.dismiss()
+            btnReminderEdit.setOnClickListener {
+
+                StateManager.selectedHistoricalReminder = value
+                val intent = Intent(this, EditReminderActivity::class.java)
+                startActivity(intent)
+                reminderDialog.dismiss()
+            }
+            btnReminderDelete.setOnClickListener {
+                deleteReminder(value)
+                reminderDialog.dismiss()
+            }
+            reminderDialog.show()
         }
-        btnReminderDelete.setOnClickListener {
-            deleteReminder(value)
-            reminderDialog.dismiss()
-        }
-        reminderDialog.show()
     }
 
     private fun deleteReminder(reminder: HistoricalReminder) {
