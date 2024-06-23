@@ -116,6 +116,7 @@ class HomeActivity : AppCompatActivity() {
     fun signOut() {
         stopServices()
         AppDatabase.getInstance(this).getLoginCredentialsDao().cleanTable()
+        AppDatabase.getInstance(this).getToneSettingsDao().cleanSettings()
         val intent = Intent(this, LoginActivity::class.java) // Cambia a LoginActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

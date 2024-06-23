@@ -14,12 +14,15 @@ import com.project.medibox.medication.persistence.CompletedReminderAlarmDAO
 import com.project.medibox.medication.persistence.MissedReminderAlarmDAO
 import com.project.medibox.medication.persistence.HistoricalReminderDAO
 import com.project.medibox.medication.persistence.UpcomingReminderAlarmDAO
+import com.project.medibox.pillboxmanagement.models.ToneSettings
+import com.project.medibox.pillboxmanagement.persistence.ToneSettingsDAO
 
 @Database(entities = [LoginCredentials::class,
     UpcomingReminderAlarm::class,
     CompletedReminderAlarm::class,
     MissedReminderAlarm::class,
-    HistoricalReminder::class],
+    HistoricalReminder::class,
+    ToneSettings::class],
     version = 1)
 abstract class AppDatabase: RoomDatabase() {
 
@@ -28,6 +31,7 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun getCompletedReminderAlarmDao(): CompletedReminderAlarmDAO
     abstract fun getMissedReminderAlarmDao(): MissedReminderAlarmDAO
     abstract fun getHistoricalReminderDao(): HistoricalReminderDAO
+    abstract fun getToneSettingsDao(): ToneSettingsDAO
     companion object {
         private var INSTANCE: AppDatabase? = null
 

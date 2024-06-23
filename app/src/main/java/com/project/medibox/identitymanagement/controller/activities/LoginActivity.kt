@@ -86,6 +86,7 @@ class LoginActivity : AppCompatActivity() {
         )
         StateManager.loggedUserId = authenticateResponse.id
         ReminderService.loadAlarmsFromApi(this)
+        AppDatabase.getInstance(this).getToneSettingsDao().createSettings()
         val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

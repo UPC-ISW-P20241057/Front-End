@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         AppDatabase.getInstance(this@MainActivity).getLoginCredentialsDao().cleanTable()
                         Toast.makeText(this@MainActivity, "Error al iniciar sesión de forma automatica", Toast.LENGTH_SHORT).show()
+                        AppDatabase.getInstance(this@MainActivity).getToneSettingsDao().cleanSettings()
                         stopServices()
                         startLoginActivity()
                     }
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<AuthenticationResponse>, t: Throwable) {
                     AppDatabase.getInstance(this@MainActivity).getLoginCredentialsDao().cleanTable()
                     Toast.makeText(this@MainActivity, "Error al iniciar sesión de forma automatica", Toast.LENGTH_SHORT).show()
+                    AppDatabase.getInstance(this@MainActivity).getToneSettingsDao().cleanSettings()
                     stopServices()
                     startLoginActivity()
                 }
@@ -81,7 +83,6 @@ class MainActivity : AppCompatActivity() {
             authenticateResponse.lastName
         )
         StateManager.loggedUserId = authenticateResponse.id
-
 
         val intent = Intent(this, HomeActivity::class.java) // Cambia a HomeActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
