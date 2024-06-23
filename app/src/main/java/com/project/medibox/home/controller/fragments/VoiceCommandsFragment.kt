@@ -14,7 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.project.medibox.R
-import com.project.medibox.controllers.activities.CustomizeAlarmActivity
+import com.project.medibox.pillboxmanagement.controller.activities.CustomizeAlarmActivity
 import com.project.medibox.home.controller.activities.HomeActivity
 import com.project.medibox.identitymanagement.controller.activities.EditProfileActivity
 import com.project.medibox.medication.controller.activities.NewScheduleActivity
