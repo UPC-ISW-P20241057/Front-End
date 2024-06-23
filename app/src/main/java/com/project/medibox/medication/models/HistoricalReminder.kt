@@ -7,9 +7,11 @@ import androidx.room.PrimaryKey
 class HistoricalReminder(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
-    var createdDateString: String,
-    var pills: Int?,
+    var createdDate: String,
+    var createdDateSimply: String,
+    var pills: Short?,
     var endDateString: String,
+    var endDateStringSimply: String,
     var medicineName: String,
     var type: String,
     var typeId: Long,

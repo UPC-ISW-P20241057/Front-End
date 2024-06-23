@@ -229,7 +229,8 @@
             app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cvEditInterval">
+            app:layout_constraintTop_toBottomOf="@+id/cvEditInterval"
+            tools:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -261,16 +262,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvShBeTkn" />
 
-                <Switch
-                    android:id="@+id/swFrequency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="25dp"
-                    android:theme="@style/MediBoxSwitch"
-                    app:layout_constraintStart_toEndOf="@+id/tvFrequency"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <TextView
                     android:id="@+id/tvShBeTkn"
                     android:layout_width="wrap_content"
@@ -300,9 +291,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="22dp"
+                    android:layout_marginTop="18dp"
                     app:layout_constraintStart_toEndOf="@+id/tvShBeTkn"
-                    app:layout_constraintTop_toBottomOf="@+id/swFrequency" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvFrequency" />
 
                 <Spinner
                     android:id="@+id/spnPer"
@@ -326,7 +317,8 @@
             app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvEditDuration">
+            app:layout_constraintTop_toBottomOf="@+id/tvEditDuration"
+            tools:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -342,19 +334,6 @@
                     android:text="Interval"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Switch
-                    android:id="@+id/swInterval"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="25dp"
-                    android:fontFamily="@font/palanquin_dark"
-                    android:textColor="#5D46EF"
-                    android:textSize="16sp"
-                    android:theme="@style/MediBoxSwitch"
-                    app:layout_constraintStart_toEndOf="@+id/tvInterval"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -376,20 +355,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
-                    android:layout_marginTop="22dp"
-                    android:enabled="false"
+                    android:layout_marginTop="77dp"
                     app:layout_constraintStart_toEndOf="@+id/tvEvery"
-                    app:layout_constraintTop_toBottomOf="@+id/swInterval" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Spinner
                     android:id="@+id/spnIntervalTimeType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="22dp"
-                    android:enabled="false"
+                    android:layout_marginTop="77dp"
                     app:layout_constraintStart_toEndOf="@+id/spnIntervalTime"
-                    app:layout_constraintTop_toBottomOf="@+id/swInterval" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 

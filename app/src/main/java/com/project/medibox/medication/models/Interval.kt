@@ -6,6 +6,6 @@ data class Interval (
     var id: Long,
     var intervalType: String,
 
-    @SerializedName("interval")
+    @SerializedName("value")
     var intervalValue: Int
 )

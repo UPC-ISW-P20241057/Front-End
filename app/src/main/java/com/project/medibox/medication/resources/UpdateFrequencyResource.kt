@@ -2,10 +2,10 @@ package com.project.medibox.medication.resources
 
 import com.google.gson.annotations.SerializedName
 
-data class CreateIntervalResource(
-    @SerializedName("intervalType")
+data class UpdateFrequencyResource(
+    var id: Long,
+    @SerializedName("frequencyType")
     var type: String,
-    @SerializedName("value")
-    var quantity: Int,
+    var times: Int,
     var reminderId: Long
 )

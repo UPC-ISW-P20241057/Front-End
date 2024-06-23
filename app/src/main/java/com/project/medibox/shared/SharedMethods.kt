@@ -10,6 +10,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.concurrent.TimeUnit
@@ -23,23 +24,17 @@ object SharedMethods {
         return formatter.format(date)
     }
     fun getJSDateFromLocalDateTime(localDateTime: LocalDateTime): String {
-        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
-        val date = Date.from(instant)
-        return formatter.format(date)
+        val offsetDate = OffsetDateTime.of(localDateTime, ZoneOffset.UTC)
+        return offsetDate.format(DateTimeFormatter.ISO_DATE_TIME)
+    }
+    fun getLocalDateTimeFromJSDateeee(jsDate: String): LocalDateTime {
+        val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+        val date =  LocalDateTime.parse(jsDate, formatter)
+        return date
     }
     fun getLocalDateTimeFromJSDate(jsDate: String): LocalDateTime {
-        try {
-            val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-            val date =  LocalDateTime.parse(jsDate, formatter)
-            return date
-        }
-        catch (e: Exception) {
-            val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-            val offsetDateTime = OffsetDateTime.parse(jsDate, formatter)
-            val date = offsetDateTime.toLocalDateTime()
-            return date
-        }
+        val formatter = DateTimeFormatter.ISO_DATE_TIME
+        return LocalDateTime.parse(jsDate, formatter)
     }
     fun localDateTimeToDate(localDateTime: LocalDateTime): Date {
         val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()

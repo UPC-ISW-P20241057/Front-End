@@ -266,7 +266,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
         }
     }
-    private fun makeHttpRequest(pills: Int?, startDate: LocalDateTime, endDateString: String?, consumedFood: Boolean?) {
+    private fun makeHttpRequest(pills: Short?, startDate: LocalDateTime, endDateString: String?, consumedFood: Boolean?) {
         val medicationApiService = SharedMethods.retrofitServiceBuilder(MedicationApiService::class.java)
         val postReminderRequest = medicationApiService.createReminder(StateManager.authToken, CreateReminderResource(
             SharedMethods.getJSDateFromLocalDateTime(startDate),
@@ -347,8 +347,10 @@ class NextNewScheduleActivity : AppCompatActivity() {
         val endDateParsed = SharedMethods.getDDMMYYStringFromDate(endDate)
         AppDatabase.getInstance(this).getHistoricalReminderDao().insertReminder(HistoricalReminder(
             0,
+            reminder.createdDateString,
             createdDateParsed,
             reminder.pills,
+            reminder.endDateString!!,
             endDateParsed,
             StateManager.selectedMedicine!!.name,
             type,
@@ -382,8 +384,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
             else -> null
         }
 
-        val pills: Int? = when(swPills.isChecked) {
-            true -> etPills.text.toString().toInt()
+        val pills: Short? = when(swPills.isChecked) {
+            true -> etPills.text.toString().toShort()
             false -> null
         }
 

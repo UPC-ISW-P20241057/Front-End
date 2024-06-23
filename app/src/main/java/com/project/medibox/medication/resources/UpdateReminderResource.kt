@@ -1,17 +1,15 @@
-package com.project.medibox.medication.models
+package com.project.medibox.medication.resources
 
 import com.google.gson.annotations.SerializedName
 
-data class Reminder(
+data class UpdateReminderResource(
     var id: Long,
     @SerializedName("createdDate")
     var createdDateString: String,
-    var pills: Short?,
+    var pills: Int?,
     @SerializedName("endDate")
     var endDateString: String?,
-    var medicine: Medicine,
+    var medicineId: Long,
     var userId: Long,
-    var frequency: Frequency?,
-    var interval: Interval?,
     var consumeFood: Boolean?
 )
