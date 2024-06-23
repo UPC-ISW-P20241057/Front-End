@@ -82,7 +82,6 @@ class MainActivity : AppCompatActivity() {
         )
         StateManager.loggedUserId = authenticateResponse.id
 
-
         val intent = Intent(this, HomeActivity::class.java) // Cambia a HomeActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
