@@ -19,7 +19,7 @@ class HistoricalReminderAdapter(private val reminders: List<HistoricalReminder>,
 
         fun bind(reminder: HistoricalReminder, itemClickListener: OnItemClickListener<HistoricalReminder>) {
             tvStoreMedName.text = reminder.medicineName
-            tvStoreMedPeriod.text = "${reminder.createdDateString} - ${reminder.endDateString}"
+            tvStoreMedPeriod.text = "${reminder.createdDateSimply} - ${reminder.endDateStringSimply}"
             cvStoreMedication.setOnClickListener {
                 itemClickListener.onItemClicked(reminder)
             }

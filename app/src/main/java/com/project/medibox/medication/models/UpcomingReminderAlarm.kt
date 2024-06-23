@@ -17,7 +17,7 @@ data class UpcomingReminderAlarm(
     @ColumnInfo
     var activateMinute: Int,
     @ColumnInfo
-    var pills: Int?,
+    var pills: Short?,
     @ColumnInfo
     var consumeFood: Boolean?,
     @ColumnInfo

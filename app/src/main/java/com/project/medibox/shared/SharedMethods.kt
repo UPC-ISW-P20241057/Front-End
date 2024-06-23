@@ -1,5 +1,6 @@
 package com.project.medibox.shared
 
+import android.util.Log
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
@@ -9,25 +10,31 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.concurrent.TimeUnit
 
 
 object SharedMethods {
+    private const val TAG = "SharedMethods"
+
     fun getJSDate(date: Date): String {
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         return formatter.format(date)
     }
     fun getJSDateFromLocalDateTime(localDateTime: LocalDateTime): String {
-        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
-        val date = Date.from(instant)
-        return formatter.format(date)
+        val offsetDate = OffsetDateTime.of(localDateTime, ZoneOffset.UTC)
+        return offsetDate.format(DateTimeFormatter.ISO_DATE_TIME)
+    }
+    fun getLocalDateTimeFromJSDateeee(jsDate: String): LocalDateTime {
+        val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+        val date =  LocalDateTime.parse(jsDate, formatter)
+        return date
     }
     fun getLocalDateTimeFromJSDate(jsDate: String): LocalDateTime {
-        val offsetDate = OffsetDateTime.parse(jsDate, DateTimeFormatter.ISO_DATE_TIME)
-        return offsetDate.toLocalDateTime()
+        val formatter = DateTimeFormatter.ISO_DATE_TIME
+        return LocalDateTime.parse(jsDate, formatter)
     }
     fun localDateTimeToDate(localDateTime: LocalDateTime): Date {
         val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
@@ -85,11 +92,16 @@ object SharedMethods {
         }
         else {
             finalHour = if (hour == 0) 12 else hour
-            moment = "PM"
+            moment = "AM"
         }
         val hourStr = if (finalHour < 10) "0${finalHour}" else finalHour.toString()
         val minuteStr = if (minute < 10) "0${minute}" else minute.toString()
 
+        Log.d(TAG, "$hourStr:$minuteStr $moment")
         return "$hourStr:$minuteStr $moment"
+    }
+    fun convertDDMMYYYYToLocalDate(date: String): LocalDate {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        return LocalDate.parse(date, formatter)
     }
 }

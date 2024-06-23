@@ -15,9 +15,12 @@ import androidx.core.app.TaskStackBuilder
 import com.project.medibox.R
 import com.project.medibox.medication.controller.activities.MedicationAlarmActivity
 import com.project.medibox.medication.models.Frequency
+import com.project.medibox.medication.models.HistoricalReminder
 import com.project.medibox.medication.models.Interval
+import com.project.medibox.medication.models.Medicine
 import com.project.medibox.medication.models.Reminder
 import com.project.medibox.medication.models.UpcomingReminderAlarm
+import com.project.medibox.medication.network.MedicationApiService
 import com.project.medibox.medication.persistence.UpcomingReminderAlarmDAO
 import com.project.medibox.pillboxmanagement.models.BoxData
 import com.project.medibox.pillboxmanagement.models.BoxDataResponse
@@ -164,7 +167,6 @@ class ReminderService : Service() {
         private const val ONGOING_NOTIFICATION_ID = 105
         private const val CHANNEL_ID = "1003"
 
-
         fun getUpcomingUniqueDateStrList(context: Context): List<String> {
             val upcomingAlarmDAO = AppDatabase.getInstance(context).getUpcomingReminderAlarmDao()
             val query = upcomingAlarmDAO.getAll()
@@ -177,15 +179,77 @@ class ReminderService : Service() {
             return uniqueDates
         }
 
+        private fun saveHistoricalReminder(context: Context, reminder: Reminder) {
+            val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
+            val createdDateParsed = SharedMethods.getDDMMYYStringFromDate(createdDate)
+            val endDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.endDateString!!)
+            val endDateParsed = SharedMethods.getDDMMYYStringFromDate(endDate)
+            val type: String
+            val typeId: Long
+            if (reminder.interval != null) {
+                type = "Interval"
+                typeId = reminder.interval!!.id
+            }
+            else {
+                type = "Frequency"
+                typeId = reminder.frequency!!.id
+            }
+            AppDatabase.getInstance(context).getHistoricalReminderDao().insertReminder(HistoricalReminder(
+                0,
+                reminder.createdDateString,
+                createdDateParsed,
+                reminder.pills,
+                reminder.endDateString!!,
+                endDateParsed,
+                reminder.medicine.name,
+                type,
+                typeId,
+                reminder.consumeFood,
+                reminder.id
+            ))
+        }
+
+        fun loadAlarmsFromApi(context: Context) {
+            val medicationApiService = SharedMethods.retrofitServiceBuilder(MedicationApiService::class.java)
+            val request = medicationApiService.getRemindersByUserId(StateManager.authToken, StateManager.loggedUserId)
+            val now = LocalDate.now()
+            request.enqueue(object : Callback<List<Reminder>> {
+                override fun onResponse(call: Call<List<Reminder>>, response: Response<List<Reminder>>) {
+                    if (response.isSuccessful) {
+                        response.body()!!.forEach {
+                            saveHistoricalReminder(context, it)
+                            val createdDate = SharedMethods.getLocalDateTimeFromJSDate(it.createdDateString)
+                            val newDate = LocalDateTime.of(now, createdDate.toLocalTime())
+                            it.createdDateString = SharedMethods.getJSDateFromLocalDateTime(newDate)
+                            StateManager.selectedMedicine = it.medicine
+                            if (it.interval != null)
+                                createAlarms(context, it, it.interval!!)
+                            else if (it.frequency != null)
+                                createAlarms(context, it, it.frequency!!)
+                        }
+                    }
+                }
+
+                override fun onFailure(p0: Call<List<Reminder>>, p1: Throwable) {
+
+                }
+
+            })
+
+        }
+
         fun startService(context: Context) {
             val intent = Intent(context, ReminderService::class.java)
             context.startForegroundService(intent)
         }
 
         fun stopService(context: Context) {
+            AppDatabase.getInstance(context).getUpcomingReminderAlarmDao().clearTable()
+            AppDatabase.getInstance(context).getHistoricalReminderDao().clearTable()
             val intent = Intent(context, ReminderService::class.java)
             context.stopService(intent)
         }
+
         private fun generateNotificationId(dao: UpcomingReminderAlarmDAO): Int {
             val existingIds = dao.getAll().map { it.notificationId }.toSet()
             val random = Random(System.nanoTime())

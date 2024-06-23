@@ -5,15 +5,16 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".medication.controller.activities.NewScheduleActivity">
+    tools:context=".medication.controller.activities.EditReminderActivity">
 
     <Button
-        android:id="@+id/btnSchNext"
+        android:id="@+id/btnEditReminderNext"
         android:layout_width="131dp"
         android:layout_height="58dp"
         android:layout_marginBottom="60dp"
         android:backgroundTint="#5D46EF"
         android:fontFamily="@font/palanquin_dark"
+        android:onClick="goToNextEditActivity"
         android:text="Next"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
@@ -23,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
-        android:id="@+id/osMedicines"
+        android:id="@+id/spnEditMedicines"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -33,36 +34,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.338"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMedName"
+        app:layout_constraintTop_toBottomOf="@+id/tvEditMedName"
         app:layout_constraintWidth_percent="0.8" />
 
     <TextView
-        android:id="@+id/tvNS1"
+        android:id="@+id/tvER1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/palanquin_dark"
-        android:text="New"
+        android:text="Edit"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMediboxNS" />
+        app:layout_constraintTop_toBottomOf="@+id/tvMediboxER" />
 
     <TextView
-        android:id="@+id/tvNS2"
+        android:id="@+id/tvER2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/palanquin_dark"
-        android:text="Schedule Reminder"
+        android:text="Reminder"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNS1" />
+        app:layout_constraintTop_toBottomOf="@+id/tvER1" />
 
     <TextView
-        android:id="@+id/tvMediboxNS"
+        android:id="@+id/tvMediboxER"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -75,7 +76,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvMedName"
+        android:id="@+id/tvEditMedName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -84,5 +85,6 @@
         android:text="Medication name:"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNS2" />
+        app:layout_constraintTop_toBottomOf="@+id/tvER2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

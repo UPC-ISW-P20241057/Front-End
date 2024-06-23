@@ -23,4 +23,7 @@ interface UpcomingReminderAlarmDAO {
 
     @Query("DELETE FROM UpcomingReminderAlarm WHERE id = :id")
     fun deleteById(id: Short)
+
+    @Query("DELETE FROM UpcomingReminderAlarm")
+    fun clearTable()
 }

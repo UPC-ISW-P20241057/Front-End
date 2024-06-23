@@ -12,6 +12,9 @@ import com.project.medibox.identitymanagement.models.AuthenticationRequest
 import com.project.medibox.identitymanagement.models.AuthenticationResponse
 import com.project.medibox.identitymanagement.models.User
 import com.project.medibox.identitymanagement.network.UserApiService
+import com.project.medibox.identitymanagement.services.PermanentLoginService
+import com.project.medibox.medication.services.ReminderService
+import com.project.medibox.pillboxmanagement.services.EmptyPillboxService
 import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         AppDatabase.getInstance(this@MainActivity).getLoginCredentialsDao().cleanTable()
                         Toast.makeText(this@MainActivity, "Error al iniciar sesión de forma automatica", Toast.LENGTH_SHORT).show()
+                        stopServices()
                         startLoginActivity()
                     }
                 }
@@ -53,10 +57,17 @@ class MainActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<AuthenticationResponse>, t: Throwable) {
                     AppDatabase.getInstance(this@MainActivity).getLoginCredentialsDao().cleanTable()
                     Toast.makeText(this@MainActivity, "Error al iniciar sesión de forma automatica", Toast.LENGTH_SHORT).show()
+                    stopServices()
                     startLoginActivity()
                 }
             })
         } else startLoginActivity()
+    }
+
+    private fun stopServices() {
+        EmptyPillboxService.stopService(this)
+        ReminderService.stopService(this)
+        PermanentLoginService.stopService(this)
     }
 
     private fun goToHome(authenticateResponse: AuthenticationResponse) {
@@ -70,6 +81,7 @@ class MainActivity : AppCompatActivity() {
             authenticateResponse.lastName
         )
         StateManager.loggedUserId = authenticateResponse.id
+
 
         val intent = Intent(this, HomeActivity::class.java) // Cambia a HomeActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
