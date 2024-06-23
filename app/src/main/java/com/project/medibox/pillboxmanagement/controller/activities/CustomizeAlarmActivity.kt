@@ -76,6 +76,7 @@ class CustomizeAlarmActivity : AppCompatActivity() {
             Log.d("CustomizeAlarmActivity", AppDatabase.getInstance(this).getToneSettingsDao().getSettings().toString())
             finish()
         }
+        else Toast.makeText(this, "Please select one alarm!", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {
