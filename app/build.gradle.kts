@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation("com.kizitonwose.calendar:view:2.5.2")
     implementation("org.quanqi:android-holo-graph:0.1.0")
+    implementation("com.github.alcarazolabs:FastTableLayout:1.0.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
