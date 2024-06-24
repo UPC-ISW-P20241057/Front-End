@@ -29,12 +29,9 @@ import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.awaitResponse
-import java.util.Timer
 
 class NewScheduleActivity : AppCompatActivity() {
     private lateinit var optionsSpinner: Spinner
-    private lateinit var medicines: List<String>
     private lateinit var medicationApiService: MedicationApiService
 
 
@@ -128,7 +125,7 @@ class NewScheduleActivity : AppCompatActivity() {
                     val result = runBlocking {isMedicineConflicting(medicine)}
                     if (result != null) {
                         conflictingFound = true
-                        ConflictingMedicineDialog(medicine, selectedMedicine!!.name).show(
+                        ConflictingMedicineDialog(selectedMedicine!!.name, medicine).show(
                             supportFragmentManager,
                             conflictingMedicineDialogTag
                         )
