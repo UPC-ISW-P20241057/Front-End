@@ -74,6 +74,9 @@ class MedicationProgressActivity : AppCompatActivity() {
         graphBarView.bars = graphBars
 
         val fastTable = FastTableLayout(this, progressTable, tableHeaders, tableData)
+        fastTable.SET_DEAFULT_HEADER_BORDER = true
+        fastTable.TABLE_TEXT_SIZE = 18F
+        fastTable.setCustomBackgroundToHeaders(R.color.light_purple)
         fastTable.build()
     }
 
