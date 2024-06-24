@@ -143,6 +143,7 @@
       </androidx.cardview.widget.CardView>
 
       <androidx.cardview.widget.CardView
+          android:id="@+id/cvMedProcess"
           android:layout_width="352dp"
           android:layout_height="130dp"
           android:layout_marginTop="20dp"
