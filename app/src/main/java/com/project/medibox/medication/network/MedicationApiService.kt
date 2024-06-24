@@ -7,6 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -22,6 +23,8 @@ interface MedicationApiService {
     fun createInterval(@Header("Authorization") token: String, @Body interval: CreateIntervalResource): Call<Interval>
     @POST("gateway/v1/frequencies")
     fun createFrequency(@Header("Authorization") token: String, @Body frequency: CreateFrequencyResource): Call<Frequency>
+    @PATCH("gateway/v1/conflictingmedicines")
+    fun verifyConflictingMedicines(@Header("Authorization") token: String, @Body query: ConflictingMedicinesQuery): Call<ConflictingMedicines>
     @PUT("gateway/v1/reminders/{id}")
     fun updateReminder(@Header("Authorization") token: String, @Path("id") id: Long, @Body reminder: CreateReminderResource): Call<Reminder>
     @PUT("gateway/v1/frequencies/{id}")
