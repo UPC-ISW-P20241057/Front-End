@@ -55,16 +55,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Switch
-                    android:id="@+id/swLapse"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="25dp"
-                    android:theme="@style/MediBoxSwitch"
-                    app:layout_constraintStart_toEndOf="@+id/tvLapse"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <TextView
                     android:id="@+id/tvFor"
                     android:layout_width="wrap_content"
@@ -84,22 +74,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="22dp"
                     android:layout_marginBottom="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tvFor"
-                    app:layout_constraintTop_toBottomOf="@+id/swLapse" />
+                    app:layout_constraintStart_toEndOf="@+id/tvFor" />
 
                 <Spinner
                     android:id="@+id/spnForTimeType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="22dp"
                     android:layout_marginBottom="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/spnForTime"
-                    app:layout_constraintTop_toBottomOf="@+id/swLapse" />
+                    app:layout_constraintStart_toEndOf="@+id/spnForTime" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
