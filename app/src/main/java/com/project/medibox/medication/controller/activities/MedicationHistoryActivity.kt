@@ -53,7 +53,7 @@ class MedicationHistoryActivity : AppCompatActivity(), OnItemClickListener<Histo
 
     override fun onItemClicked(value: HistoricalReminder) {
         val endDate = SharedMethods.convertDDMMYYYYToLocalDate(value.endDateStringSimply)
-        if (endDate <= LocalDate.now()) {
+        if (endDate >= LocalDate.now()) {
             reminderDialog = Dialog(this)
             reminderDialog.setContentView(R.layout.dialog_reminder_options)
             reminderDialog.window!!.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
