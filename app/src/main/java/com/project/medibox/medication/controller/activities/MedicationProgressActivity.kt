@@ -2,10 +2,12 @@ package com.project.medibox.medication.controller.activities
 
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.TableLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.alclabs.fasttablelayout.FastTableLayout
 import com.echo.holographlibrary.Bar
 import com.echo.holographlibrary.BarGraph
 import com.project.medibox.R
@@ -16,6 +18,9 @@ class MedicationProgressActivity : AppCompatActivity() {
     private lateinit var graphBars: ArrayList<Bar>
     private lateinit var graphBarView: BarGraph
     private lateinit var hexChars: Array<String>
+    private lateinit var progressTable: TableLayout
+    private lateinit var tableHeaders: Array<String>
+    private lateinit var tableData: Array<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,13 +32,16 @@ class MedicationProgressActivity : AppCompatActivity() {
             insets
         }
         graphBarView = findViewById(R.id.progressBarGraph) as BarGraph
+        progressTable = findViewById(R.id.progressTable)
         graphBars = ArrayList()
         hexChars = arrayOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
-        makeGraph()
+        tableHeaders = arrayOf("Medicine", "Taken", "% completed")
+        makeGraphAndTable()
     }
 
-    private fun makeGraph() {
+    private fun makeGraphAndTable() {
         val completedAlarms = AppDatabase.getInstance(this).getCompletedReminderAlarmDao().getAll()
+        val missedAlarms = AppDatabase.getInstance(this).getMissedReminderAlarmDao().getAll()
 
         val medicineNames = completedAlarms.flatMap { listOf(it.medicineName) }
         val uniqueMedicineNames = medicineNames.distinct()
@@ -45,16 +53,28 @@ class MedicationProgressActivity : AppCompatActivity() {
             if (!colorList.contains(colorString))
                 colorList.add(colorString)
         }
+        val data = ArrayList<Array<String>>()
 
         for(i in uniqueMedicineNames.indices) {
             val bar = Bar()
+            val countOfCompleted = completedAlarms.count { it.medicineName == uniqueMedicineNames[i] }
+            val countOfMissed = missedAlarms.count { it.medicineName == uniqueMedicineNames[i] }
+            val total = countOfCompleted + countOfMissed
+            val decCompleted = countOfCompleted.toFloat() / total.toFloat()
+            val percentage = String.format("%.2f", decCompleted * 100)
             bar.color = Color.parseColor(colorList[i])
             bar.name = uniqueMedicineNames[i]
-            bar.value = completedAlarms.count { it.medicineName == uniqueMedicineNames[i] }.toFloat()
+            bar.value = countOfCompleted.toFloat()
             graphBars.add(bar)
+            data.add(arrayOf(uniqueMedicineNames[i], countOfCompleted.toString(), "$percentage%"))
         }
 
+        tableData = data.toTypedArray()
+
         graphBarView.bars = graphBars
+
+        val fastTable = FastTableLayout(this, progressTable, tableHeaders, tableData)
+        fastTable.build()
     }
 
     private fun generateHexColor(): String {
