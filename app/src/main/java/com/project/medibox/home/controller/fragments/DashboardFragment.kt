@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.project.medibox.R
 import com.project.medibox.medication.controller.activities.MedicationHistoryActivity
+import com.project.medibox.medication.controller.activities.MedicationProgressActivity
 import com.project.medibox.medication.controller.activities.NewScheduleActivity
 import com.project.medibox.pillboxmanagement.controller.activities.CustomizeAlarmActivity
 import com.project.medibox.pillboxmanagement.controller.activities.WiFiInstructionsActivity
@@ -33,6 +34,7 @@ class DashboardFragment : Fragment() {
     val ivWifiInstructions = view.findViewById<ImageView>(R.id.ivWifiInstructions)
     val cvCustomizeAlarm = view.findViewById<CardView>(R.id.cvCustomizeAlarm)
     val cvDboardMedHistory = view.findViewById<CardView>(R.id.cvDboardMedHistory)
+    val cvMedProcess = view.findViewById<CardView>(R.id.cvMedProcess)
     cvScheduleReminder.setOnClickListener {
       goToNewScheduleActivity()
     }
@@ -45,6 +47,14 @@ class DashboardFragment : Fragment() {
     cvCustomizeAlarm.setOnClickListener {
       goToCustomizeAlarmActivity()
     }
+    cvMedProcess.setOnClickListener {
+      goToMedicationProcessActivity()
+    }
+  }
+
+  private fun goToMedicationProcessActivity() {
+    val intent = Intent(requireContext(), MedicationProgressActivity::class.java)
+    startActivity(intent)
   }
 
   private fun goToMedicationHistoryActivity() {

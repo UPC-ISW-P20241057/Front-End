@@ -20,6 +20,9 @@
         android:theme="@style/Theme.MediBox"
         tools:targetApi="31">
         <activity
+            android:name=".medication.controller.activities.MedicationProgressActivity"
+            android:exported="false" />
+        <activity
             android:name=".medication.controller.activities.NextEditReminderActivity"
             android:exported="false" />
         <activity
