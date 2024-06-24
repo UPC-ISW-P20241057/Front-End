@@ -54,7 +54,6 @@ class NextNewScheduleActivity : AppCompatActivity() {
     private var interval = CreateIntervalResource("", -1, -1)
     private var frequency = CreateFrequencyResource("", -1, -1)
 
-    private lateinit var swLapse: Switch
     private var lapseTime: Int = -1
     private var lapseType: String = ""
 
@@ -86,10 +85,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
         etPills = findViewById(R.id.etPills)
         disablePillQuantity()
 
-        swLapse = findViewById(R.id.swLapse)
         spnForTime = findViewById(R.id.spnForTime)
         spnForTimeType = findViewById(R.id.spnForTimeType)
-        disableLapse()
 
         loadSpinners()
 
@@ -122,29 +119,10 @@ class NextNewScheduleActivity : AppCompatActivity() {
             }
         }
 
-        swLapse.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                enableLapse()
-            }
-            else {
-                disableLapse()
-            }
-        }
-
         val btnCreateSchedule = findViewById<Button>(R.id.btnCreateSchedule)
         btnCreateSchedule.setOnClickListener {
             createSchedule()
         }
-    }
-
-    private fun enableLapse() {
-        spnForTime.isEnabled = true
-        spnForTimeType.isEnabled = true
-    }
-
-    private fun disableLapse() {
-        spnForTime.isEnabled = false
-        spnForTimeType.isEnabled = false
     }
 
     private fun disablePillQuantity() {
