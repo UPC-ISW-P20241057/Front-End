@@ -1,13 +1,36 @@
 package com.project.medibox.medication.controller.activities
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.project.medibox.R
+import com.project.medibox.medication.models.CompletedReminderAlarm
+import com.project.medibox.medication.models.MedicineImage
+import com.project.medibox.medication.models.MissedReminderAlarm
+import com.project.medibox.shared.AppDatabase
+import com.project.medibox.shared.BitmapConverter
+import com.project.medibox.shared.StateManager
 
 class MedicationAlarmWithImageActivity : AppCompatActivity() {
+    private var bitmap: Bitmap? = null
+    private lateinit var image: MedicineImage
+    private lateinit var ivMedicinePic: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -17,5 +40,109 @@ class MedicationAlarmWithImageActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val tvImMedicine = findViewById<TextView>(R.id.tvImMedicine)
+        val btnMediImAccept = findViewById<Button>(R.id.btnMediImAccept)
+        val btnMediImMissed = findViewById<Button>(R.id.btnMediImMissed)
+        ivMedicinePic = findViewById<ImageView>(R.id.ivMedicinePic)
+        val upcomingAlarm = StateManager.selectedUpcomingAlarm
+
+        tvImMedicine.text = upcomingAlarm.medicineName
+
+
+        btnMediImAccept.setOnClickListener {
+            AppDatabase.getInstance(this).getUpcomingReminderAlarmDao().deleteById(upcomingAlarm.id)
+            AppDatabase.getInstance(this).getCompletedReminderAlarmDao().insertAlarm(
+                CompletedReminderAlarm(
+                    0,
+                    upcomingAlarm.medicineName,
+                    upcomingAlarm.activateDateString,
+                    upcomingAlarm.activateHour,
+                    upcomingAlarm.activateMinute,
+                    upcomingAlarm.consumeFood
+                )
+            )
+            finish()
+        }
+        btnMediImMissed.setOnClickListener {
+            AppDatabase.getInstance(this).getUpcomingReminderAlarmDao().deleteById(upcomingAlarm.id)
+            AppDatabase.getInstance(this).getMissedReminderAlarmDao().insertAlarm(
+                MissedReminderAlarm(
+                    0,
+                    upcomingAlarm.medicineName,
+                    upcomingAlarm.activateDateString,
+                    upcomingAlarm.activateHour,
+                    upcomingAlarm.activateMinute,
+                    upcomingAlarm.consumeFood
+                )
+            )
+            finish()
+        }
+        ivMedicinePic.setOnClickListener {
+            requestImagePermission()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setMedicineImage()
+    }
+
+    private fun setMedicineImage() {
+        image = StateManager.selectedMedicineImage
+        val bitmapFromString = BitmapConverter.converterStringToBitmap(image.imageString)
+        ivMedicinePic.setImageBitmap(bitmapFromString)
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            pickImageFromGallery()
+        }
+        else {
+            Toast.makeText(this, "You need permission to select image.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun requestImagePermission() {
+        val permission =
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            else
+                Manifest.permission.READ_MEDIA_IMAGES
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                pickImageFromGallery()
+            }
+            else -> {
+                requestPermissionLauncher.launch(permission)
+            }
+        }
+    }
+
+
+    private fun saveMedicineImage() {
+        val imageDao = AppDatabase.getInstance(this).getMedicineImageDao()
+        val imageString = BitmapConverter.converterBitmapToString(bitmap!!)
+        val medicineImage = MedicineImage(image.id, imageString, image.medicineName)
+        imageDao.updateImage(medicineImage)
+        StateManager.selectedMedicineImage = medicineImage
+    }
+    private val startForActivityGallery = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data?.data
+            bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, data)
+            saveMedicineImage()
+        }
+    }
+    private fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        startForActivityGallery.launch(intent)
     }
 }

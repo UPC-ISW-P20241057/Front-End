@@ -18,6 +18,7 @@ import com.project.medibox.medication.adapter.CompletedReminderAlarmAdapter
 import com.project.medibox.medication.adapter.MissedReminderAlarmAdapter
 import com.project.medibox.medication.adapter.UpcomingReminderAlarmAdapter
 import com.project.medibox.medication.controller.activities.MedicationAlarmActivity
+import com.project.medibox.medication.controller.activities.MedicationAlarmWithImageActivity
 import com.project.medibox.medication.models.CompletedReminderAlarm
 import com.project.medibox.medication.models.MissedReminderAlarm
 import com.project.medibox.medication.models.UpcomingReminderAlarm
@@ -119,8 +120,16 @@ class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnI
 
     override fun onItemClicked(value: UpcomingReminderAlarm) {
         if (value.notified) {
+            val image = AppDatabase.getInstance(requireContext()).getMedicineImageDao().getImageByMedicineName(value.medicineName)
             StateManager.selectedUpcomingAlarm = value
-            val intent = Intent(requireContext(), MedicationAlarmActivity::class.java)
+            val intent: Intent
+            if (image != null) {
+                intent = Intent(requireContext(), MedicationAlarmWithImageActivity::class.java)
+                StateManager.selectedMedicineImage = image
+            }
+            else {
+                intent = Intent(requireContext(), MedicationAlarmActivity::class.java)
+            }
             startActivity(intent)
         }
     }

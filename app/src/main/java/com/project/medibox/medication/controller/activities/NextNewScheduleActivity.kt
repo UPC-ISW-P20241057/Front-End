@@ -1,6 +1,13 @@
 package com.project.medibox.medication.controller.activities
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -12,7 +19,10 @@ import android.widget.Spinner
 import android.widget.Switch
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -21,13 +31,16 @@ import com.project.medibox.R
 import com.project.medibox.medication.models.Frequency
 import com.project.medibox.medication.models.HistoricalReminder
 import com.project.medibox.medication.models.Interval
+import com.project.medibox.medication.models.MedicineImage
 import com.project.medibox.medication.models.Reminder
 import com.project.medibox.medication.network.MedicationApiService
+import com.project.medibox.medication.persistence.MedicineImageDAO
 import com.project.medibox.medication.resources.CreateFrequencyResource
 import com.project.medibox.medication.resources.CreateIntervalResource
 import com.project.medibox.medication.resources.CreateReminderResource
 import com.project.medibox.medication.services.ReminderService
 import com.project.medibox.shared.AppDatabase
+import com.project.medibox.shared.BitmapConverter
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
 import retrofit2.Call
@@ -51,6 +64,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
     private lateinit var spnForTime: Spinner
     private lateinit var spnForTimeType: Spinner
 
+    private var existingImage: MedicineImage? = null
+
     private var interval = CreateIntervalResource("", -1, -1)
     private var frequency = CreateFrequencyResource("", -1, -1)
 
@@ -58,6 +73,10 @@ class NextNewScheduleActivity : AppCompatActivity() {
     private var lapseType: String = ""
 
     private lateinit var timePicker: MaterialTimePicker
+
+    private lateinit var imageDao: MedicineImageDAO
+    private var bitmap: Bitmap? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +88,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        imageDao = AppDatabase.getInstance(this).getMedicineImageDao()
 
         swInterval = findViewById(R.id.swInterval)
         spnIntervalTime = findViewById(R.id.spnIntervalTime)
@@ -123,6 +144,11 @@ class NextNewScheduleActivity : AppCompatActivity() {
         btnCreateSchedule.setOnClickListener {
             createSchedule()
         }
+
+        val cvUploadPhoto = findViewById<CardView>(R.id.cvUploadPhoto)
+        cvUploadPhoto.setOnClickListener {
+            requestImagePermission()
+        }
     }
 
     private fun disablePillQuantity() {
@@ -173,6 +199,67 @@ class NextNewScheduleActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            pickImageFromGallery()
+        }
+        else {
+            Toast.makeText(this, "You need permission to select image.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun requestImagePermission() {
+        val permission =
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            else
+                Manifest.permission.READ_MEDIA_IMAGES
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                pickImageFromGallery()
+            }
+            else -> {
+                requestPermissionLauncher.launch(permission)
+            }
+        }
+    }
+
+    private fun saveMedicineImage() {
+        val imageString = BitmapConverter.converterBitmapToString(bitmap!!)
+        existingImage = imageDao.getImageByMedicineName(StateManager.selectedMedicine!!.name)
+        if (existingImage == null)
+            imageDao.insertImage(MedicineImage(
+                0,
+                imageString,
+                StateManager.selectedMedicine!!.name
+            ))
+        else
+            imageDao.updateImage(MedicineImage(
+                existingImage!!.id,
+                imageString,
+                StateManager.selectedMedicine!!.name
+            ))
+    }
+    private val startForActivityGallery = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data?.data
+            bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, data)
+            saveMedicineImage()
+        }
+    }
+    private fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        startForActivityGallery.launch(intent)
     }
 
     private fun loadSpinners() {
