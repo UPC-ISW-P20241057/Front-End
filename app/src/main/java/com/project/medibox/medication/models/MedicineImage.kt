@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class MedicineImage(
     @PrimaryKey(autoGenerate = true)
-    var id: Int?,
+    var id: Int,
     var imageString: String,
     var medicineName: String
 )

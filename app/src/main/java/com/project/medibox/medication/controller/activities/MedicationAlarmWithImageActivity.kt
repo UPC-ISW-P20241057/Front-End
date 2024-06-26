@@ -43,7 +43,7 @@ class MedicationAlarmWithImageActivity : AppCompatActivity() {
         val tvImMedicine = findViewById<TextView>(R.id.tvImMedicine)
         val btnMediImAccept = findViewById<Button>(R.id.btnMediImAccept)
         val btnMediImMissed = findViewById<Button>(R.id.btnMediImMissed)
-        ivMedicinePic = findViewById<ImageView>(R.id.ivMedicinePic)
+        ivMedicinePic = findViewById(R.id.ivMedicinePic)
         val upcomingAlarm = StateManager.selectedUpcomingAlarm
 
         tvImMedicine.text = upcomingAlarm.medicineName

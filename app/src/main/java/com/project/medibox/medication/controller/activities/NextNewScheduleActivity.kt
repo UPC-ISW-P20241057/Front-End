@@ -2,9 +2,11 @@ package com.project.medibox.medication.controller.activities
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -77,6 +79,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
     private lateinit var imageDao: MedicineImageDAO
     private var bitmap: Bitmap? = null
 
+    private var uri: Uri? = null
+    private val REQUEST_IMAGE_CAPTURE = 1 // Puedes usar cualquier número como código de solicitud
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,6 +153,11 @@ class NextNewScheduleActivity : AppCompatActivity() {
         cvUploadPhoto.setOnClickListener {
             requestImagePermission()
         }
+
+        val cvTakePhoto = findViewById<CardView>(R.id.cvTakePhoto)
+        cvTakePhoto.setOnClickListener {
+            requestCameraPermission()
+        }
     }
 
     private fun disablePillQuantity() {
@@ -201,7 +210,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
         }
     }
 
-    private val requestPermissionLauncher = registerForActivityResult(
+    private val requestGalleryPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
@@ -226,7 +235,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
                 pickImageFromGallery()
             }
             else -> {
-                requestPermissionLauncher.launch(permission)
+                requestGalleryPermissionLauncher.launch(permission)
             }
         }
     }
@@ -260,6 +269,65 @@ class NextNewScheduleActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         startForActivityGallery.launch(intent)
+    }
+
+    private fun requestCameraPermission() {
+        val cameraPermission = Manifest.permission.CAMERA
+
+        /*val storagePermission =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                Manifest.permission.ACCESS_MEDIA_LOCATION
+            else
+                Manifest.permission.WRITE_EXTERNAL_STORAGE*/
+
+        val permissionsToRequest = mutableListOf<String>()
+        if (ContextCompat.checkSelfPermission(this, cameraPermission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(cameraPermission)
+        }
+        /*if (ContextCompat.checkSelfPermission(this, storagePermission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(storagePermission)
+        }*/
+
+        requestCameraPermissionLauncher.launch(permissionsToRequest.toTypedArray())
+    }
+
+    private val requestCameraPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions())
+    { permissions ->
+        // Handle Permission granted/rejected
+        var granted = true
+        val deniedList = mutableListOf<String>()
+        permissions.entries.forEach {
+            val permissionName = it.key
+            val isGranted = it.value
+            if (!isGranted) {
+                granted = false
+                deniedList.add(permissionName)
+            }
+        }
+        if (granted)
+            openCamera()
+        else
+            Toast.makeText(this, "One or more required permissions were denied: $deniedList", Toast.LENGTH_SHORT).show()
+    }
+    private val startForActivityCamera = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // Obtén la imagen capturada desde la cámara
+            bitmap = result.data?.extras?.get("data") as? Bitmap
+            if (bitmap != null) {
+                // Guarda la imagen en el almacenamiento interno
+                saveMedicineImage()
+            }
+        } else {
+            Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun openCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startForActivityCamera.launch(intent)
     }
 
     private fun loadSpinners() {
