@@ -13,7 +13,9 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import com.project.medibox.R
+import com.project.medibox.controllers.activities.MainActivity
 import com.project.medibox.medication.controller.activities.MedicationAlarmActivity
+import com.project.medibox.medication.controller.activities.MedicationAlarmWithImageActivity
 import com.project.medibox.medication.models.Frequency
 import com.project.medibox.medication.models.HistoricalReminder
 import com.project.medibox.medication.models.Interval
@@ -76,10 +78,9 @@ class ReminderService : Service() {
             .setContentTitle("Time for medication!")
             .setContentText(medicationName)
             .setSmallIcon(R.drawable.ic_test_notification)
-            .setContentIntent(createPendingIntent(MedicationAlarmActivity::class.java))
+            .setContentIntent(createPendingIntent(MainActivity::class.java))
             .setAutoCancel(true)
             .build()
-
     }
     private fun createServiceNotificationChannel() {
         val channel = NotificationChannel(

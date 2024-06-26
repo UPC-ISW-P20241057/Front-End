@@ -16,4 +16,5 @@
     <string name="instrction_1"><![CDATA[1. Search for "RED_PASTILLERO" next to the Wi-Fi networks]]></string>
     <string name="instruction_2">2. Enter your browser and put 198.168.1.32 in the url.</string>
     <string name="instruction_3">3. Enter the credentials for a Wi-Fi network with Internet access.</string>
+    <string name="delete">Delete</string>
 </resources>

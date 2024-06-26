@@ -2,6 +2,7 @@ package com.project.medibox.medication.controller.activities
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -24,8 +25,9 @@ class MedicationAlarmActivity : AppCompatActivity() {
         }
         val btnMediAccept = findViewById<Button>(R.id.btnMediAccept)
         val btnMediMissed = findViewById<Button>(R.id.btnMediMissed)
-
+        val tvTimeForMedMedicine = findViewById<TextView>(R.id.tvTimeForMedMedicine)
         val upcomingAlarm = StateManager.selectedUpcomingAlarm
+        tvTimeForMedMedicine.text = upcomingAlarm.medicineName
 
         btnMediAccept.setOnClickListener {
             AppDatabase.getInstance(this).getUpcomingReminderAlarmDao().deleteById(upcomingAlarm.id)
@@ -42,7 +44,7 @@ class MedicationAlarmActivity : AppCompatActivity() {
             finish()
         }
         btnMediMissed.setOnClickListener {
-            AppDatabase.getInstance(this).getUpcomingReminderAlarmDao().deleteById(StateManager.selectedUpcomingAlarm.id)
+            AppDatabase.getInstance(this).getUpcomingReminderAlarmDao().deleteById(upcomingAlarm.id)
             AppDatabase.getInstance(this).getMissedReminderAlarmDao().insertAlarm(
                 MissedReminderAlarm(
                     0,
