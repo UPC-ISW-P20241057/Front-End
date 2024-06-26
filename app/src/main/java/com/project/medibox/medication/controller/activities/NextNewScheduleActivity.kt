@@ -272,43 +272,30 @@ class NextNewScheduleActivity : AppCompatActivity() {
     }
 
     private fun requestCameraPermission() {
-        val cameraPermission = Manifest.permission.CAMERA
+        val permission = Manifest.permission.CAMERA
 
-        /*val storagePermission =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-                Manifest.permission.ACCESS_MEDIA_LOCATION
-            else
-                Manifest.permission.WRITE_EXTERNAL_STORAGE*/
-
-        val permissionsToRequest = mutableListOf<String>()
-        if (ContextCompat.checkSelfPermission(this, cameraPermission) != PackageManager.PERMISSION_GRANTED) {
-            permissionsToRequest.add(cameraPermission)
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                openCamera()
+            }
+            else -> {
+                requestCameraPermissionLauncher.launch(permission)
+            }
         }
-        /*if (ContextCompat.checkSelfPermission(this, storagePermission) != PackageManager.PERMISSION_GRANTED) {
-            permissionsToRequest.add(storagePermission)
-        }*/
-
-        requestCameraPermissionLauncher.launch(permissionsToRequest.toTypedArray())
     }
 
     private val requestCameraPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions())
-    { permissions ->
-        // Handle Permission granted/rejected
-        var granted = true
-        val deniedList = mutableListOf<String>()
-        permissions.entries.forEach {
-            val permissionName = it.key
-            val isGranted = it.value
-            if (!isGranted) {
-                granted = false
-                deniedList.add(permissionName)
-            }
-        }
-        if (granted)
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
             openCamera()
-        else
-            Toast.makeText(this, "One or more required permissions were denied: $deniedList", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(this, "You need permission to take photos.", Toast.LENGTH_SHORT).show()
+        }
     }
     private val startForActivityCamera = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
