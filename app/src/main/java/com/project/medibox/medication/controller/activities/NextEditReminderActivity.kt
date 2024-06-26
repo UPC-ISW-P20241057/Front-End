@@ -1,6 +1,13 @@
 package com.project.medibox.medication.controller.activities
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -12,8 +19,10 @@ import android.widget.Spinner
 import android.widget.Switch
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -22,8 +31,10 @@ import com.project.medibox.R
 import com.project.medibox.medication.models.Frequency
 import com.project.medibox.medication.models.HistoricalReminder
 import com.project.medibox.medication.models.Interval
+import com.project.medibox.medication.models.MedicineImage
 import com.project.medibox.medication.models.Reminder
 import com.project.medibox.medication.network.MedicationApiService
+import com.project.medibox.medication.persistence.MedicineImageDAO
 import com.project.medibox.medication.resources.CreateFrequencyResource
 import com.project.medibox.medication.resources.CreateIntervalResource
 import com.project.medibox.medication.resources.CreateReminderResource
@@ -32,6 +43,7 @@ import com.project.medibox.medication.resources.UpdateIntervalResource
 import com.project.medibox.medication.resources.UpdateReminderResource
 import com.project.medibox.medication.services.ReminderService
 import com.project.medibox.shared.AppDatabase
+import com.project.medibox.shared.BitmapConverter
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
 import retrofit2.Call
@@ -67,6 +79,10 @@ class NextEditReminderActivity : AppCompatActivity() {
     private lateinit var timePicker: MaterialTimePicker
     private var reminderType: String = ""
 
+    private lateinit var imageDao: MedicineImageDAO
+    private var bitmap: Bitmap? = null
+    private var existingImage: MedicineImage? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -81,6 +97,8 @@ class NextEditReminderActivity : AppCompatActivity() {
             "Interval" -> showIntervalCard()
             "Frequency" -> showFrequencyCard()
         }
+
+        imageDao = AppDatabase.getInstance(this).getMedicineImageDao()
 
         val btnEditReminder = findViewById<Button>(R.id.btnEditReminder)
         btnEditReminder.setOnClickListener {
@@ -111,6 +129,141 @@ class NextEditReminderActivity : AppCompatActivity() {
                 disablePillQuantity()
             }
         }
+
+        val cvUploadPhoto = findViewById<CardView>(R.id.cvUploadPhoto)
+        cvUploadPhoto.setOnClickListener {
+            requestImagePermission()
+        }
+
+        val cvTakePhoto = findViewById<CardView>(R.id.cvTakePhoto)
+        cvTakePhoto.setOnClickListener {
+            requestCameraPermission()
+        }
+
+        val btnDeletePhoto = findViewById<Button>(R.id.btnDeletePhoto)
+        btnDeletePhoto.setOnClickListener {
+            deleteMedicinePhoto()
+        }
+    }
+
+    private fun deleteMedicinePhoto() {
+        existingImage = imageDao.getImageByMedicineName(StateManager.selectedMedicine!!.name)
+        if (existingImage != null){
+            imageDao.deleteImageByMedicineName(existingImage!!.medicineName)
+            Toast.makeText(this, "Image deleted successfully!", Toast.LENGTH_SHORT).show()
+        }
+        else Toast.makeText(this, "Image doesn't exist.", Toast.LENGTH_SHORT).show()
+    }
+
+    private val requestGalleryPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            pickImageFromGallery()
+        }
+        else {
+            Toast.makeText(this, "You need permission to select image.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun requestImagePermission() {
+        val permission =
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            else
+                Manifest.permission.READ_MEDIA_IMAGES
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                pickImageFromGallery()
+            }
+            else -> {
+                requestGalleryPermissionLauncher.launch(permission)
+            }
+        }
+    }
+
+    private fun saveMedicineImage() {
+        val imageString = BitmapConverter.converterBitmapToString(bitmap!!)
+        existingImage = imageDao.getImageByMedicineName(StateManager.selectedMedicine!!.name)
+        if (existingImage == null)
+            imageDao.insertImage(
+                MedicineImage(
+                0,
+                imageString,
+                StateManager.selectedMedicine!!.name
+            )
+            )
+        else
+            imageDao.updateImage(
+                MedicineImage(
+                existingImage!!.id,
+                imageString,
+                StateManager.selectedMedicine!!.name
+            )
+            )
+    }
+    private val startForActivityGallery = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data?.data
+            bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, data)
+            saveMedicineImage()
+        }
+    }
+    private fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        startForActivityGallery.launch(intent)
+    }
+
+    private fun requestCameraPermission() {
+        val permission = Manifest.permission.CAMERA
+
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                openCamera()
+            }
+            else -> {
+                requestCameraPermissionLauncher.launch(permission)
+            }
+        }
+    }
+
+    private val requestCameraPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            openCamera()
+        }
+        else {
+            Toast.makeText(this, "You need permission to take photos.", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private val startForActivityCamera = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // Obtén la imagen capturada desde la cámara
+            bitmap = result.data?.extras?.get("data") as? Bitmap
+            if (bitmap != null) {
+                // Guarda la imagen en el almacenamiento interno
+                saveMedicineImage()
+            }
+        } else {
+            Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun openCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startForActivityCamera.launch(intent)
     }
 
     private fun makeHttpRequest(pills: Short?, startDate: LocalDateTime, endDateString: String?, consumedFood: Boolean?) {
