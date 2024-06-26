@@ -100,15 +100,6 @@
         app:cornerRadius="13dp" />
 
     <TextView
-      android:id="@+id/tvForgetPwd"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="110dp"
-      android:layout_marginTop="420dp"
-      android:fontFamily="@font/palanquin_dark"
-      android:text="@string/forget_my_password" />
-
-    <TextView
       android:id="@+id/tvNotAcct"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
