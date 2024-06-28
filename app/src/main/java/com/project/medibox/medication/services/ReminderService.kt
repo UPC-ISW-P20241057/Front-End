@@ -249,6 +249,9 @@ class ReminderService : Service() {
         fun stopService(context: Context) {
             AppDatabase.getInstance(context).getUpcomingReminderAlarmDao().clearTable()
             AppDatabase.getInstance(context).getHistoricalReminderDao().clearTable()
+            AppDatabase.getInstance(context).getUpcomingReminderAlarmDao().clearTable()
+            AppDatabase.getInstance(context).getCompletedReminderAlarmDao().clearTable()
+            AppDatabase.getInstance(context).getMissedReminderAlarmDao().clearTable()
             val intent = Intent(context, ReminderService::class.java)
             context.stopService(intent)
         }

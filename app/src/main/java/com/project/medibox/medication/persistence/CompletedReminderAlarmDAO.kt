@@ -12,4 +12,7 @@ interface CompletedReminderAlarmDAO {
 
     @Insert
     fun insertAlarm(vararg alarm: CompletedReminderAlarm)
+
+    @Query("DELETE FROM CompletedReminderAlarm")
+    fun clearTable()
 }
