@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/main"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".home.controller.fragments.ProfileFragment">
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <TextView
+          android:id="@+id/tvProfileLastnameTitle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="36dp"
+          android:layout_marginTop="10dp"
+          android:fontFamily="@font/palanquin_dark"
+          android:text="Lastname:"
+          android:textColor="#5E5E5E"
+          android:textSize="20sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileName" />
+
+      <TextView
+          android:id="@+id/textView7"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="16dp"
+          android:fontFamily="@font/palanquin_dark"
+          android:text="@string/medibox"
+          android:textColor="#5D46EF"
+          android:textSize="36sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      <TextView
+          android:id="@+id/tvProfile"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="36dp"
+          android:layout_marginTop="80dp"
+          android:fontFamily="@font/palanquin_dark"
+          android:text="Profile"
+          android:textSize="26sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      <ImageView
+          android:id="@+id/imageView3"
+          android:layout_width="220dp"
+          android:layout_height="194dp"
+          android:layout_marginStart="90dp"
+          android:layout_marginTop="128dp"
+          android:layout_marginEnd="103dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:srcCompat="@drawable/profile_mockup" />
+
+      <TextView
+          android:id="@+id/tvProfileNameTitle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="36dp"
+          android:layout_marginTop="300dp"
+          android:fontFamily="@font/palanquin_dark"
+          android:text="Name:"
+          android:textColor="#5E5E5E"
+          android:textSize="20sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      <TextView
+          android:id="@+id/tvProfileName"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="38dp"
+          android:layout_marginTop="5dp"
+          android:fontFamily="@font/palanquin_dark"
+          android:textSize="20sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileNameTitle"
+          tools:text="Name" />
+
+      <TextView
+          android:id="@+id/tvProfileLastname"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="38dp"
+          android:layout_marginTop="5dp"
+          android:fontFamily="@font/palanquin_dark"
+          android:textSize="20sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileLastnameTitle"
+          tools:text="Lastname" />
+
+      <TextView
+          android:id="@+id/tvProfileEmailTitle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="36dp"
+          android:layout_marginTop="10dp"
+          android:fontFamily="@font/palanquin_dark"
+          android:text="Email:"
+          android:textColor="#5E5E5E"
+          android:textSize="20sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileLastname" />
+
+      <TextView
+          android:id="@+id/tvProfileEmail"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="38dp"
+          android:layout_marginTop="5dp"
+          android:fontFamily="@font/palanquin_dark"
+          android:textSize="20sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileEmailTitle"
+          tools:text="Email" />
+
+      <TextView
+          android:id="@+id/tvProfileCellphoneTitle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="36dp"
+          android:layout_marginTop="10dp"
+          android:fontFamily="@font/palanquin_dark"
+          android:text="Cellphone"
+          android:textColor="#5E5E5E"
+          android:textSize="20sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileEmail" />
+
+      <TextView
+          android:id="@+id/tvProfileCellphone"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="38dp"
+          android:layout_marginTop="5dp"
+          android:fontFamily="@font/palanquin_dark"
+          android:textSize="20sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileCellphoneTitle"
+          tools:text="Cellphone" />
+
+      <Button
+          android:id="@+id/btnEditProfile"
+          android:layout_width="134dp"
+          android:layout_height="61dp"
+          android:layout_marginStart="50dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginBottom="17dp"
+          android:backgroundTint="#7E69F5"
+          android:fontFamily="@font/palanquin_dark"
+          android:text="Edit"
+          android:textSize="20sp"
+          app:cornerRadius="13dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tvProfileCellphone" />
+
+      <Button
+          android:id="@+id/btnSignOut"
+          android:layout_width="134dp"
+          android:layout_height="61dp"
+          android:layout_marginStart="57dp"
+          android:layout_marginEnd="36dp"
+          android:layout_marginBottom="17dp"
+          android:backgroundTint="#E86868"
+          android:fontFamily="@font/palanquin_dark"
+          android:text="Sign Out"
+          android:textSize="20sp"
+          app:cornerRadius="13dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toEndOf="@+id/btnEditProfile" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

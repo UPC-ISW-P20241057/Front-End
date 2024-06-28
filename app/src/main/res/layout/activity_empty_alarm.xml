@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".pillboxmanagement.controller.activities.EmptyAlarmActivity">
+
+    <TextView
+        android:id="@+id/textView32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/palanquin_dark"
+        android:text="@string/medibox"
+        android:textColor="#5D46EF"
+        android:textSize="36sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView33"
+        android:layout_width="335dp"
+        android:layout_height="116dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="80dp"
+        android:fontFamily="@font/palanquin_dark"
+        android:text="No Medication on Pillbox"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="339dp"
+        android:layout_height="422dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="24dp"
+        app:cardBackgroundColor="#F1F1F1"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView33" >
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="165dp"
+            android:layout_height="153dp"
+            android:layout_marginStart="85dp"
+            android:layout_marginTop="60dp"
+            app:srcCompat="@drawable/png_transparent_computer_icons_error_closeup_miscellaneous_text_logo" />
+
+        <TextView
+            android:id="@+id/textView39"
+            android:layout_width="303dp"
+            android:layout_height="119dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="200dp"
+            android:fontFamily="@font/palanquin_dark"
+            android:text="There are no more pills"
+            android:textAlignment="center"
+            android:textColor="#020A51"
+            android:textSize="34sp" />
+
+        <Button
+            android:id="@+id/btnAcceptEmpty"
+            android:layout_width="142dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="330dp"
+            android:backgroundTint="#7E69F5"
+            android:fontFamily="@font/palanquin_dark"
+            android:text="Accept"
+            android:textSize="24sp"
+            app:cornerRadius="13dp" />
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home.controller.fragments.DashboardFragment">
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <TextView
+          android:id="@+id/tbUpcMed"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="16dp"
+          android:fontFamily="@font/palanquin_dark"
+          android:text="@string/medibox"
+          android:textColor="#5D46EF"
+          android:textSize="36sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      <TextView
+          android:id="@+id/textView"
+          android:layout_width="89dp"
+          android:layout_height="40dp"
+          android:layout_marginStart="36dp"
+          android:fontFamily="@font/palanquin_dark"
+          android:text="Menu"
+          android:textSize="26sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tbUpcMed" />
+
+      <androidx.cardview.widget.CardView
+          android:id="@+id/cvScheduleReminder"
+          android:layout_width="352dp"
+          android:layout_height="130dp"
+          android:layout_marginTop="135dp"
+          android:onClick="goToNewScheduleActivity"
+          app:cardBackgroundColor="#71F2B4"
+          app:cardCornerRadius="20dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/programar_mediacion" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="142dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="170dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/palanquin_dark"
+            android:text="Schedule Reminder"
+            android:textColor="#FFFFFF"
+            android:textSize="26sp" />
+
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+          android:id="@+id/cvCustomizeAlarm"
+          android:layout_width="352dp"
+          android:layout_height="130dp"
+          android:layout_marginTop="20dp"
+          app:cardBackgroundColor="#EEEEEE"
+          app:cardCornerRadius="20dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/cvScheduleReminder">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/editar_alarma" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="170dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/palanquin_dark"
+            android:text="Customize Alarm"
+            android:textColor="#575757"
+            android:textSize="26sp" />
+
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+          android:id="@+id/cvDboardMedHistory"
+          android:layout_width="352dp"
+          android:layout_height="130dp"
+          android:layout_marginTop="20dp"
+          app:cardBackgroundColor="#FBB2B2"
+          app:cardCornerRadius="20dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/cvCustomizeAlarm">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="132dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="170dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/palanquin_dark"
+            android:text="Medication History"
+            android:textColor="#575757"
+            android:textSize="26sp" />
+
+        <ImageView
+            android:id="@+id/imageView15"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:src="@mipmap/medication_history" />
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+          android:id="@+id/cvMedProcess"
+          android:layout_width="352dp"
+          android:layout_height="130dp"
+          android:layout_marginTop="20dp"
+          app:cardBackgroundColor="#D07AF9"
+          app:cardCornerRadius="20dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/cvDboardMedHistory">
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/progreso_medicacion" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="139dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="170dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/palanquin_dark"
+            android:text="Medication Progress"
+            android:textColor="#575757"
+            android:textSize="26sp" />
+      </androidx.cardview.widget.CardView>
+
+      <ImageView
+          android:id="@+id/ivWifiInstructions"
+          android:layout_width="55dp"
+          android:layout_height="58dp"
+          android:layout_marginTop="25dp"
+          android:layout_marginEnd="16dp"
+          android:src="@mipmap/pillbox_wifi_instructions"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

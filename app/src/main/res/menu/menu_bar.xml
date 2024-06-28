@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@mipmap/home_grey"
+        android:title="Home" />
+    <item
+        android:id="@+id/menu_dashboard"
+        android:icon="@mipmap/dashboard_grey"
+        android:title="Dashboard" />
+    <item
+        android:id="@+id/menu_voice"
+        android:icon="@mipmap/microphone"
+        android:title="Voice" />
+    <item
+        android:id="@+id/menu_calendar"
+        android:icon="@mipmap/calendar_grey"
+        android:title="Calendar" />
+    <item
+        android:id="@+id/menu_profile"
+        android:icon="@mipmap/profile_grey"
+        android:title="Profile" />
+</menu>

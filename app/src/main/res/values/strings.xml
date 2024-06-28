@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">MediBox</string>
     <string name="medibox">MediBox</string>
+    <string name="user">User</string>
+    <string name="login">Log In</string>
+    <string name="email_or_phone_number">Email or phone number</string>
+    <string name="password">Password</string>
+    <string name="forget_my_password">I forgot my password</string>
+    <string name="not_account">You do not have an account?</string>
+    <string name="signup">Sign Up</string>
+    <string name="upcoming">Upcoming</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create">Create</string>
+    <string name="instruction_tittle">Does your pillbox not have a Wi-Fi connection?</string>
+    <string name="instrction_1"><![CDATA[1. Search for "RED_PASTILLERO" next to the Wi-Fi networks]]></string>
+    <string name="instruction_2">2. Enter your browser and put 198.168.1.32 in the url.</string>
+    <string name="instruction_3">3. Enter the credentials for a Wi-Fi network with Internet access.</string>
+    <string name="delete">Delete</string>
 </resources>
