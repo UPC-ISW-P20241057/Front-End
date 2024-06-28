@@ -1,5 +1,8 @@
 package com.project.medibox.shared
 
+import android.app.Activity
+import android.content.res.Configuration
+import android.os.Build
 import android.util.Log
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -103,5 +106,10 @@ object SharedMethods {
     fun convertDDMMYYYYToLocalDate(date: String): LocalDate {
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         return LocalDate.parse(date, formatter)
+    }
+    fun isDarkTheme(activity: Activity): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
+            return false
+        return activity.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
 }
