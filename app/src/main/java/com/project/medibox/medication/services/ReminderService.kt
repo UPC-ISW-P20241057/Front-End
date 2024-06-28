@@ -69,7 +69,7 @@ class ReminderService : Service() {
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Reminder Service")
             .setContentText("Service running...")
-            .setSmallIcon(R.drawable.ic_test_notification)
+            .setSmallIcon(R.drawable.ic_stat_name)
             .build()
         startForeground(ONGOING_NOTIFICATION_ID, notification)
     }
@@ -77,7 +77,7 @@ class ReminderService : Service() {
         reminderNotification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Time for medication!")
             .setContentText(medicationName)
-            .setSmallIcon(R.drawable.ic_test_notification)
+            .setSmallIcon(R.drawable.ic_stat_name)
             .setContentIntent(createPendingIntent(MainActivity::class.java))
             .setAutoCancel(true)
             .build()

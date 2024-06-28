@@ -18,6 +18,7 @@ import com.project.medibox.medication.controller.activities.MedicationProgressAc
 import com.project.medibox.medication.controller.activities.NewScheduleActivity
 import com.project.medibox.pillboxmanagement.controller.activities.CustomizeAlarmActivity
 import com.project.medibox.pillboxmanagement.controller.activities.WiFiInstructionsActivity
+import com.project.medibox.shared.SharedMethods
 
 class DashboardFragment : Fragment() {
   override fun onCreateView(
@@ -49,6 +50,9 @@ class DashboardFragment : Fragment() {
     }
     cvMedProcess.setOnClickListener {
       goToMedicationProcessActivity()
+    }
+    if (SharedMethods.isDarkTheme(requireActivity())) {
+      ivWifiInstructions.setImageResource(R.mipmap.pillbox_wifi_instructions_white)
     }
   }
 

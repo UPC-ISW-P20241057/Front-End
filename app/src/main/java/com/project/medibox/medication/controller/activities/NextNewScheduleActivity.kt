@@ -5,7 +5,9 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -157,6 +159,16 @@ class NextNewScheduleActivity : AppCompatActivity() {
         val cvTakePhoto = findViewById<CardView>(R.id.cvTakePhoto)
         cvTakePhoto.setOnClickListener {
             requestCameraPermission()
+        }
+
+        if (SharedMethods.isDarkTheme(this)) {
+            val rbtnFoodYes = findViewById<RadioButton>(R.id.rbtnFoodYes)
+            val rbtnFoodNo = findViewById<RadioButton>(R.id.rbtnFoodNo)
+            val rbtnFoodNotMatter = findViewById<RadioButton>(R.id.rbtnFoodNotMatter)
+
+            rbtnFoodYes.setTextColor(Color.WHITE)
+            rbtnFoodNo.setTextColor(Color.WHITE)
+            rbtnFoodNotMatter.setTextColor(Color.WHITE)
         }
     }
 

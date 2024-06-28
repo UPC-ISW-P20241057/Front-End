@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:fontFamily="@font/palanquin_dark"
-        android:text="Daily tasks"
+        android:text="Your tasks"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHiUser" />
@@ -51,7 +51,7 @@
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDialyTasks" >
+        app:layout_constraintTop_toBottomOf="@+id/tvDialyTasks">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

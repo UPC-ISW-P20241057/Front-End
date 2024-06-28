@@ -9,7 +9,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.project.medibox"
+        applicationId = "com.gutemoon.medibox"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
