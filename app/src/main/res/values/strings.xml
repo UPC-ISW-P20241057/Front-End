@@ -9,7 +9,6 @@
     <string name="not_account">¿No tienes una cuenta?</string>
     <string name="signup">Registrarse</string>
     <string name="upcoming">Pendiente</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create">Crear</string>
     <string name="instruction_tittle">¿Tu pastillero no tiene conexión Wi-Fi?</string>
