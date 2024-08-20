@@ -18,7 +18,7 @@
             android:layout_marginBottom="15dp"
             android:backgroundTint="#5D46EF"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Edit"
+            android:text="@string/edit"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             app:cornerRadius="13dp"
@@ -64,7 +64,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/palanquin_dark"
-                    android:text="Lapse of time"
+                    android:text="@string/lapse_of_time"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -87,7 +87,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
                     android:fontFamily="@font/palanquin_dark"
-                    android:text="For"
+                    android:text="@string/for_"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +140,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:fontFamily="@font/palanquin_dark"
-                    android:text="Number of pills"
+                    android:text="@string/number_of_pills"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -179,7 +179,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Should it be taken with food?"
+            android:text="@string/should_it_be_taken_with_food"
             android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cvEditFrequency" />
@@ -203,7 +203,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Update"
+            android:text="@string/update"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -215,7 +215,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Reminder"
+            android:text="@string/reminder"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
@@ -229,7 +229,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Medication schedule:"
+            android:text="@string/medication_data"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvNER2" />
@@ -258,7 +258,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/palanquin_dark"
-                    android:text="Frequency"
+                    android:text="@string/frequency"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -271,7 +271,7 @@
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="20dp"
                     android:fontFamily="@font/palanquin_dark"
-                    android:text="per:"
+                    android:text="@string/per_two_points"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -284,7 +284,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/palanquin_dark"
-                    android:text="Should be taken:"
+                    android:text="@string/should_be_taken_two_points"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvFrequency" />
@@ -296,7 +296,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/palanquin_dark"
-                    android:text="times"
+                    android:text="@string/times"
                     android:textSize="20sp"
                     app:layout_constraintStart_toEndOf="@+id/spnFrecTimes"
                     app:layout_constraintTop_toBottomOf="@+id/tvFrequency" />
@@ -346,7 +346,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/palanquin_dark"
-                    android:text="Interval"
+                    android:text="@string/interval"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -359,7 +359,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
                     android:fontFamily="@font/palanquin_dark"
-                    android:text="Every"
+                    android:text="@string/every"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -392,7 +392,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Duration of medication"
+            android:text="@string/duration_of_medication"
             android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rgrpFood" />
@@ -412,7 +412,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/palanquin_dark"
-                android:text="Yes"
+                android:text="@string/yes"
                 android:textSize="16sp"
                 android:theme="@style/MediBoxRadioButton" />
 
@@ -421,7 +421,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/palanquin_dark"
-                android:text="No"
+                android:text="@string/no"
                 android:textSize="16sp"
                 android:theme="@style/MediBoxRadioButton" />
 
@@ -430,7 +430,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/palanquin_dark"
-                android:text="It doesn't matter"
+                android:text="@string/it_doesn_t_matter"
                 android:textSize="16sp"
                 android:theme="@style/MediBoxRadioButton" />
         </RadioGroup>
@@ -456,7 +456,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/palanquin_dark"
-                    android:text="Upload photo"
+                    android:text="@string/upload_photo"
                     android:textColor="#FFFFFF"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -482,10 +482,10 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/palanquin_dark"
+            android:text="@string/pill_photo_optional"
             android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cvEditLapse"
-            tools:text="Pill photo (optional)" />
+            app:layout_constraintTop_toBottomOf="@+id/cvEditLapse" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cvTakePhoto"
@@ -509,7 +509,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/palanquin_dark"
-                    android:text="Take a photo"
+                    android:text="@string/take_a_photo"
                     android:textColor="#FFFFFF"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

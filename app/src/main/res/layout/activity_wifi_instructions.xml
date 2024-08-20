@@ -108,7 +108,7 @@
             android:layout_marginTop="15dp"
             android:backgroundTint="#5D46EF"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Accept"
+            android:text="@string/accept"
             android:textSize="24sp"
             app:cornerRadius="13dp"
             app:layout_constraintEnd_toEndOf="parent"

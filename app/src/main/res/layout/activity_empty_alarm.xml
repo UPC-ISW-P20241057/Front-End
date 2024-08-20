@@ -22,14 +22,14 @@
 
     <TextView
         android:id="@+id/textView33"
-        android:layout_width="335dp"
+        android:layout_width="wrap_content"
         android:layout_height="116dp"
-        android:layout_marginStart="36dp"
         android:layout_marginTop="80dp"
         android:fontFamily="@font/palanquin_dark"
-        android:text="No Medication on Pillbox"
+        android:text="@string/no_medication_on_pillbox"
         android:textAlignment="center"
         android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,7 +58,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="200dp"
             android:fontFamily="@font/palanquin_dark"
-            android:text="There are no more pills"
+            android:text="@string/there_are_no_more_pills"
             android:textAlignment="center"
             android:textColor="#020A51"
             android:textSize="34sp" />
@@ -71,7 +71,7 @@
             android:layout_marginTop="330dp"
             android:backgroundTint="#7E69F5"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Accept"
+            android:text="@string/accept"
             android:textSize="24sp"
             app:cornerRadius="13dp" />
     </androidx.cardview.widget.CardView>
