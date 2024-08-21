@@ -56,33 +56,33 @@ class VoiceCommandsFragment : Fragment() {
 
     private fun initCommands() {
         mCommandsList = ArrayList()
-        mCommandsList.add("edit profile")
-        mCommandsList.add("create reminder")
-        mCommandsList.add("change alarm")
-        mCommandsList.add("log out")
-        mCommandsList.add("exit")
-        mCommandsList.add("close")
-        mCommandsList.add("pillbox")
+        mCommandsList.add(getString(R.string.voice_edit_profile))
+        mCommandsList.add(getString(R.string.voice_create_reminder))
+        mCommandsList.add(getString(R.string.voice_change_alarm))
+        mCommandsList.add(getString(R.string.voice_log_out))
+        mCommandsList.add(getString(R.string.voice_exit))
+        mCommandsList.add(getString(R.string.voice_close))
+        mCommandsList.add(getString(R.string.voice_pillbox))
     }
 
     private fun createIntent(): Intent {
         val i = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         i.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-UK")
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es-PE")
         return i
     }
 
     private fun handleSpeechBegin() {
         // start audio session
-        tvTouchMe.text = "Listening..."
+        tvTouchMe.text = getString(R.string.listening_three_points)
         mIsListening = true
         mSpeechRecognizer.startListening(createIntent())
     }
 
     private fun handleSpeechEnd() {
         // end audio session
-        tvTouchMe.text = "Touch me!"
+        tvTouchMe.text = getString(R.string.touch_me)
         mIsListening = false
         mSpeechRecognizer.cancel()
     }
@@ -136,35 +136,36 @@ class VoiceCommandsFragment : Fragment() {
         if (mCommandsList.contains(command)) {
             // Successful utterance, notify user
             when(command) {
-                "edit profile" -> {
+                getString(R.string.voice_edit_profile) -> {
                     val intent = Intent(requireContext(), EditProfileActivity::class.java)
                     startActivity(intent)
                 }
-                "create reminder" -> {
+                getString(R.string.voice_create_reminder) -> {
                     val intent = Intent(requireContext(), NewScheduleActivity::class.java)
                     startActivity(intent)
                 }
-                "change alarm" -> {
+                getString(R.string.voice_change_alarm) -> {
                     val intent = Intent(requireContext(), CustomizeAlarmActivity::class.java)
                     startActivity(intent)
                 }
-                "pillbox" -> {
+                getString(R.string.voice_pillbox) -> {
                     val intent = Intent(requireContext(), WiFiInstructionsActivity::class.java)
                     startActivity(intent)
                 }
-                "log out" -> {
+                getString(R.string.voice_log_out) -> {
                     homeActivity.signOut()
                 }
-                "exit" -> {
+                getString(R.string.voice_exit) -> {
                     homeActivity.finish()
                 }
-                "close" -> {
+                getString(R.string.voice_close) -> {
                     homeActivity.finish()
                 }
             }
         } else {
             // Unsucessful utterance, show failure message on screen
-            Toast.makeText(requireContext(), "Could not recognize command $command", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(),
+                getString(R.string.could_not_recognize_voice_command, command), Toast.LENGTH_LONG).show()
         }
     }
 }

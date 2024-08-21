@@ -42,11 +42,12 @@ class EditReminderActivity : AppCompatActivity() {
 
                     loadSpinner(response.body()!!)
                 }
-                else Toast.makeText(this@EditReminderActivity, "Error al obtener medicinas.", Toast.LENGTH_SHORT).show()
+                else Toast.makeText(this@EditReminderActivity,
+                    getString(R.string.error_while_getting_medicines), Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(call: Call<List<Medicine>>, t: Throwable) {
-                Toast.makeText(this@EditReminderActivity, "Error al obtener medicinas.1", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@EditReminderActivity, getString(R.string.error_while_getting_medicines), Toast.LENGTH_SHORT).show()
             }
 
         })
@@ -78,6 +79,6 @@ class EditReminderActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-        else Toast.makeText(this, "Please select a medicine.", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(this, getString(R.string.please_select_a_medicine), Toast.LENGTH_SHORT).show()
     }
 }

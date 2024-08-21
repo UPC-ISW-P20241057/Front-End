@@ -75,7 +75,8 @@ class EditProfileActivity : AppCompatActivity() {
         request.enqueue(object : Callback<UpdateResponse> {
             override fun onResponse(call: Call<UpdateResponse>, response: Response<UpdateResponse>) {
                 if (response.isSuccessful && response.body()!!.message == "User updated successfully.") {
-                    Toast.makeText(this@EditProfileActivity, "User updated successfully!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EditProfileActivity,
+                        getString(R.string.user_updated_successfully), Toast.LENGTH_SHORT).show()
                     StateManager.loggedUser = User(
                         StateManager.loggedUserId,
                         etEditEmail.text.toString(),
@@ -90,11 +91,12 @@ class EditProfileActivity : AppCompatActivity() {
                     )
                     finish()
                 }
-                else Toast.makeText(this@EditProfileActivity, "Error while updating user.", Toast.LENGTH_SHORT).show()
+                else Toast.makeText(this@EditProfileActivity,
+                    getString(R.string.error_while_updating_user), Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(p0: Call<UpdateResponse>, p1: Throwable) {
-                Toast.makeText(this@EditProfileActivity, "Error while updating user..", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@EditProfileActivity, getString(R.string.error_while_updating_user), Toast.LENGTH_SHORT).show()
             }
 
         })

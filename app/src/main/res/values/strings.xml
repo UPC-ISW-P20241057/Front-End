@@ -12,7 +12,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create">Crear</string>
     <string name="instruction_tittle">¿Tu pastillero no tiene conexión Wi-Fi?</string>
-    <string name="instrction_1"><![CDATA[1. Busca "RED_PASTILLERO" en tus redes Wi-Fi disponibles]]></string>
+    <string name="instruction_1"><![CDATA[1. Busca "RED_PASTILLERO" en tus redes Wi-Fi disponibles]]></string>
     <string name="instruction_2">2. Ingresa a tu navegador y dirígete a 198.168.1.32.</string>
     <string name="instruction_3">3. Ingresa las credenciales de una red Wi-Fi.</string>
     <string name="delete">Eliminar</string>
@@ -72,4 +72,27 @@
     <string name="completed">Completo</string>
     <string name="sign_out">Cerrar sesión</string>
     <string name="touch_me">¡Tócame!</string>
+    <string name="need_microphone_permission">Necesitas proveer el permiso de micrófono para activar comandos de voz.</string>
+    <string name="listening_three_points">Escuchando…</string>
+    <string name="voice_edit_profile">edit profile</string>
+    <string name="voice_create_reminder">crear recordatorio</string>
+    <string name="voice_change_alarm">cambiar alarma</string>
+    <string name="voice_log_out">cerrar sesión</string>
+    <string name="voice_exit">cerrar</string>
+    <string name="voice_close">cerrar</string>
+    <string name="voice_pillbox">pastillero</string>
+    <string name="could_not_recognize_voice_command">No se pudo reconocer el comando %1$s</string>
+    <string name="user_updated_successfully">El usuario se actualizó exitosamente.</string>
+    <string name="error_while_updating_user">Ocurrió un error al actualizar el usuario.</string>
+    <string name="admin_account_denied">Hey, esta es una cuenta administrativa. No puedes iniciar sesión con esta cuenta</string>
+    <string name="error_while_logging_in">Error al iniciar sesión</string>
+    <string name="an_error_occurred_while_registration">Ha ocurrido un error durante el registro del usuario.</string>
+    <string name="validation_errors_occurred">Han ocurrido errores de validación.</string>
+    <string name="error_while_getting_medicines">Error al obtener medicinas.</string>
+    <string name="please_select_a_medicine">Por favor, selecciona una medicina.</string>
+    <string name="you_need_permission_to_select_image">Necesitas autorizar permisos para seleccionar las imágenes.</string>
+    <string name="reminder_deleted_successfully">El recordatorio fue eliminado exitosamente.</string>
+    <string name="error_while_deleting_reminder">Ha ocurrido un error al eliminar el recordatorio.</string>
+    <string name="taken">Tomada</string>
+    <string name="percentage_completed">% completado</string>
 </resources>
