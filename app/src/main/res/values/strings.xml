@@ -95,4 +95,11 @@
     <string name="error_while_deleting_reminder">Ha ocurrido un error al eliminar el recordatorio.</string>
     <string name="taken">Tomada</string>
     <string name="percentage_completed">% completado</string>
+    <string name="cancelled">Cancelado</string>
+    <string name="reminder_updated_successfully">Recordatorio actualizado correctamente</string>
+    <string name="error_while_creating_interval_of_reminder">Ocurrió un error al crear intervalo de recordatorio. Destruyendo el recordatorio incompleto...</string>
+    <string name="error_while_creating_frequency_of_reminder">Ocurrió un error al crear frecuencia de recordatorio. Destruyendo el recordatorio incompleto...</string>
+    <string name="error_while_updating_reminder">Ha ocurrido un error al actualizar el recordatorio.</string>
+    <string name="select_reminder_start_time">Selecciona la hora del recordatorio</string>
+    <string name="you_need_to_indicate_the_reminder_start_time">Necesita indicar la hora de inicio del recordatorio.</string>
 </resources>
