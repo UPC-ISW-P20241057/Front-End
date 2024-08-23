@@ -130,7 +130,7 @@ class ReminderService : Service() {
         val request = pillboxService.updatePillboxData(1, BoxData(1, true, toneSettings.tone.toInt()))
         request.enqueue(object : Callback<BoxDataResponse> {
             override fun onResponse(p0: Call<BoxDataResponse>, p1: Response<BoxDataResponse>) {
-
+                Log.d("ReminderService", "Sended info of reminder to your pillbox")
             }
 
             override fun onFailure(p0: Call<BoxDataResponse>, p1: Throwable) {

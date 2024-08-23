@@ -119,10 +119,10 @@ class EmptyPillboxService : Service() {
                         })
                     }
                     else Log.d(TAG, "Notification made. Aborting request...")
-                    postDelayed(this, 120000)
+                    postDelayed(this, 1000)
                 }
             }
-            postDelayed(runnable, 120000)
+            postDelayed(runnable, 1000)
         }
     }
 
