@@ -100,7 +100,8 @@ class MedicationAlarmWithImageActivity : AppCompatActivity() {
             pickImageFromGallery()
         }
         else {
-            Toast.makeText(this, "You need permission to select image.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,
+                getString(R.string.you_need_permission_to_select_image), Toast.LENGTH_SHORT).show()
         }
     }
 

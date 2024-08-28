@@ -243,7 +243,7 @@ class NextEditReminderActivity : AppCompatActivity() {
             openCamera()
         }
         else {
-            Toast.makeText(this, "You need permission to take photos.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.you_need_permission_to_select_image), Toast.LENGTH_SHORT).show()
         }
     }
     private val startForActivityCamera = registerForActivityResult(
@@ -257,7 +257,7 @@ class NextEditReminderActivity : AppCompatActivity() {
                 saveMedicineImage()
             }
         } else {
-            Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -292,11 +292,13 @@ class NextEditReminderActivity : AppCompatActivity() {
                                     reminder.createdDateString = SharedMethods.getJSDateFromLocalDateTime(updateDate)
                                     AppDatabase.getInstance(this@NextEditReminderActivity).getUpcomingReminderAlarmDao().deleteAllByReminderId(reminder.id)
                                     ReminderService.createAlarms(this@NextEditReminderActivity, reminder, response.body()!!)
-                                    Toast.makeText(this@NextEditReminderActivity, "Reminder with interval updated successfully", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextEditReminderActivity,
+                                        getString(R.string.reminder_updated_successfully), Toast.LENGTH_SHORT).show()
                                 }
 
                                 else {
-                                    Toast.makeText(this@NextEditReminderActivity, "Error while creating interval of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextEditReminderActivity,
+                                        getString(R.string.error_while_creating_interval_of_reminder), Toast.LENGTH_SHORT).show()
                                     val r = medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                                     r.enqueue(object : Callback<Reminder> {
                                         override fun onResponse(
@@ -317,7 +319,7 @@ class NextEditReminderActivity : AppCompatActivity() {
                             }
 
                             override fun onFailure(p0: Call<Interval>, p1: Throwable) {
-                                Toast.makeText(this@NextEditReminderActivity, "Error while creating interval of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@NextEditReminderActivity, getString(R.string.error_while_creating_interval_of_reminder), Toast.LENGTH_SHORT).show()
                                 val r = medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                                 r.enqueue(object : Callback<Reminder> {
                                     override fun onResponse(
@@ -347,10 +349,10 @@ class NextEditReminderActivity : AppCompatActivity() {
                                     updateHistoricalReminder(reminder, "Frequency", response.body()!!.id)
                                     AppDatabase.getInstance(this@NextEditReminderActivity).getUpcomingReminderAlarmDao().deleteAllByReminderId(reminder.id)
                                     ReminderService.createAlarms(this@NextEditReminderActivity, reminder, response.body()!!)
-                                    Toast.makeText(this@NextEditReminderActivity, "Reminder with frequency created successfully", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextEditReminderActivity, getString(R.string.reminder_updated_successfully), Toast.LENGTH_SHORT).show()
                                 }
                                 else {
-                                    Toast.makeText(this@NextEditReminderActivity, "Error while creating frequency of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextEditReminderActivity, getString(R.string.error_while_creating_frequency_of_reminder), Toast.LENGTH_SHORT).show()
                                     val r = medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                                     r.enqueue(object : Callback<Reminder> {
                                         override fun onResponse(
@@ -371,7 +373,7 @@ class NextEditReminderActivity : AppCompatActivity() {
                             }
 
                             override fun onFailure(p0: Call<Frequency>, p1: Throwable) {
-                                Toast.makeText(this@NextEditReminderActivity, "Error while creating frequency of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@NextEditReminderActivity, getString(R.string.error_while_creating_frequency_of_reminder), Toast.LENGTH_SHORT).show()
                                 val r = medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                                 r.enqueue(object : Callback<Reminder> {
                                     override fun onResponse(
@@ -393,11 +395,12 @@ class NextEditReminderActivity : AppCompatActivity() {
                     }
                     finish()
                 }
-                else Toast.makeText(this@NextEditReminderActivity, "Error while creating reminder", Toast.LENGTH_SHORT).show()
+                else Toast.makeText(this@NextEditReminderActivity,
+                    getString(R.string.error_while_updating_reminder), Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(p0: Call<Reminder>, p1: Throwable) {
-                Toast.makeText(this@NextEditReminderActivity, "Error while creating reminder", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@NextEditReminderActivity, getString(R.string.error_while_updating_reminder), Toast.LENGTH_SHORT).show()
             }
 
         })
@@ -431,7 +434,7 @@ class NextEditReminderActivity : AppCompatActivity() {
             .setTimeFormat(TimeFormat.CLOCK_12H)
             .setHour(12)
             .setMinute(0)
-            .setTitleText("Select reminder start time")
+            .setTitleText(getString(R.string.select_reminder_start_time))
             .build()
 
 
@@ -442,9 +445,9 @@ class NextEditReminderActivity : AppCompatActivity() {
         val selectedFoodRadio = findViewById<RadioButton>(rgrpFood.checkedRadioButtonId)
         val foodOption = selectedFoodRadio.text.toString()
         val consumedFood: Boolean? = when(foodOption) {
-            "Yes" -> true
-            "No" -> false
-            "It doesn't matter" -> null
+            getString(R.string.yes) -> true
+            getString(R.string.no) -> false
+            getString(R.string.it_doesn_t_matter) -> null
             else -> null
         }
 
@@ -471,7 +474,8 @@ class NextEditReminderActivity : AppCompatActivity() {
 
             timePicker.show(supportFragmentManager, "Reminder time")
             timePicker.addOnNegativeButtonClickListener {
-                Toast.makeText(this@NextEditReminderActivity, "You need to indicate the reminder start time.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@NextEditReminderActivity,
+                    getString(R.string.you_need_to_indicate_the_reminder_start_time), Toast.LENGTH_SHORT).show()
             }
             timePicker.addOnPositiveButtonClickListener {
                 val nowHour = LocalTime.of(now.hour, now.minute)

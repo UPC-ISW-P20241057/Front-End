@@ -58,12 +58,14 @@ class RegistrationActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                    Toast.makeText(this@RegistrationActivity, "An error occurred while registration", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@RegistrationActivity,
+                        getString(R.string.an_error_occurred_while_registration), Toast.LENGTH_SHORT).show()
                 }
 
             })
         }
-        else Toast.makeText(this@RegistrationActivity, "Validation errors occurred", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(this@RegistrationActivity,
+            getString(R.string.validation_errors_occurred), Toast.LENGTH_SHORT).show()
 
     }
 

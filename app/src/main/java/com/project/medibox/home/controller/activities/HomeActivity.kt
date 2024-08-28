@@ -81,7 +81,7 @@ class HomeActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_DENIED)
-            Toast.makeText(this, "You need to provide microphone permission to invoke voice commands.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.need_microphone_permission), Toast.LENGTH_SHORT).show()
     }
 
     private fun startServices() {

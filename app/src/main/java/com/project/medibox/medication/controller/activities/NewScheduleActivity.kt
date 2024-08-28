@@ -58,7 +58,7 @@ class NewScheduleActivity : AppCompatActivity() {
                     loadSpinner(response.body()!!)
                 } else Toast.makeText(
                     this@NewScheduleActivity,
-                    "Error al obtener medicinas.",
+                    getString(R.string.error_while_getting_medicines),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -66,7 +66,7 @@ class NewScheduleActivity : AppCompatActivity() {
             override fun onFailure(call: Call<List<Medicine>>, t: Throwable) {
                 Toast.makeText(
                     this@NewScheduleActivity,
-                    "Error al obtener medicinas.1",
+                    getString(R.string.error_while_getting_medicines),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -147,7 +147,7 @@ class NewScheduleActivity : AppCompatActivity() {
         } else {
             Toast.makeText(
                 this@NewScheduleActivity,
-                "Please select a medicine.",
+                getString(R.string.please_select_a_medicine),
                 Toast.LENGTH_SHORT
             ).show()
         }

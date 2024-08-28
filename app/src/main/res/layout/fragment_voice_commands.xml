@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
         android:fontFamily="@font/palanquin_dark"
-        android:text="Touch me!"
+        android:text="@string/touch_me"
         android:textColor="@color/medibox_default"
         android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"

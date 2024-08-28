@@ -85,14 +85,16 @@ class MedicationHistoryActivity : AppCompatActivity(), OnItemClickListener<Histo
                 if (response.isSuccessful) {
                     AppDatabase.getInstance(this@MedicationHistoryActivity).getHistoricalReminderDao().deleteById(reminder.id)
                     AppDatabase.getInstance(this@MedicationHistoryActivity).getUpcomingReminderAlarmDao().deleteAllByReminderId(reminder.reminderId)
-                    Toast.makeText(this@MedicationHistoryActivity, "Reminder deleted successfully.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MedicationHistoryActivity,
+                        getString(R.string.reminder_deleted_successfully), Toast.LENGTH_SHORT).show()
                 }
-                else Toast.makeText(this@MedicationHistoryActivity, "Error while deleting reminder.", Toast.LENGTH_SHORT).show()
+                else Toast.makeText(this@MedicationHistoryActivity,
+                    getString(R.string.error_while_deleting_reminder), Toast.LENGTH_SHORT).show()
 
             }
 
             override fun onFailure(p0: Call<Reminder>, p1: Throwable) {
-                Toast.makeText(this@MedicationHistoryActivity, "Error while deleting reminder.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MedicationHistoryActivity, getString(R.string.error_while_deleting_reminder), Toast.LENGTH_SHORT).show()
             }
 
         })

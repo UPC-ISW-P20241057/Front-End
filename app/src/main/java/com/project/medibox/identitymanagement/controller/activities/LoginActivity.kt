@@ -62,10 +62,12 @@ class LoginActivity : AppCompatActivity() {
                         )
                         goToHome(response.body()!!)
                     }
-                    else Toast.makeText(this@LoginActivity, "Hey, esta es una cuenta administrativa. No puedes iniciar sesión con esta cuenta", Toast.LENGTH_SHORT).show()
+                    else Toast.makeText(this@LoginActivity,
+                        getString(R.string.admin_account_denied), Toast.LENGTH_SHORT).show()
                 }
                 else
-                    Toast.makeText(this@LoginActivity, "Error al iniciar sesión", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity,
+                        getString(R.string.error_while_logging_in), Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(call: Call<AuthenticationResponse>, p1: Throwable) {
