@@ -14,16 +14,14 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import com.project.medibox.R
 import com.project.medibox.controllers.activities.MainActivity
-import com.project.medibox.medication.controller.activities.MedicationAlarmActivity
-import com.project.medibox.medication.controller.activities.MedicationAlarmWithImageActivity
 import com.project.medibox.medication.models.Frequency
 import com.project.medibox.medication.models.HistoricalReminder
 import com.project.medibox.medication.models.Interval
-import com.project.medibox.medication.models.Medicine
 import com.project.medibox.medication.models.Reminder
 import com.project.medibox.medication.models.UpcomingReminderAlarm
 import com.project.medibox.medication.network.MedicationApiService
 import com.project.medibox.medication.persistence.UpcomingReminderAlarmDAO
+import com.project.medibox.medication.receivers.PostponeAlarmReceiver
 import com.project.medibox.pillboxmanagement.models.BoxData
 import com.project.medibox.pillboxmanagement.models.BoxDataResponse
 import com.project.medibox.pillboxmanagement.network.PillboxApiService
@@ -73,13 +71,19 @@ class ReminderService : Service() {
             .build()
         startForeground(ONGOING_NOTIFICATION_ID, notification)
     }
-    private fun defineNotification(medicationName: CharSequence) {
+    private fun defineNotification(medicationName: CharSequence, notificationId: Int) {
+        val intent = Intent(this, PostponeAlarmReceiver::class.java).apply {
+            putExtra("notificationId", notificationId.toString())
+        }
+        val flag = PendingIntent.FLAG_IMMUTABLE
+        val pendingIntent = PendingIntent.getBroadcast(this, notificationId, intent, flag)
         reminderNotification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Time for medication!")
+            .setContentTitle(getString(R.string.time_for_medication_notif))
             .setContentText(medicationName)
             .setSmallIcon(R.drawable.ic_stat_name)
             .setContentIntent(createPendingIntent(MainActivity::class.java))
             .setAutoCancel(true)
+            .addAction(0, getString(R.string.postpone), pendingIntent)
             .build()
     }
     private fun createServiceNotificationChannel() {
@@ -107,7 +111,7 @@ class ReminderService : Service() {
                     if (upcomingAlarm != null) {
                         if (!isNotificationVisible(upcomingAlarm.notificationId)) {
                             Log.d(TAG, "Sending reminder notification...")
-                            defineNotification(upcomingAlarm.medicineName)
+                            defineNotification(upcomingAlarm.medicineName, upcomingAlarm.notificationId)
                             StateManager.selectedUpcomingAlarm = upcomingAlarm
                             notificationManager.notify(upcomingAlarm.notificationId, reminderNotification)
                             sendDataToPillbox()

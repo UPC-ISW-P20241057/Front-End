@@ -102,4 +102,7 @@
     <string name="error_while_updating_reminder">Ha ocurrido un error al actualizar el recordatorio.</string>
     <string name="select_reminder_start_time">Selecciona la hora del recordatorio</string>
     <string name="you_need_to_indicate_the_reminder_start_time">Necesita indicar la hora de inicio del recordatorio.</string>
+    <string name="postpone">Postponer</string>
+    <string name="time_for_medication_notif">¡Hora de la medicina!</string>
+    <string name="alarm_postponed">Alarma de medicación postpuesta.</string>
 </resources>
