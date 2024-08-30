@@ -22,14 +22,29 @@ import com.project.medibox.R
 import com.project.medibox.medication.models.CompletedReminderAlarm
 import com.project.medibox.medication.models.MedicineImage
 import com.project.medibox.medication.models.MissedReminderAlarm
+import com.project.medibox.medication.persistence.UpcomingReminderAlarmDAO
 import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.BitmapConverter
+import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
+import java.time.LocalDateTime
+import kotlin.random.Random
 
 class MedicationAlarmWithImageActivity : AppCompatActivity() {
     private var bitmap: Bitmap? = null
     private lateinit var image: MedicineImage
     private lateinit var ivMedicinePic: ImageView
+
+    private fun generateNotificationId(dao: UpcomingReminderAlarmDAO): Int {
+        val existingIds = dao.getAll().map { it.notificationId }.toSet()
+        val random = Random(System.nanoTime())
+        while (true) {
+            val notificationId = random.nextInt(Int.MAX_VALUE - 200 + 1) + 200
+            if (notificationId !in existingIds) {
+                return notificationId
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +58,7 @@ class MedicationAlarmWithImageActivity : AppCompatActivity() {
         val tvImMedicine = findViewById<TextView>(R.id.tvImMedicine)
         val btnMediImAccept = findViewById<Button>(R.id.btnMediImAccept)
         val btnMediImMissed = findViewById<Button>(R.id.btnMediImMissed)
+        val btnMediInPostpone = findViewById<Button>(R.id.btnMediImPostpone)
         ivMedicinePic = findViewById(R.id.ivMedicinePic)
         val upcomingAlarm = StateManager.selectedUpcomingAlarm
 
@@ -75,6 +91,18 @@ class MedicationAlarmWithImageActivity : AppCompatActivity() {
                     upcomingAlarm.consumeFood
                 )
             )
+            finish()
+        }
+        btnMediInPostpone.setOnClickListener {
+            val dao = AppDatabase.getInstance(this).getUpcomingReminderAlarmDao()
+            var localDateTime = LocalDateTime.now()
+            localDateTime = localDateTime.plusMinutes(10)
+            upcomingAlarm.activateHour = localDateTime.hour
+            upcomingAlarm.activateMinute = localDateTime.minute
+            upcomingAlarm.activateDateString = SharedMethods.getDDMMYYStringFromDate(localDateTime)
+            upcomingAlarm.notified = false
+            upcomingAlarm.notificationId = generateNotificationId(dao)
+            dao.updateAlarm(upcomingAlarm)
             finish()
         }
         ivMedicinePic.setOnClickListener {
