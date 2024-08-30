@@ -33,7 +33,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="339dp"
-        android:layout_height="430dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         app:cardBackgroundColor="#F1F1F1"
         app:cardCornerRadius="20dp"
@@ -106,6 +106,23 @@
                 app:cornerRadius="13dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvImMedicine" />
+
+            <Button
+                android:id="@+id/btnMediImPostpone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="#FF9800"
+                android:fontFamily="@font/palanquin_dark"
+                android:text="@string/postpone"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                app:cornerRadius="13dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMediImMissed" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -35,6 +35,12 @@ import java.time.format.DateTimeFormatter
 
 class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnItemClickListener2<CompletedReminderAlarm>, OnItemClickListener3<MissedReminderAlarm> {
 
+    private var selectedMenu = "Upcoming"
+    private lateinit var rvReminderAlarms: RecyclerView
+    private lateinit var cvUpcoming: CardView
+    private lateinit var cvCompleted: CardView
+    private lateinit var cvMissed: CardView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,13 +49,65 @@ class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnI
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        when(selectedMenu) {
+            "Upcoming" -> {
+                cvUpcoming.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.dark_menu_purple))
+                cvCompleted.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.menu_bar_background))
+                cvMissed.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.menu_bar_background))
+                val upcomingAlarms = AppDatabase.getInstance(requireContext()).getUpcomingReminderAlarmDao().getAll()
+                Log.d("Database", upcomingAlarms.toString())
+                rvReminderAlarms.layoutManager = LinearLayoutManager(requireContext())
+                val sortedAlarms = upcomingAlarms.sortedBy { alarm ->
+                    val date = LocalDate.parse(alarm.activateDateString, dateFormatter)
+                    val dateTime = LocalDateTime.of(date, LocalTime.of(alarm.activateHour, alarm.activateMinute))
+                    dateTime
+                }
+                Log.d("HomeFragment", "Database sortedAlarms: $sortedAlarms")
+                rvReminderAlarms.adapter = UpcomingReminderAlarmAdapter(sortedAlarms, this)
+            }
+            "Completed" -> {
+                cvUpcoming.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.menu_bar_background))
+                cvCompleted.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.dark_menu_purple))
+                cvMissed.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.menu_bar_background))
+                //navigateTo(CompletedFragment())
+                val completedAlarms = AppDatabase.getInstance(requireContext()).getCompletedReminderAlarmDao().getAll()
+                rvReminderAlarms.layoutManager = LinearLayoutManager(requireContext())
+                val completedSortedAlarms = completedAlarms.sortedBy { alarm ->
+                    val date = LocalDate.parse(alarm.activateDateString, dateFormatter)
+                    val dateTime = LocalDateTime.of(date, LocalTime.of(alarm.activateHour, alarm.activateMinute))
+                    dateTime
+                }
+                Log.d("HomeFragment", "Database completedSortedAlarms: $completedSortedAlarms")
+                rvReminderAlarms.adapter = CompletedReminderAlarmAdapter(completedSortedAlarms, this)
+            }
+            "Missed" -> {
+                cvUpcoming.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.menu_bar_background))
+                cvCompleted.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.menu_bar_background))
+                cvMissed.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.dark_menu_purple))
+                //navigateTo(MissedFragment())
+                val missedAlarms = AppDatabase.getInstance(requireContext()).getMissedReminderAlarmDao().getAll()
+                val missedSortedAlarms = missedAlarms.sortedBy { alarm ->
+                    val date = LocalDate.parse(alarm.activateDateString, dateFormatter)
+                    val dateTime = LocalDateTime.of(date, LocalTime.of(alarm.activateHour, alarm.activateMinute))
+                    dateTime
+                }
+                rvReminderAlarms.layoutManager = LinearLayoutManager(requireContext())
+                Log.d("HomeFragment", "Database missedSortedAlarms: $missedSortedAlarms")
+                rvReminderAlarms.adapter = MissedReminderAlarmAdapter(missedSortedAlarms, this)
+            }
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val tvHiUser = view.findViewById<TextView>(R.id.tvHiUser)
         tvHiUser.text = "Hi ${StateManager.loggedUser.name}"
-        val rvReminderAlarms = view.findViewById<RecyclerView>(R.id.rvReminderAlarms)
+        rvReminderAlarms = view.findViewById(R.id.rvReminderAlarms)
         var upcomingAlarms = AppDatabase.getInstance(requireContext()).getUpcomingReminderAlarmDao().getAll()
         Log.d("Database", upcomingAlarms.toString())
         rvReminderAlarms.layoutManager = LinearLayoutManager(requireContext())
@@ -67,10 +125,11 @@ class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnI
                 .commit()
         }*/
 
-        val cvUpcoming = view.findViewById<CardView>(R.id.cvUpcoming)
-        val cvCompleted = view.findViewById<CardView>(R.id.cvCompleted)
-        val cvMissed = view.findViewById<CardView>(R.id.cvMissed)
+        cvUpcoming = view.findViewById(R.id.cvUpcoming)
+        cvCompleted = view.findViewById(R.id.cvCompleted)
+        cvMissed = view.findViewById(R.id.cvMissed)
         cvUpcoming.setOnClickListener {
+            selectedMenu = "Upcoming"
             cvUpcoming.setCardBackgroundColor(ContextCompat.getColor(view.context, R.color.dark_menu_purple))
             cvCompleted.setCardBackgroundColor(ContextCompat.getColor(view.context, R.color.menu_bar_background))
             cvMissed.setCardBackgroundColor(ContextCompat.getColor(view.context, R.color.menu_bar_background))
@@ -87,6 +146,7 @@ class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnI
             rvReminderAlarms.adapter = UpcomingReminderAlarmAdapter(sortedAlarms, this)
         }
         cvCompleted.setOnClickListener {
+            selectedMenu = "Completed"
             cvUpcoming.setCardBackgroundColor(ContextCompat.getColor(view.context, R.color.menu_bar_background))
             cvCompleted.setCardBackgroundColor(ContextCompat.getColor(view.context, R.color.dark_menu_purple))
             cvMissed.setCardBackgroundColor(ContextCompat.getColor(view.context, R.color.menu_bar_background))
@@ -102,6 +162,7 @@ class HomeFragment : Fragment(), OnItemClickListener<UpcomingReminderAlarm>, OnI
             rvReminderAlarms.adapter = CompletedReminderAlarmAdapter(completedSortedAlarms, this)
         }
         cvMissed.setOnClickListener {
+            selectedMenu = "Missed"
             cvUpcoming.setCardBackgroundColor(ContextCompat.getColor(view.context, R.color.menu_bar_background))
             cvCompleted.setCardBackgroundColor(ContextCompat.getColor(view.context, R.color.menu_bar_background))
             cvMissed.setCardBackgroundColor(ContextCompat.getColor(view.context, R.color.dark_menu_purple))
