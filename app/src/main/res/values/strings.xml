@@ -105,4 +105,5 @@
     <string name="postpone">Postponer</string>
     <string name="time_for_medication_notif">¡Hora de la medicina!</string>
     <string name="alarm_postponed">Alarma de medicación postpuesta.</string>
+    <string name="confirm">Confirmar</string>
 </resources>

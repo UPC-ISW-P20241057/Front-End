@@ -21,6 +21,8 @@ import com.project.medibox.medication.models.Reminder
 import com.project.medibox.medication.models.UpcomingReminderAlarm
 import com.project.medibox.medication.network.MedicationApiService
 import com.project.medibox.medication.persistence.UpcomingReminderAlarmDAO
+import com.project.medibox.medication.receivers.ConfirmAlarmReceiver
+import com.project.medibox.medication.receivers.MissAlarmReceiver
 import com.project.medibox.medication.receivers.PostponeAlarmReceiver
 import com.project.medibox.pillboxmanagement.models.BoxData
 import com.project.medibox.pillboxmanagement.models.BoxDataResponse
@@ -72,18 +74,28 @@ class ReminderService : Service() {
         startForeground(ONGOING_NOTIFICATION_ID, notification)
     }
     private fun defineNotification(medicationName: CharSequence, notificationId: Int) {
-        val intent = Intent(this, PostponeAlarmReceiver::class.java).apply {
+        val flag = PendingIntent.FLAG_IMMUTABLE
+        val postponeIntent = Intent(this, PostponeAlarmReceiver::class.java).apply {
             putExtra("notificationId", notificationId.toString())
         }
-        val flag = PendingIntent.FLAG_IMMUTABLE
-        val pendingIntent = PendingIntent.getBroadcast(this, notificationId, intent, flag)
+        val postponePendingIntent = PendingIntent.getBroadcast(this, notificationId, postponeIntent, flag)
+        val confirmIntent = Intent(this, ConfirmAlarmReceiver::class.java).apply {
+            putExtra("notificationId", notificationId.toString())
+        }
+        val confirmPendingIntent = PendingIntent.getBroadcast(this, notificationId, confirmIntent, flag)
+        val missIntent = Intent(this, MissAlarmReceiver::class.java).apply {
+            putExtra("notificationId", notificationId.toString())
+        }
+        val missPendingIntent = PendingIntent.getBroadcast(this, notificationId, missIntent, flag)
         reminderNotification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.time_for_medication_notif))
             .setContentText(medicationName)
             .setSmallIcon(R.drawable.ic_stat_name)
             .setContentIntent(createPendingIntent(MainActivity::class.java))
             .setAutoCancel(true)
-            .addAction(0, getString(R.string.postpone), pendingIntent)
+            .addAction(0, getString(R.string.confirm), confirmPendingIntent)
+            .addAction(0, getString(R.string.forgotten), missPendingIntent)
+            .addAction(0, getString(R.string.postpone), postponePendingIntent)
             .build()
     }
     private fun createServiceNotificationChannel() {
