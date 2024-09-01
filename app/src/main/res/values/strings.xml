@@ -106,4 +106,6 @@
     <string name="time_for_medication_notif">¡Hora de la medicina!</string>
     <string name="alarm_postponed">Alarma de medicación postpuesta.</string>
     <string name="confirm">Confirmar</string>
+    <string name="reminder_created_successfully">Recordatorio creado correctamente.</string>
+    <string name="error_while_creating_reminder">Error al crear recordatorio</string>
 </resources>

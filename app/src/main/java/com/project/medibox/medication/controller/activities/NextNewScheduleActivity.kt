@@ -62,9 +62,6 @@ class NextNewScheduleActivity : AppCompatActivity() {
     private lateinit var spnFreqTimes: Spinner
     private lateinit var spnPer: Spinner
 
-    private lateinit var swPills: Switch
-    private lateinit var etPills: EditText
-
     private lateinit var spnForTime: Spinner
     private lateinit var spnForTimeType: Spinner
 
@@ -107,11 +104,6 @@ class NextNewScheduleActivity : AppCompatActivity() {
         spnPer = findViewById(R.id.spnPer)
         disableFrequency()
 
-        swPills = findViewById(R.id.swPills)
-
-        etPills = findViewById(R.id.etPills)
-        disablePillQuantity()
-
         spnForTime = findViewById(R.id.spnForTime)
         spnForTimeType = findViewById(R.id.spnForTimeType)
 
@@ -137,14 +129,6 @@ class NextNewScheduleActivity : AppCompatActivity() {
             }
         }
 
-        swPills.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                enablePillQuantity()
-            }
-            else {
-                disablePillQuantity()
-            }
-        }
 
         val btnCreateSchedule = findViewById<Button>(R.id.btnCreateSchedule)
         btnCreateSchedule.setOnClickListener {
@@ -172,13 +156,6 @@ class NextNewScheduleActivity : AppCompatActivity() {
         }
     }
 
-    private fun disablePillQuantity() {
-        etPills.isEnabled = false
-    }
-
-    private fun enablePillQuantity() {
-        etPills.isEnabled = true
-    }
 
     private fun enableInterval() {
         spnIntervalTime.isEnabled = true
@@ -398,11 +375,11 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
         }
     }
-    private fun makeHttpRequest(pills: Short?, startDate: LocalDateTime, endDateString: String?, consumedFood: Boolean?) {
+    private fun makeHttpRequest(startDate: LocalDateTime, endDateString: String?, consumedFood: Boolean?) {
         val medicationApiService = SharedMethods.retrofitServiceBuilder(MedicationApiService::class.java)
         val postReminderRequest = medicationApiService.createReminder(StateManager.authToken, CreateReminderResource(
             SharedMethods.getJSDateFromLocalDateTime(startDate),
-            pills,
+            null,
             endDateString,
             StateManager.selectedMedicine!!.id,
             StateManager.loggedUserId,
@@ -421,17 +398,18 @@ class NextNewScheduleActivity : AppCompatActivity() {
                                 if (response.isSuccessful) {
                                     ReminderService.createAlarms(this@NextNewScheduleActivity, reminder, response.body()!!)
                                     saveHistoricalReminder(reminder, "Interval", response.body()!!.id)
-                                    Toast.makeText(this@NextNewScheduleActivity, "Reminder with interval created successfully", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextNewScheduleActivity,
+                                        getString(R.string.reminder_created_successfully), Toast.LENGTH_SHORT).show()
                                 }
 
                                 else {
-                                    Toast.makeText(this@NextNewScheduleActivity, "Error while creating interval of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextNewScheduleActivity, getString(R.string.error_while_creating_interval_of_reminder), Toast.LENGTH_SHORT).show()
                                     medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                                 }
                             }
 
                             override fun onFailure(p0: Call<Interval>, p1: Throwable) {
-                                Toast.makeText(this@NextNewScheduleActivity, "Error while creating interval of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@NextNewScheduleActivity, getString(R.string.error_while_creating_interval_of_reminder), Toast.LENGTH_SHORT).show()
                                 medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                             }
 
@@ -445,16 +423,16 @@ class NextNewScheduleActivity : AppCompatActivity() {
                                 if (response.isSuccessful) {
                                     ReminderService.createAlarms(this@NextNewScheduleActivity, reminder, response.body()!!)
                                     saveHistoricalReminder(reminder, "Frequency", response.body()!!.id)
-                                    Toast.makeText(this@NextNewScheduleActivity, "Reminder with frequency created successfully", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextNewScheduleActivity, getString(R.string.reminder_created_successfully), Toast.LENGTH_SHORT).show()
                                 }
                                 else {
-                                    Toast.makeText(this@NextNewScheduleActivity, "Error while creating frequency of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextNewScheduleActivity, getString(R.string.error_while_creating_frequency_of_reminder), Toast.LENGTH_SHORT).show()
                                     medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                                 }
                             }
 
                             override fun onFailure(p0: Call<Frequency>, p1: Throwable) {
-                                Toast.makeText(this@NextNewScheduleActivity, "Error while creating frequency of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@NextNewScheduleActivity, getString(R.string.error_while_creating_frequency_of_reminder), Toast.LENGTH_SHORT).show()
                                 medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                             }
 
@@ -462,11 +440,12 @@ class NextNewScheduleActivity : AppCompatActivity() {
                     }
                     finish()
                 }
-                else Toast.makeText(this@NextNewScheduleActivity, "Error while creating reminder", Toast.LENGTH_SHORT).show()
+                else Toast.makeText(this@NextNewScheduleActivity,
+                    getString(R.string.error_while_creating_reminder), Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(p0: Call<Reminder>, p1: Throwable) {
-                Toast.makeText(this@NextNewScheduleActivity, "Error while creating reminder", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@NextNewScheduleActivity, getString(R.string.error_while_creating_reminder), Toast.LENGTH_SHORT).show()
             }
 
         })
@@ -502,8 +481,6 @@ class NextNewScheduleActivity : AppCompatActivity() {
             .setTitleText("Select reminder start time")
             .build()
 
-
-        val etPills = findViewById<EditText>(R.id.etPills)
         val rgrpFood = findViewById<RadioGroup>(R.id.rgrpFood)
 
 
@@ -516,11 +493,6 @@ class NextNewScheduleActivity : AppCompatActivity() {
             else -> null
         }
 
-        val pills: Short? = when(swPills.isChecked) {
-            true -> etPills.text.toString().toShort()
-            false -> null
-        }
-
         if ((swInterval.isChecked && (spnIntervalTime.selectedItem.toString() == "6" || spnIntervalTime.selectedItem.toString() == "8") && spnIntervalTimeType.selectedItem.toString() == "Hours") ||
             swFrequency.isChecked && spnFreqTimes.selectedItem.toString() == "2" && spnPer.selectedItem.toString() == "Day") {
             val createdDate = now.plusDays(1)
@@ -529,7 +501,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
                 "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
                 else -> null
             }
-            makeHttpRequest(pills, createdDate, endDateString, consumedFood)
+            makeHttpRequest(createdDate, endDateString, consumedFood)
         }
         else if ((swInterval.isChecked && spnIntervalTime.selectedItem.toString() == "12" && spnIntervalTimeType.selectedItem.toString() == "Hours") ||
             (swInterval.isChecked && spnIntervalTimeType.selectedItem.toString() == "Days") ||
@@ -552,7 +524,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
                     "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
                     else -> null
                 }
-                makeHttpRequest(pills, createdDate, endDateString, consumedFood)
+                makeHttpRequest(createdDate, endDateString, consumedFood)
             }
         }
 
