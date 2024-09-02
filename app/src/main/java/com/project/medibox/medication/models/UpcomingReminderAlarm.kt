@@ -25,5 +25,7 @@ data class UpcomingReminderAlarm(
     @ColumnInfo
     var reminderId: Long,
     @ColumnInfo
-    var notified: Boolean = false
+    var localReminderId: Short = -1,
+    @ColumnInfo
+    var notified: Boolean = false,
 )

@@ -108,4 +108,9 @@
     <string name="confirm">Confirmar</string>
     <string name="reminder_created_successfully">Recordatorio creado correctamente.</string>
     <string name="error_while_creating_reminder">Error al crear recordatorio</string>
+    <string name="other">Otro</string>
+    <string name="you_need_permission_to_take_photos">Necesitas otorgar permiso para tomar fotos.</string>
+    <string name="medicine_name">Nombre de medicina</string>
+    <string name="write_medicine_name">Escribe el nombre de la medicina</string>
+    <string name="local_reminder_created">Recordatorio local creado correctamente.</string>
 </resources>
