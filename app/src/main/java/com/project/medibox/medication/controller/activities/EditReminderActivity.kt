@@ -55,7 +55,10 @@ class EditReminderActivity : AppCompatActivity() {
 
     private fun loadSpinner(medicines: List<Medicine>) {
         optionsSpinner.visibility = View.VISIBLE
-        val options = medicines.map { it.name }
+        val options = medicines.map { it.name }.sorted().toMutableList()
+        if (options.contains(getString(R.string.other))) {
+            options.remove(getString(R.string.other))
+        }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         optionsSpinner.adapter = adapter
