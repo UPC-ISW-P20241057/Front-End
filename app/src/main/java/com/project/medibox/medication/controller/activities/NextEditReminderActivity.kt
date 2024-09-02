@@ -60,9 +60,6 @@ class NextEditReminderActivity : AppCompatActivity() {
     private lateinit var spnFreqTimes: Spinner
     private lateinit var spnPer: Spinner
 
-    private lateinit var swPills: Switch
-    private lateinit var etPills: EditText
-
     private lateinit var spnForTime: Spinner
     private lateinit var spnForTimeType: Spinner
 
@@ -110,25 +107,10 @@ class NextEditReminderActivity : AppCompatActivity() {
         spnFreqTimes = findViewById(R.id.spnFrecTimes)
         spnPer = findViewById(R.id.spnPer)
 
-        swPills = findViewById(R.id.swPills)
-
-        etPills = findViewById(R.id.etPills)
-        disablePillQuantity()
-
         spnForTime = findViewById(R.id.spnForTime)
         spnForTimeType = findViewById(R.id.spnForTimeType)
 
         loadSpinners()
-
-
-        swPills.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                enablePillQuantity()
-            }
-            else {
-                disablePillQuantity()
-            }
-        }
 
         val cvUploadPhoto = findViewById<CardView>(R.id.cvUploadPhoto)
         cvUploadPhoto.setOnClickListener {
@@ -266,11 +248,11 @@ class NextEditReminderActivity : AppCompatActivity() {
         startForActivityCamera.launch(intent)
     }
 
-    private fun makeHttpRequest(pills: Short?, startDate: LocalDateTime, endDateString: String?, consumedFood: Boolean?) {
+    private fun makeHttpRequest(startDate: LocalDateTime, endDateString: String?, consumedFood: Boolean?) {
         val medicationApiService = SharedMethods.retrofitServiceBuilder(MedicationApiService::class.java)
         val putReminderRequest = medicationApiService.updateReminder(StateManager.authToken, StateManager.selectedHistoricalReminder.reminderId, CreateReminderResource(
             SharedMethods.getJSDateFromLocalDateTime(startDate),
-            pills,
+            null,
             endDateString,
             StateManager.selectedMedicine!!.id,
             StateManager.loggedUserId,
@@ -437,8 +419,6 @@ class NextEditReminderActivity : AppCompatActivity() {
             .setTitleText(getString(R.string.select_reminder_start_time))
             .build()
 
-
-        val etPills = findViewById<EditText>(R.id.etPills)
         val rgrpFood = findViewById<RadioGroup>(R.id.rgrpFood)
 
 
@@ -451,10 +431,6 @@ class NextEditReminderActivity : AppCompatActivity() {
             else -> null
         }
 
-        val pills: Short? = when(swPills.isChecked) {
-            true -> etPills.text.toString().toShort()
-            false -> null
-        }
 
         if ((reminderType == "Interval" && (spnIntervalTime.selectedItem.toString() == "6" || spnIntervalTime.selectedItem.toString() == "8") && spnIntervalTimeType.selectedItem.toString() == "Hours") ||
             reminderType == "Frequency" && spnFreqTimes.selectedItem.toString() == "2" && spnPer.selectedItem.toString() == "Day") {
@@ -465,7 +441,7 @@ class NextEditReminderActivity : AppCompatActivity() {
                 "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
                 else -> null
             }
-            makeHttpRequest(pills, createdDate, endDateString, consumedFood)
+            makeHttpRequest(createdDate, endDateString, consumedFood)
         }
         else if ((reminderType == "Interval" && spnIntervalTime.selectedItem.toString() == "12" && spnIntervalTimeType.selectedItem.toString() == "Hours") ||
             (reminderType == "Interval" && spnIntervalTimeType.selectedItem.toString() == "Days") ||
@@ -489,7 +465,7 @@ class NextEditReminderActivity : AppCompatActivity() {
                     "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
                     else -> null
                 }
-                makeHttpRequest(pills, createdDate, endDateString, consumedFood)
+                makeHttpRequest(createdDate, endDateString, consumedFood)
             }
         }
     }
@@ -583,14 +559,6 @@ class NextEditReminderActivity : AppCompatActivity() {
             }
 
         }
-    }
-
-    private fun disablePillQuantity() {
-        etPills.isEnabled = false
-    }
-
-    private fun enablePillQuantity() {
-        etPills.isEnabled = true
     }
 
     private fun showFrequencyCard() {

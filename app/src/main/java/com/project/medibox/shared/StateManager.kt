@@ -19,4 +19,5 @@ object StateManager {
     lateinit var selectedMissedAlarm: MissedReminderAlarm
     lateinit var selectedHistoricalReminder: HistoricalReminder
     lateinit var selectedMedicineImage: MedicineImage
+    lateinit var customMedicine: String
 }

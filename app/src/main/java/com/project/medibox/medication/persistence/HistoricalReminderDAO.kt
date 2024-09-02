@@ -23,4 +23,10 @@ interface HistoricalReminderDAO {
 
     @Query("DELETE FROM HistoricalReminder WHERE id = :id")
     fun deleteById(id: Int)
+
+    @Query("SELECT * FROM HistoricalReminder WHERE localId = :localId")
+    fun getByLocalId(localId: Short): HistoricalReminder?
+
+    @Query("DELETE FROM HistoricalReminder WHERE localId = :localId")
+    fun deleteByLocalId(localId: Short)
 }

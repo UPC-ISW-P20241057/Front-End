@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -52,6 +53,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.LocalTime
+import kotlin.random.Random
 
 class NextNewScheduleActivity : AppCompatActivity() {
     private lateinit var swInterval: Switch
@@ -61,9 +63,6 @@ class NextNewScheduleActivity : AppCompatActivity() {
     private lateinit var swFrequency: Switch
     private lateinit var spnFreqTimes: Spinner
     private lateinit var spnPer: Spinner
-
-    private lateinit var swPills: Switch
-    private lateinit var etPills: EditText
 
     private lateinit var spnForTime: Spinner
     private lateinit var spnForTimeType: Spinner
@@ -80,6 +79,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
     private lateinit var imageDao: MedicineImageDAO
     private var bitmap: Bitmap? = null
+
+    private var localId: Short = -1
 
     private var uri: Uri? = null
     private val REQUEST_IMAGE_CAPTURE = 1 // Puedes usar cualquier número como código de solicitud
@@ -107,11 +108,6 @@ class NextNewScheduleActivity : AppCompatActivity() {
         spnPer = findViewById(R.id.spnPer)
         disableFrequency()
 
-        swPills = findViewById(R.id.swPills)
-
-        etPills = findViewById(R.id.etPills)
-        disablePillQuantity()
-
         spnForTime = findViewById(R.id.spnForTime)
         spnForTimeType = findViewById(R.id.spnForTimeType)
 
@@ -137,14 +133,6 @@ class NextNewScheduleActivity : AppCompatActivity() {
             }
         }
 
-        swPills.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                enablePillQuantity()
-            }
-            else {
-                disablePillQuantity()
-            }
-        }
 
         val btnCreateSchedule = findViewById<Button>(R.id.btnCreateSchedule)
         btnCreateSchedule.setOnClickListener {
@@ -172,13 +160,6 @@ class NextNewScheduleActivity : AppCompatActivity() {
         }
     }
 
-    private fun disablePillQuantity() {
-        etPills.isEnabled = false
-    }
-
-    private fun enablePillQuantity() {
-        etPills.isEnabled = true
-    }
 
     private fun enableInterval() {
         spnIntervalTime.isEnabled = true
@@ -229,7 +210,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
             pickImageFromGallery()
         }
         else {
-            Toast.makeText(this, "You need permission to select image.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.you_need_permission_to_select_image), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -254,18 +235,19 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
     private fun saveMedicineImage() {
         val imageString = BitmapConverter.converterBitmapToString(bitmap!!)
-        existingImage = imageDao.getImageByMedicineName(StateManager.selectedMedicine!!.name)
+        val medicineName = if (StateManager.selectedMedicine!!.name == getString(R.string.other)) StateManager.customMedicine else StateManager.selectedMedicine!!.name
+        existingImage = imageDao.getImageByMedicineName(medicineName)
         if (existingImage == null)
             imageDao.insertImage(MedicineImage(
                 0,
                 imageString,
-                StateManager.selectedMedicine!!.name
+                medicineName
             ))
         else
             imageDao.updateImage(MedicineImage(
                 existingImage!!.id,
                 imageString,
-                StateManager.selectedMedicine!!.name
+                medicineName
             ))
     }
     private val startForActivityGallery = registerForActivityResult(
@@ -306,7 +288,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
             openCamera()
         }
         else {
-            Toast.makeText(this, "You need permission to take photos.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,
+                getString(R.string.you_need_permission_to_take_photos), Toast.LENGTH_SHORT).show()
         }
     }
     private val startForActivityCamera = registerForActivityResult(
@@ -398,11 +381,43 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
         }
     }
-    private fun makeHttpRequest(pills: Short?, startDate: LocalDateTime, endDateString: String?, consumedFood: Boolean?) {
+
+    private fun saveReminderWithCustomMedicine(startDate: LocalDateTime, endDateString: String?, consumedFood: Boolean?) {
+        val reminder = Reminder(
+            0,
+            SharedMethods.getJSDateFromLocalDateTime(startDate),
+            null,
+            endDateString,
+            StateManager.selectedMedicine!!,
+            StateManager.loggedUserId,
+            null,
+            null,
+            consumedFood
+        )
+        if (swInterval.isChecked) {
+            val procIntr = Interval(0, interval.type, interval.quantity)
+            reminder.interval = procIntr
+            saveHistoricalReminder(reminder, "Interval", 0, StateManager.customMedicine)
+            ReminderService.createAlarms(this, reminder, procIntr, StateManager.customMedicine, localId)
+            Toast.makeText(this, getString(R.string.local_reminder_created), Toast.LENGTH_SHORT).show()
+            finish()
+        }
+        else if (swFrequency.isChecked) {
+            val procFreq = Frequency(0, frequency.type, frequency.times)
+            reminder.frequency = procFreq
+            saveHistoricalReminder(reminder, "Frequency", 0, StateManager.customMedicine)
+            ReminderService.createAlarms(this, reminder, procFreq, StateManager.customMedicine, localId)
+            Toast.makeText(this, getString(R.string.local_reminder_created), Toast.LENGTH_SHORT).show()
+            finish()
+        }
+
+    }
+
+    private fun makeHttpRequest(startDate: LocalDateTime, endDateString: String?, consumedFood: Boolean?) {
         val medicationApiService = SharedMethods.retrofitServiceBuilder(MedicationApiService::class.java)
         val postReminderRequest = medicationApiService.createReminder(StateManager.authToken, CreateReminderResource(
             SharedMethods.getJSDateFromLocalDateTime(startDate),
-            pills,
+            null,
             endDateString,
             StateManager.selectedMedicine!!.id,
             StateManager.loggedUserId,
@@ -421,17 +436,18 @@ class NextNewScheduleActivity : AppCompatActivity() {
                                 if (response.isSuccessful) {
                                     ReminderService.createAlarms(this@NextNewScheduleActivity, reminder, response.body()!!)
                                     saveHistoricalReminder(reminder, "Interval", response.body()!!.id)
-                                    Toast.makeText(this@NextNewScheduleActivity, "Reminder with interval created successfully", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextNewScheduleActivity,
+                                        getString(R.string.reminder_created_successfully), Toast.LENGTH_SHORT).show()
                                 }
 
                                 else {
-                                    Toast.makeText(this@NextNewScheduleActivity, "Error while creating interval of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextNewScheduleActivity, getString(R.string.error_while_creating_interval_of_reminder), Toast.LENGTH_SHORT).show()
                                     medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                                 }
                             }
 
                             override fun onFailure(p0: Call<Interval>, p1: Throwable) {
-                                Toast.makeText(this@NextNewScheduleActivity, "Error while creating interval of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@NextNewScheduleActivity, getString(R.string.error_while_creating_interval_of_reminder), Toast.LENGTH_SHORT).show()
                                 medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                             }
 
@@ -445,16 +461,16 @@ class NextNewScheduleActivity : AppCompatActivity() {
                                 if (response.isSuccessful) {
                                     ReminderService.createAlarms(this@NextNewScheduleActivity, reminder, response.body()!!)
                                     saveHistoricalReminder(reminder, "Frequency", response.body()!!.id)
-                                    Toast.makeText(this@NextNewScheduleActivity, "Reminder with frequency created successfully", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextNewScheduleActivity, getString(R.string.reminder_created_successfully), Toast.LENGTH_SHORT).show()
                                 }
                                 else {
-                                    Toast.makeText(this@NextNewScheduleActivity, "Error while creating frequency of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@NextNewScheduleActivity, getString(R.string.error_while_creating_frequency_of_reminder), Toast.LENGTH_SHORT).show()
                                     medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                                 }
                             }
 
                             override fun onFailure(p0: Call<Frequency>, p1: Throwable) {
-                                Toast.makeText(this@NextNewScheduleActivity, "Error while creating frequency of reminder. Destroying corrupt reminder...", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@NextNewScheduleActivity, getString(R.string.error_while_creating_frequency_of_reminder), Toast.LENGTH_SHORT).show()
                                 medicationApiService.deleteReminder(StateManager.authToken, reminder.id)
                             }
 
@@ -462,11 +478,12 @@ class NextNewScheduleActivity : AppCompatActivity() {
                     }
                     finish()
                 }
-                else Toast.makeText(this@NextNewScheduleActivity, "Error while creating reminder", Toast.LENGTH_SHORT).show()
+                else Toast.makeText(this@NextNewScheduleActivity,
+                    getString(R.string.error_while_creating_reminder), Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(p0: Call<Reminder>, p1: Throwable) {
-                Toast.makeText(this@NextNewScheduleActivity, "Error while creating reminder", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@NextNewScheduleActivity, getString(R.string.error_while_creating_reminder), Toast.LENGTH_SHORT).show()
             }
 
         })
@@ -492,6 +509,42 @@ class NextNewScheduleActivity : AppCompatActivity() {
         ))
     }
 
+    private fun generateLocalReminderId(): Short {
+        val dao = AppDatabase.getInstance(this).getHistoricalReminderDao()
+        val existingIds = dao.getAll().map { it.localId }.toSet()
+
+        val random = Random(System.nanoTime())
+        while (true) {
+            val localId = (random.nextInt(Short.MAX_VALUE.toInt() - 200 + 1) + 200).toShort()
+            if (localId !in existingIds) {
+                return localId
+            }
+        }
+    }
+
+    private fun saveHistoricalReminder(reminder: Reminder, type: String, typeId: Long, customMedicine: String) {
+        val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
+        val createdDateParsed = SharedMethods.getDDMMYYStringFromDate(createdDate)
+        val endDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.endDateString!!)
+        val endDateParsed = SharedMethods.getDDMMYYStringFromDate(endDate)
+        localId = generateLocalReminderId()
+        Log.d("Creating with local id", localId.toString())
+        AppDatabase.getInstance(this).getHistoricalReminderDao().insertReminder(HistoricalReminder(
+            0,
+            reminder.createdDateString,
+            createdDateParsed,
+            reminder.pills,
+            reminder.endDateString!!,
+            endDateParsed,
+            customMedicine,
+            type,
+            typeId,
+            reminder.consumeFood,
+            reminder.id,
+            localId
+        ))
+    }
+
     private fun createSchedule() {
         val now = LocalDateTime.now()
 
@@ -499,26 +552,25 @@ class NextNewScheduleActivity : AppCompatActivity() {
             .setTimeFormat(TimeFormat.CLOCK_12H)
             .setHour(12)
             .setMinute(0)
-            .setTitleText("Select reminder start time")
+            .setTitleText(getString(R.string.select_reminder_start_time))
             .build()
 
-
-        val etPills = findViewById<EditText>(R.id.etPills)
         val rgrpFood = findViewById<RadioGroup>(R.id.rgrpFood)
 
 
         val selectedFoodRadio = findViewById<RadioButton>(rgrpFood.checkedRadioButtonId)
-        val foodOption = selectedFoodRadio.text.toString()
-        val consumedFood: Boolean? = when(foodOption) {
-            "Yes" -> true
-            "No" -> false
-            "It doesn't matter" -> null
-            else -> null
+        var consumedFood: Boolean?
+        try {
+            val foodOption = selectedFoodRadio.text.toString()
+            consumedFood = when(foodOption) {
+                getString(R.string.yes) -> true
+                getString(R.string.no) -> false
+                getString(R.string.it_doesn_t_matter) -> null
+                else -> null
+            }
         }
-
-        val pills: Short? = when(swPills.isChecked) {
-            true -> etPills.text.toString().toShort()
-            false -> null
+        catch (e: Exception) {
+            consumedFood = null
         }
 
         if ((swInterval.isChecked && (spnIntervalTime.selectedItem.toString() == "6" || spnIntervalTime.selectedItem.toString() == "8") && spnIntervalTimeType.selectedItem.toString() == "Hours") ||
@@ -529,7 +581,10 @@ class NextNewScheduleActivity : AppCompatActivity() {
                 "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
                 else -> null
             }
-            makeHttpRequest(pills, createdDate, endDateString, consumedFood)
+            if (StateManager.selectedMedicine!!.name == getString(R.string.other))
+                saveReminderWithCustomMedicine(createdDate, endDateString, consumedFood)
+            else
+                makeHttpRequest(createdDate, endDateString, consumedFood)
         }
         else if ((swInterval.isChecked && spnIntervalTime.selectedItem.toString() == "12" && spnIntervalTimeType.selectedItem.toString() == "Hours") ||
             (swInterval.isChecked && spnIntervalTimeType.selectedItem.toString() == "Days") ||
@@ -538,7 +593,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
 
             timePicker.show(supportFragmentManager, "Reminder time")
             timePicker.addOnNegativeButtonClickListener {
-                Toast.makeText(this@NextNewScheduleActivity, "You need to indicate the reminder start time.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@NextNewScheduleActivity, getString(R.string.you_need_to_indicate_the_reminder_start_time), Toast.LENGTH_SHORT).show()
             }
             timePicker.addOnPositiveButtonClickListener {
                 val nowHour = LocalTime.of(now.hour, now.minute)
@@ -552,7 +607,10 @@ class NextNewScheduleActivity : AppCompatActivity() {
                     "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
                     else -> null
                 }
-                makeHttpRequest(pills, createdDate, endDateString, consumedFood)
+                if (StateManager.selectedMedicine!!.name == getString(R.string.other))
+                    saveReminderWithCustomMedicine(createdDate, endDateString, consumedFood)
+                else
+                    makeHttpRequest(createdDate, endDateString, consumedFood)
             }
         }
 

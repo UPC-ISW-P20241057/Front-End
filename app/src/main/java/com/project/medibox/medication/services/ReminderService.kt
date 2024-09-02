@@ -283,6 +283,8 @@ class ReminderService : Service() {
             }
         }
 
+
+
         fun createAlarms(context: Context, reminder: Reminder, interval: Interval) {
             val endDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.endDateString!!)
             val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
@@ -427,6 +429,160 @@ class ReminderService : Service() {
                 }
             }
         }
+        fun createAlarms(context: Context, reminder: Reminder, interval: Interval, customMedicine: String, localReminderId: Short) {
+            val endDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.endDateString!!)
+            val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
+            val dayDiff = Period.between(createdDate.toLocalDate(), endDate.toLocalDate()).days
+            val upcomingReminderAlarmDAO = AppDatabase.getInstance(context).getUpcomingReminderAlarmDao()
+            if (interval.intervalType == "Hours") {
+                for (dayMore in 0L..dayDiff) {
+                    val alarmDate = createdDate.plusDays(dayMore)
+                    val alarmDateString = SharedMethods.getDDMMYYStringFromDate(alarmDate)
+                    when(interval.intervalValue) {
+                        6 -> {
+                            upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                0,
+                                customMedicine,
+                                alarmDateString,
+                                8,
+                                0,
+                                reminder.pills,
+                                reminder.consumeFood,
+                                generateNotificationId(upcomingReminderAlarmDAO),
+                                reminder.id,
+                                localReminderId
+                            ))
+                            upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                0,
+                                customMedicine,
+                                alarmDateString,
+                                14,
+                                0,
+                                reminder.pills,
+                                reminder.consumeFood,
+                                generateNotificationId(upcomingReminderAlarmDAO),
+                                reminder.id,
+                                localReminderId
+                            ))
+                            upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                0,
+                                customMedicine,
+                                alarmDateString,
+                                20,
+                                0,
+                                reminder.pills,
+                                reminder.consumeFood,
+                                generateNotificationId(upcomingReminderAlarmDAO),
+                                reminder.id,
+                                localReminderId
+                            ))
+                        }
+                        8 -> {
+                            upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                0,
+                                customMedicine,
+                                alarmDateString,
+                                7,
+                                0,
+                                reminder.pills,
+                                reminder.consumeFood,
+                                generateNotificationId(upcomingReminderAlarmDAO),
+                                reminder.id,
+                                localReminderId
+                            ))
+                            upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                0,
+                                customMedicine,
+                                alarmDateString,
+                                15,
+                                0,
+                                reminder.pills,
+                                reminder.consumeFood,
+                                generateNotificationId(upcomingReminderAlarmDAO),
+                                reminder.id,
+                                localReminderId
+                            ))
+                            upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                0,
+                                customMedicine,
+                                alarmDateString,
+                                23,
+                                0,
+                                reminder.pills,
+                                reminder.consumeFood,
+                                generateNotificationId(upcomingReminderAlarmDAO),
+                                reminder.id,
+                                localReminderId
+                            ))
+                        }
+                        12 -> {
+                            upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                0,
+                                customMedicine,
+                                alarmDateString,
+                                createdDate.hour,
+                                createdDate.minute,
+                                reminder.pills,
+                                reminder.consumeFood,
+                                generateNotificationId(upcomingReminderAlarmDAO),
+                                reminder.id,
+                                localReminderId
+                            ))
+                            if (dayMore == 0L && createdDate.toLocalDate() == LocalDate.now()) {
+                                if (createdDate.hour < 12) {
+                                    upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                        0,
+                                        customMedicine,
+                                        alarmDateString,
+                                        createdDate.hour + 12,
+                                        createdDate.minute,
+                                        reminder.pills,
+                                        reminder.consumeFood,
+                                        generateNotificationId(upcomingReminderAlarmDAO),
+                                        reminder.id,
+                                        localReminderId
+                                    ))
+                                }
+                            }
+                            else {
+                                val alarmHour = if (createdDate.hour < 12) createdDate.hour + 12 else createdDate.hour - 12
+                                upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                    0,
+                                    customMedicine,
+                                    alarmDateString,
+                                    alarmHour,
+                                    createdDate.minute,
+                                    reminder.pills,
+                                    reminder.consumeFood,
+                                    generateNotificationId(upcomingReminderAlarmDAO),
+                                    reminder.id,
+                                    localReminderId
+                                ))
+                            }
+                        }
+                    }
+                }
+
+            }
+            else {
+                for (dayMore in 0L until dayDiff step interval.intervalValue.toLong()) {
+                    val alarmDate = createdDate.plusDays(dayMore)
+                    val alarmDateString = SharedMethods.getDDMMYYStringFromDate(alarmDate)
+                    upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                        0,
+                        StateManager.selectedMedicine!!.name,
+                        alarmDateString,
+                        createdDate.hour,
+                        createdDate.minute,
+                        reminder.pills,
+                        reminder.consumeFood,
+                        generateNotificationId(upcomingReminderAlarmDAO),
+                        reminder.id,
+                        localReminderId
+                    ))
+                }
+            }
+        }
         fun createAlarms(context: Context, reminder: Reminder, frequency: Frequency) {
             val endDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.endDateString!!)
             val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
@@ -476,6 +632,65 @@ class ReminderService : Service() {
                             reminder.consumeFood,
                             generateNotificationId(upcomingReminderAlarmDAO),
                             reminder.id
+                        )
+                        upcomingReminderAlarmDAO.insertAlarm(upc2)
+                        Log.d("Database", upc2.toString())
+                    }
+                }
+            }
+        }
+        fun createAlarms(context: Context, reminder: Reminder, frequency: Frequency, customMedicine: String, localReminderId: Short) {
+            val endDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.endDateString!!)
+            val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
+            val dayDiff = Period.between(createdDate.toLocalDate(), endDate.toLocalDate()).days
+            val upcomingReminderAlarmDAO = AppDatabase.getInstance(context).getUpcomingReminderAlarmDao()
+
+            for (dayMore in 0L..dayDiff) {
+                val alarmDate = createdDate.plusDays(dayMore)
+                val alarmDateString = SharedMethods.getDDMMYYStringFromDate(alarmDate)
+                when(frequency.times) {
+                    1 -> {
+                        val upc1 = UpcomingReminderAlarm(
+                            0,
+                            customMedicine,
+                            alarmDateString,
+                            createdDate.hour,
+                            createdDate.minute,
+                            reminder.pills,
+                            reminder.consumeFood,
+                            generateNotificationId(upcomingReminderAlarmDAO),
+                            reminder.id,
+                            localReminderId
+                        )
+                        upcomingReminderAlarmDAO.insertAlarm(upc1)
+                        Log.d("Database", upc1.toString())
+                    }
+                    2 -> {
+                        val upc1 = UpcomingReminderAlarm(
+                            0,
+                            customMedicine,
+                            alarmDateString,
+                            8,
+                            0,
+                            reminder.pills,
+                            reminder.consumeFood,
+                            generateNotificationId(upcomingReminderAlarmDAO),
+                            reminder.id,
+                            localReminderId
+                        )
+                        upcomingReminderAlarmDAO.insertAlarm(upc1)
+                        Log.d("Database", upc1.toString())
+                        val upc2 = UpcomingReminderAlarm(
+                            0,
+                            customMedicine,
+                            alarmDateString,
+                            20,
+                            0,
+                            reminder.pills,
+                            reminder.consumeFood,
+                            generateNotificationId(upcomingReminderAlarmDAO),
+                            reminder.id,
+                            localReminderId
                         )
                         upcomingReminderAlarmDAO.insertAlarm(upc2)
                         Log.d("Database", upc2.toString())
