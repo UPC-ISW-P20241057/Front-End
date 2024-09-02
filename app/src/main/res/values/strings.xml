@@ -113,4 +113,6 @@
     <string name="medicine_name">Nombre de medicina</string>
     <string name="write_medicine_name">Escribe el nombre de la medicina</string>
     <string name="local_reminder_created">Recordatorio local creado correctamente.</string>
+    <string name="with_food">Con comida</string>
+    <string name="without_food">Sin comida</string>
 </resources>
