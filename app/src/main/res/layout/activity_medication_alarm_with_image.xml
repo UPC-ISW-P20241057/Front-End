@@ -90,7 +90,7 @@
                 android:textSize="24sp"
                 app:cornerRadius="13dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvImMedicine" />
+                app:layout_constraintTop_toBottomOf="@+id/tvImAlarmWithFood" />
 
             <Button
                 android:id="@+id/btnMediImAccept"
@@ -105,7 +105,19 @@
                 android:textSize="24sp"
                 app:cornerRadius="13dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvImMedicine" />
+                app:layout_constraintTop_toBottomOf="@+id/tvImAlarmWithFood" />
+
+            <TextView
+                android:id="@+id/tvImAlarmWithFood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:fontFamily="@font/palanquin_dark"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvImMedicine"
+                tools:text="Con comida" />
 
             <Button
                 android:id="@+id/btnMediImPostpone"

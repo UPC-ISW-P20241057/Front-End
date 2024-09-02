@@ -41,8 +41,15 @@ class MedicationAlarmActivity : AppCompatActivity() {
         val btnMediMissed = findViewById<Button>(R.id.btnMediMissed)
         val btnMediPostponed = findViewById<Button>(R.id.btnMediPostpone)
         val tvTimeForMedMedicine = findViewById<TextView>(R.id.tvTimeForMedMedicine)
+        val tvAlarmWithFood = findViewById<TextView>(R.id.tvAlarmWithFood)
         val upcomingAlarm = StateManager.selectedUpcomingAlarm
         tvTimeForMedMedicine.text = upcomingAlarm.medicineName
+
+        tvAlarmWithFood.text = when (upcomingAlarm.consumeFood) {
+            true -> getString(R.string.with_food)
+            false -> getString(R.string.without_food)
+            null -> ""
+        }
 
         btnMediAccept.setOnClickListener {
             AppDatabase.getInstance(this).getUpcomingReminderAlarmDao().deleteById(upcomingAlarm.id)

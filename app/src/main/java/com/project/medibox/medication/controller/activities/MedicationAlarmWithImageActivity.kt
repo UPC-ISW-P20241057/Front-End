@@ -59,10 +59,17 @@ class MedicationAlarmWithImageActivity : AppCompatActivity() {
         val btnMediImAccept = findViewById<Button>(R.id.btnMediImAccept)
         val btnMediImMissed = findViewById<Button>(R.id.btnMediImMissed)
         val btnMediInPostpone = findViewById<Button>(R.id.btnMediImPostpone)
+        val tvImAlarmWithFood = findViewById<TextView>(R.id.tvImAlarmWithFood)
         ivMedicinePic = findViewById(R.id.ivMedicinePic)
         val upcomingAlarm = StateManager.selectedUpcomingAlarm
 
         tvImMedicine.text = upcomingAlarm.medicineName
+
+        tvImAlarmWithFood.text = when (upcomingAlarm.consumeFood) {
+            true -> getString(R.string.with_food)
+            false -> getString(R.string.without_food)
+            null -> ""
+        }
 
 
         btnMediImAccept.setOnClickListener {
