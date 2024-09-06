@@ -121,4 +121,6 @@
     <string name="pillbox_id_changed_successfully">ID de pastillero cambiado correctamente.</string>
     <string name="introduce_valid_natural_number">Introduce un número natural válido</string>
     <string name="pillbox_id_saved_correctly">Id de pastillero guardado correctamente</string>
+    <string name="invalid_id">ID inválido</string>
+    <string name="error_occurred_in_pillbox_server">Ha ocurrido un error en el servidor de pastilleros.</string>
 </resources>

@@ -111,11 +111,13 @@ class HomeActivity : AppCompatActivity() {
                             changePillboxIdDialog.dismiss()
                         }
                         else
-                            Toast.makeText(this@HomeActivity, "ID inválido", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@HomeActivity,
+                                getString(R.string.invalid_id), Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onFailure(call: Call<Pillbox>, t: Throwable) {
-                        Toast.makeText(this@HomeActivity, "Ha ocurrido un error en el servidor de pastilleros.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@HomeActivity,
+                            getString(R.string.error_occurred_in_pillbox_server), Toast.LENGTH_SHORT).show()
                     }
 
                 })
