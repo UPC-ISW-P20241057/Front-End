@@ -115,4 +115,10 @@
     <string name="local_reminder_created">Recordatorio local creado correctamente.</string>
     <string name="with_food">Con comida</string>
     <string name="without_food">Sin comida</string>
+    <string name="change_id">Cambiar ID</string>
+    <string name="pillbox_id">ID de pastillero</string>
+    <string name="select_pillbox_id">Elige el id de tu pastillero</string>
+    <string name="pillbox_id_changed_successfully">ID de pastillero cambiado correctamente.</string>
+    <string name="introduce_valid_natural_number">Introduce un número natural válido</string>
+    <string name="pillbox_id_saved_correctly">Id de pastillero guardado correctamente</string>
 </resources>

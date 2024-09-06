@@ -101,7 +101,7 @@ class EmptyPillboxService : Service() {
                 override fun run() {
                     if (!isNotificationVisible(EMPTY_NOTIFICATION_ID) && !isNotificationVisible(ALMOST_EMPTY_NOTIFICATION_ID)) {
                         Log.d(TAG, "Making http request to pillbox endpoint...")
-                        val request = pillboxService.getPillboxData(1)
+                        val request = pillboxService.getPillboxData(StateManager.selectedPillboxId)
                         request.enqueue(object : Callback<Pillbox> {
                             override fun onResponse(call: Call<Pillbox>, response: Response<Pillbox>) {
                                 if (response.isSuccessful) {

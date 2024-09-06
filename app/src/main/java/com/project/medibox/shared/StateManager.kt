@@ -20,4 +20,5 @@ object StateManager {
     lateinit var selectedHistoricalReminder: HistoricalReminder
     lateinit var selectedMedicineImage: MedicineImage
     lateinit var customMedicine: String
+    var selectedPillboxId: Long = -1
 }

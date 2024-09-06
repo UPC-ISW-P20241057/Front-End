@@ -112,4 +112,13 @@ object SharedMethods {
             return false
         return activity.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
+    fun isStringAnULong(string: String): Boolean {
+        try {
+            string.toULong()
+            return true
+        }
+        catch (e: NumberFormatException) {
+            return false
+        }
+    }
 }

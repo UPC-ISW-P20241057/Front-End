@@ -143,7 +143,7 @@ class ReminderService : Service() {
         val toneSettings = AppDatabase.getInstance(this).getToneSettingsDao().getSettings()
         Log.d(TAG, "Tone Settings: $toneSettings")
         val pillboxService = SharedMethods.retrofitServiceBuilder(PillboxApiService::class.java)
-        val request = pillboxService.updatePillboxData(1, BoxData(1, true, toneSettings.tone.toInt()))
+        val request = pillboxService.updatePillboxData(StateManager.selectedPillboxId, BoxData(StateManager.selectedPillboxId, true, toneSettings.tone.toInt()))
         request.enqueue(object : Callback<BoxDataResponse> {
             override fun onResponse(p0: Call<BoxDataResponse>, p1: Response<BoxDataResponse>) {
                 Log.d("ReminderService", "Sended info of reminder to your pillbox")
