@@ -82,8 +82,12 @@ class HomeActivity : AppCompatActivity() {
                 .commit()
         }
 
-        if (StateManager.selectedPillboxId < 1)
+        val pillboxId = AppDatabase.getInstance(this).getSavedPillboxIdDao().getPillboxId()
+
+        if (pillboxId == null)
             openSavePillboxDialog()
+        else
+            StateManager.selectedPillboxId = pillboxId.pillBoxId
 
         startServices()
     }
@@ -105,6 +109,7 @@ class HomeActivity : AppCompatActivity() {
                 request.enqueue(object : Callback<Pillbox> {
                     override fun onResponse(call: Call<Pillbox>, response: Response<Pillbox>) {
                         if (response.isSuccessful) {
+                            AppDatabase.getInstance(this@HomeActivity).getSavedPillboxIdDao().savePillboxId(selectedId)
                             StateManager.selectedPillboxId = selectedId
                             Toast.makeText(this@HomeActivity,
                                 getString(R.string.pillbox_id_saved_correctly), Toast.LENGTH_SHORT).show()
@@ -177,6 +182,7 @@ class HomeActivity : AppCompatActivity() {
         stopServices()
         AppDatabase.getInstance(this).getLoginCredentialsDao().cleanTable()
         AppDatabase.getInstance(this).getToneSettingsDao().cleanSettings()
+        AppDatabase.getInstance(this).getSavedPillboxIdDao().deletePillboxId()
         val intent = Intent(this, LoginActivity::class.java) // Cambia a LoginActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

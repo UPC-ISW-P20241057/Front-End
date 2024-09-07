@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.project.medibox.R
 import com.project.medibox.pillboxmanagement.models.Pillbox
 import com.project.medibox.pillboxmanagement.network.PillboxApiService
+import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.SharedMethods
 import com.project.medibox.shared.StateManager
 import retrofit2.Call
@@ -59,17 +60,18 @@ class WiFiInstructionsActivity : AppCompatActivity() {
                 request.enqueue(object : Callback<Pillbox> {
                     override fun onResponse(call: Call<Pillbox>, response: Response<Pillbox>) {
                         if (response.isSuccessful) {
+                            AppDatabase.getInstance(this@WiFiInstructionsActivity).getSavedPillboxIdDao().changePillboxId(selectedId)
                             StateManager.selectedPillboxId = selectedId
                             Toast.makeText(this@WiFiInstructionsActivity,
                                 getString(R.string.pillbox_id_changed_successfully), Toast.LENGTH_SHORT).show()
                             changePillboxIdDialog.dismiss()
                         }
                         else
-                            Toast.makeText(this@WiFiInstructionsActivity, "ID inválido", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@WiFiInstructionsActivity, getString(R.string.invalid_id), Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onFailure(call: Call<Pillbox>, t: Throwable) {
-                        Toast.makeText(this@WiFiInstructionsActivity, "Ha ocurrido un error en el servidor de pastilleros.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@WiFiInstructionsActivity, getString(R.string.error_occurred_in_pillbox_server), Toast.LENGTH_SHORT).show()
                     }
 
                 })

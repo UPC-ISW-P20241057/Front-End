@@ -16,7 +16,9 @@ import com.project.medibox.medication.persistence.MissedReminderAlarmDAO
 import com.project.medibox.medication.persistence.HistoricalReminderDAO
 import com.project.medibox.medication.persistence.MedicineImageDAO
 import com.project.medibox.medication.persistence.UpcomingReminderAlarmDAO
+import com.project.medibox.pillboxmanagement.models.SavedPillboxId
 import com.project.medibox.pillboxmanagement.models.ToneSettings
+import com.project.medibox.pillboxmanagement.persistence.SavedPillboxIdDAO
 import com.project.medibox.pillboxmanagement.persistence.ToneSettingsDAO
 
 @Database(entities = [LoginCredentials::class,
@@ -25,7 +27,8 @@ import com.project.medibox.pillboxmanagement.persistence.ToneSettingsDAO
     MissedReminderAlarm::class,
     HistoricalReminder::class,
     ToneSettings::class,
-    MedicineImage::class],
+    MedicineImage::class,
+    SavedPillboxId::class],
     version = 1)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun getLoginCredentialsDao(): LoginCredentialsDAO
@@ -35,6 +38,7 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun getHistoricalReminderDao(): HistoricalReminderDAO
     abstract fun getToneSettingsDao(): ToneSettingsDAO
     abstract fun getMedicineImageDao(): MedicineImageDAO
+    abstract fun getSavedPillboxIdDao(): SavedPillboxIdDAO
     companion object {
         private var INSTANCE: AppDatabase? = null
 
