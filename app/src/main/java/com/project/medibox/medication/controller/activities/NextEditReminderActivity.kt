@@ -49,6 +49,7 @@ import com.project.medibox.shared.StateManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
@@ -330,6 +331,7 @@ class NextEditReminderActivity : AppCompatActivity() {
                                 if (response.isSuccessful) {
                                     updateHistoricalReminder(reminder, "Frequency", response.body()!!.id)
                                     AppDatabase.getInstance(this@NextEditReminderActivity).getUpcomingReminderAlarmDao().deleteAllByReminderId(reminder.id)
+                                    reminder.createdDateString = SharedMethods.getJSDateFromLocalDateTime(updateDate)
                                     ReminderService.createAlarms(this@NextEditReminderActivity, reminder, response.body()!!)
                                     Toast.makeText(this@NextEditReminderActivity, getString(R.string.reminder_updated_successfully), Toast.LENGTH_SHORT).show()
                                 }
@@ -423,31 +425,37 @@ class NextEditReminderActivity : AppCompatActivity() {
 
 
         val selectedFoodRadio = findViewById<RadioButton>(rgrpFood.checkedRadioButtonId)
-        val foodOption = selectedFoodRadio.text.toString()
-        val consumedFood: Boolean? = when(foodOption) {
-            getString(R.string.yes) -> true
-            getString(R.string.no) -> false
-            getString(R.string.it_doesn_t_matter) -> null
-            else -> null
+        var consumedFood: Boolean?
+        try {
+            val foodOption = selectedFoodRadio.text.toString()
+            consumedFood = when(foodOption) {
+                getString(R.string.yes) -> true
+                getString(R.string.no) -> false
+                getString(R.string.it_doesn_t_matter) -> null
+                else -> null
+            }
+        }
+        catch (e: Exception) {
+            consumedFood = null
         }
 
 
-        if ((reminderType == "Interval" && (spnIntervalTime.selectedItem.toString() == "6" || spnIntervalTime.selectedItem.toString() == "8") && spnIntervalTimeType.selectedItem.toString() == "Hours") ||
-            reminderType == "Frequency" && spnFreqTimes.selectedItem.toString() == "2" && spnPer.selectedItem.toString() == "Day") {
+        if ((reminderType == "Interval" && (spnIntervalTime.selectedItem.toString() == "6" || spnIntervalTime.selectedItem.toString() == "8") && spnIntervalTimeType.selectedItem.toString() == getString(
+                R.string.hours
+            )) ||
+            reminderType == "Frequency" && spnFreqTimes.selectedItem.toString() == "2" && spnPer.selectedItem.toString() == getString(R.string.day)) {
             updateDate = now.plusDays(1)
             val createdDate = SharedMethods.getLocalDateTimeFromJSDate(StateManager.selectedHistoricalReminder.createdDate)
             val endDateString: String? = when(lapseType) {
-                "Days" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusDays(lapseTime.toLong()))
-                "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
+                getString(R.string.days) -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusDays(lapseTime.toLong()))
+                getString(R.string.weeks) -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
                 else -> null
             }
             makeHttpRequest(createdDate, endDateString, consumedFood)
         }
-        else if ((reminderType == "Interval" && spnIntervalTime.selectedItem.toString() == "12" && spnIntervalTimeType.selectedItem.toString() == "Hours") ||
-            (reminderType == "Interval" && spnIntervalTimeType.selectedItem.toString() == "Days") ||
-            (reminderType == "Frequency" && spnFreqTimes.selectedItem.toString() == "1" && spnPer.selectedItem.toString() == "Day")) {
-
-
+        else if ((reminderType == "Interval" && spnIntervalTime.selectedItem.toString() == "12" && spnIntervalTimeType.selectedItem.toString() == getString(R.string.hours)) ||
+            (reminderType == "Interval" && spnIntervalTimeType.selectedItem.toString() == getString(R.string.days)) ||
+            (reminderType == "Frequency" && spnFreqTimes.selectedItem.toString() == "1" && spnPer.selectedItem.toString() == getString(R.string.day))) {
             timePicker.show(supportFragmentManager, "Reminder time")
             timePicker.addOnNegativeButtonClickListener {
                 Toast.makeText(this@NextEditReminderActivity,
@@ -456,13 +464,14 @@ class NextEditReminderActivity : AppCompatActivity() {
             timePicker.addOnPositiveButtonClickListener {
                 val nowHour = LocalTime.of(now.hour, now.minute)
                 val createHour = LocalTime.of(timePicker.hour, timePicker.minute)
-                var createdDate = SharedMethods.getLocalDateTimeFromJSDate(StateManager.selectedHistoricalReminder.createdDate)
-                if (nowHour >= createHour) {
-                    createdDate = createdDate.plusDays(1)
-                }
+                val createdDate = SharedMethods.getLocalDateTimeFromJSDate(StateManager.selectedHistoricalReminder.createdDate)
+                updateDate = if (nowHour >= createHour) {
+                    now.plusDays(1)
+                } else now
+                updateDate = LocalDateTime.of(updateDate.toLocalDate(), createHour)
                 val endDateString: String? = when(lapseType) {
-                    "Days" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusDays(lapseTime.toLong()))
-                    "Weeks" -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
+                    getString(R.string.days) -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusDays(lapseTime.toLong()))
+                    getString(R.string.weeks) -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
                     else -> null
                 }
                 makeHttpRequest(createdDate, endDateString, consumedFood)
@@ -471,7 +480,7 @@ class NextEditReminderActivity : AppCompatActivity() {
     }
 
     private fun setIntervalTimeSpinner(type: String) {
-        val intervalTimeOptions: List<String> = if (type == "Hours") {
+        val intervalTimeOptions: List<String> = if (type == getString(R.string.hours)) {
             listOf("6", "8", "12")
         } else {
             (1..3).map { it.toString() }
@@ -493,11 +502,11 @@ class NextEditReminderActivity : AppCompatActivity() {
 
     private fun loadSpinners() {
 
-        val intervalTimeTypeOptions = listOf("Hours", "Days")
+        val intervalTimeTypeOptions = listOf(getString(R.string.hours), getString(R.string.days))
         val freqTimesOptions = (1..2).map { it.toString() }
-        val spnPerOptions = listOf("Day")
+        val spnPerOptions = listOf(getString(R.string.day))
         val spnForTimeOptions = (1..30).map { it.toString() }
-        val spnForTimeTypeOptions = listOf("Days", "Weeks")
+        val spnForTimeTypeOptions = listOf(getString(R.string.days), getString(R.string.weeks))
 
 
         val intervalTypeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, intervalTimeTypeOptions)
@@ -537,7 +546,7 @@ class NextEditReminderActivity : AppCompatActivity() {
         }
 
         spnPer.isEnabled = false
-        frequency.type = "Days"
+        frequency.type = getString(R.string.days)
 
         spnForTime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {

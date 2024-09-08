@@ -87,9 +87,10 @@ class HomeActivity : AppCompatActivity() {
         if (pillboxId == null)
             openSavePillboxDialog()
         else
+        {
             StateManager.selectedPillboxId = pillboxId.pillBoxId
-
-        startServices()
+            startServices()
+        }
     }
 
     private fun openSavePillboxDialog() {
@@ -113,6 +114,7 @@ class HomeActivity : AppCompatActivity() {
                             StateManager.selectedPillboxId = selectedId
                             Toast.makeText(this@HomeActivity,
                                 getString(R.string.pillbox_id_saved_correctly), Toast.LENGTH_SHORT).show()
+                            startServices()
                             changePillboxIdDialog.dismiss()
                         }
                         else

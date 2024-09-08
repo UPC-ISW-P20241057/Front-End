@@ -58,8 +58,8 @@ class EmptyPillboxService : Service() {
     private fun makeForeground() {
         createServiceNotificationChannel()
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Empty Pillbox Service")
-            .setContentText("Service running...")
+            .setContentTitle(getString(R.string.empty_pillbox_service))
+            .setContentText(getString(R.string.service_running_three_points))
             .setSmallIcon(R.drawable.ic_stat_name)
             .build()
         startForeground(ONGOING_NOTIFICATION_ID, notification)
@@ -68,8 +68,8 @@ class EmptyPillboxService : Service() {
 
     private fun defineNotifications() {
         emptyNotification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Oh no! Your pillbox is empty")
-            .setContentText("Please refill your medications.")
+            .setContentTitle(getString(R.string.oh_no_your_pillbox_is_empty))
+            .setContentText(getString(R.string.please_refill_your_medications))
             .setSmallIcon(R.drawable.ic_stat_name)
             .setContentIntent(createPendingIntent(EmptyAlarmActivity::class.java))
             .setAutoCancel(true)
@@ -77,8 +77,8 @@ class EmptyPillboxService : Service() {
 
 
         almostEmptyNotification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Your pillbox is near to be empty")
-            .setContentText("Don't forget to refill your medications.")
+            .setContentTitle(getString(R.string.your_pillbox_is_near_to_be_empty))
+            .setContentText(getString(R.string.don_t_forget_to_refill_your_medications))
             .setSmallIcon(R.drawable.ic_stat_name)
             .setContentIntent(createPendingIntent(AlmostEmptyAlarmActivity::class.java))
             .setAutoCancel(true)

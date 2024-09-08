@@ -123,4 +123,16 @@
     <string name="pillbox_id_saved_correctly">Id de pastillero guardado correctamente</string>
     <string name="invalid_id">ID inválido</string>
     <string name="error_occurred_in_pillbox_server">Ha ocurrido un error en el servidor de pastilleros.</string>
+    <string name="empty_pillbox_service">Servicio de pastillero vacío</string>
+    <string name="service_running_three_points">El servicio está corriendo…</string>
+    <string name="oh_no_your_pillbox_is_empty">¡Oh no! Tu pastillero está vacío</string>
+    <string name="please_refill_your_medications">Por favor rellena tus medicinas.</string>
+    <string name="your_pillbox_is_near_to_be_empty">Tu pastillero está casi vacío</string>
+    <string name="don_t_forget_to_refill_your_medications">No te olvides de rellenar tus medicinas.</string>
+    <string name="reminder_service">Servicio de recordatorios</string>
+    <string name="permanent_login_service">Servicio de logueo permanente</string>
+    <string name="days">Días</string>
+    <string name="day">Día</string>
+    <string name="weeks">Semanas</string>
+    <string name="hours">Horas</string>
 </resources>

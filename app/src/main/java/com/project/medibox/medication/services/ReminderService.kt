@@ -67,8 +67,8 @@ class ReminderService : Service() {
     private fun makeForeground() {
         createServiceNotificationChannel()
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Reminder Service")
-            .setContentText("Service running...")
+            .setContentTitle(getString(R.string.reminder_service))
+            .setContentText(getString(R.string.service_running_three_points))
             .setSmallIcon(R.drawable.ic_stat_name)
             .build()
         startForeground(ONGOING_NOTIFICATION_ID, notification)
@@ -290,7 +290,7 @@ class ReminderService : Service() {
             val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
             val dayDiff = Period.between(createdDate.toLocalDate(), endDate.toLocalDate()).days
             val upcomingReminderAlarmDAO = AppDatabase.getInstance(context).getUpcomingReminderAlarmDao()
-            if (interval.intervalType == "Hours") {
+            if (interval.intervalType == context.getString(R.string.hours)) {
                 for (dayMore in 0L..dayDiff) {
                     val alarmDate = createdDate.plusDays(dayMore)
                     val alarmDateString = SharedMethods.getDDMMYYStringFromDate(alarmDate)
@@ -434,7 +434,7 @@ class ReminderService : Service() {
             val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
             val dayDiff = Period.between(createdDate.toLocalDate(), endDate.toLocalDate()).days
             val upcomingReminderAlarmDAO = AppDatabase.getInstance(context).getUpcomingReminderAlarmDao()
-            if (interval.intervalType == "Hours") {
+            if (interval.intervalType == context.getString(R.string.hours)) {
                 for (dayMore in 0L..dayDiff) {
                     val alarmDate = createdDate.plusDays(dayMore)
                     val alarmDateString = SharedMethods.getDDMMYYStringFromDate(alarmDate)
