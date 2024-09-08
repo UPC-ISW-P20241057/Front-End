@@ -27,6 +27,12 @@ class VoiceCommandsFragment : Fragment() {
     private var mIsListening = false // this will be needed later
     private lateinit var tvTouchMe: TextView
     private lateinit var homeActivity: HomeActivity
+    private var activityStarted: Boolean = false
+
+    override fun onResume() {
+        super.onResume()
+        activityStarted = false
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,7 +75,7 @@ class VoiceCommandsFragment : Fragment() {
         val i = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         i.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es-PE")
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es-MX")
         return i
     }
 
@@ -114,6 +120,7 @@ class VoiceCommandsFragment : Fragment() {
                     // The results are added in decreasing order of confidence to the list
                     val command = matches[0]
                     handleCommand(command.lowercase())
+                    Log.d("VoiceCommands", command.lowercase())
                 }
             }
 
@@ -124,7 +131,8 @@ class VoiceCommandsFragment : Fragment() {
                 if (matches != null && matches.size > 0) {
                     // handle partial speech results
                     val partialText = matches[0]
-                    Log.d("Command voice", partialText)
+                    handleCommand(partialText.lowercase())
+                    Log.d("VoiceCommandsP", partialText.lowercase())
                 }
             }
 
@@ -133,8 +141,9 @@ class VoiceCommandsFragment : Fragment() {
     }
 
     private fun handleCommand(command: String) {
-        if (mCommandsList.contains(command)) {
+        if (mCommandsList.contains(command) && !activityStarted) {
             // Successful utterance, notify user
+            activityStarted = true
             when(command) {
                 getString(R.string.voice_edit_profile) -> {
                     val intent = Intent(requireContext(), EditProfileActivity::class.java)
@@ -158,14 +167,7 @@ class VoiceCommandsFragment : Fragment() {
                 getString(R.string.voice_exit) -> {
                     homeActivity.finish()
                 }
-                getString(R.string.voice_close) -> {
-                    homeActivity.finish()
-                }
             }
-        } else {
-            // Unsucessful utterance, show failure message on screen
-            Toast.makeText(requireContext(),
-                getString(R.string.could_not_recognize_voice_command, command), Toast.LENGTH_LONG).show()
         }
     }
 }

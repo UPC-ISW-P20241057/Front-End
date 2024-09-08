@@ -74,7 +74,7 @@
     <string name="touch_me">¡Tócame!</string>
     <string name="need_microphone_permission">Necesitas proveer el permiso de micrófono para activar comandos de voz.</string>
     <string name="listening_three_points">Escuchando…</string>
-    <string name="voice_edit_profile">edit profile</string>
+    <string name="voice_edit_profile">editar perfil</string>
     <string name="voice_create_reminder">crear recordatorio</string>
     <string name="voice_change_alarm">cambiar alarma</string>
     <string name="voice_log_out">cerrar sesión</string>
