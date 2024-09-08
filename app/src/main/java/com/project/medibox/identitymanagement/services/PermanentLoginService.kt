@@ -91,8 +91,8 @@ class PermanentLoginService : Service() {
     private fun makeForeground() {
         createServiceNotificationChannel()
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Permanent Login Service")
-            .setContentText("Service running...")
+            .setContentTitle(getString(R.string.permanent_login_service))
+            .setContentText(getString(R.string.service_running_three_points))
             .setSmallIcon(R.drawable.ic_stat_name)
             .build()
         startForeground(ONGOING_NOTIFICATION_ID, notification)

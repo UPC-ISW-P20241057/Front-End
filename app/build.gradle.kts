@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    kotlin("kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -52,9 +52,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.androidx.room.runtime)
     implementation(libs.logging.interceptor)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.converter.gson)
-    implementation("com.kizitonwose.calendar:view:2.5.2")
+    implementation("com.kizitonwose.calendar:view:2.5.4")
     implementation("org.quanqi:android-holo-graph:0.1.0")
     implementation("com.github.alcarazolabs:FastTableLayout:1.0.0")
     implementation(libs.androidx.activity.ktx)
