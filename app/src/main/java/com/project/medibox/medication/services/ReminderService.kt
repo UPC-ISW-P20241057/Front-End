@@ -290,7 +290,7 @@ class ReminderService : Service() {
             val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
             val dayDiff = Period.between(createdDate.toLocalDate(), endDate.toLocalDate()).days
             val upcomingReminderAlarmDAO = AppDatabase.getInstance(context).getUpcomingReminderAlarmDao()
-            if (interval.intervalType == "Hours") {
+            if (interval.intervalType == context.getString(R.string.hours)) {
                 for (dayMore in 0L..dayDiff) {
                     val alarmDate = createdDate.plusDays(dayMore)
                     val alarmDateString = SharedMethods.getDDMMYYStringFromDate(alarmDate)
@@ -434,7 +434,7 @@ class ReminderService : Service() {
             val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
             val dayDiff = Period.between(createdDate.toLocalDate(), endDate.toLocalDate()).days
             val upcomingReminderAlarmDAO = AppDatabase.getInstance(context).getUpcomingReminderAlarmDao()
-            if (interval.intervalType == "Hours") {
+            if (interval.intervalType == context.getString(R.string.hours)) {
                 for (dayMore in 0L..dayDiff) {
                     val alarmDate = createdDate.plusDays(dayMore)
                     val alarmDateString = SharedMethods.getDDMMYYStringFromDate(alarmDate)
