@@ -135,4 +135,7 @@
     <string name="day">Día</string>
     <string name="weeks">Semanas</string>
     <string name="hours">Horas</string>
+    <string name="error_while_getting_completed_alarms">Ha ocurrido un error al obtener las alarmas completadas.</string>
+    <string name="error_while_getting_missed_alarms">Ha ocurrido un error al obtener las alarmas olvidadas.</string>
+    <string name="error_while_saving_the_alarm_in_cloud">Ha ocurrido un error al guardar la alarma en la nube.</string>
 </resources>

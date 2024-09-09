@@ -4,6 +4,10 @@ import android.app.Activity
 import android.content.res.Configuration
 import android.os.Build
 import android.util.Log
+import com.project.medibox.medication.models.ApiAlarm
+import com.project.medibox.medication.models.CompletedReminderAlarm
+import com.project.medibox.medication.models.MissedReminderAlarm
+import com.project.medibox.medication.resources.CreateApiAlarmResource
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
@@ -120,5 +124,49 @@ object SharedMethods {
         catch (e: NumberFormatException) {
             return false
         }
+    }
+    fun mapApiAlarmListToCompletedAlarmList(apiAlarmList: List<ApiAlarm>): List<CompletedReminderAlarm> {
+        return apiAlarmList.map {
+            CompletedReminderAlarm(
+                0,
+                it.medicineName,
+                it.activateDateString,
+                it.activateHour,
+                it.activateMinute,
+                it.consumeFood
+            )
+        }
+    }
+    fun mapApiAlarmListToMissedAlarmList(apiAlarmList: List<ApiAlarm>): List<MissedReminderAlarm> {
+        return apiAlarmList.map {
+            MissedReminderAlarm(
+                0,
+                it.medicineName,
+                it.activateDateString,
+                it.activateHour,
+                it.activateMinute,
+                it.consumeFood
+            )
+        }
+    }
+    fun mapAlarmToCreateApiAlarmRes(alarm: CompletedReminderAlarm, userId: Long = 0): CreateApiAlarmResource {
+        return CreateApiAlarmResource(
+            alarm.medicineName,
+            alarm.activateDateString,
+            alarm.activateHour,
+            alarm.activateMinute,
+            alarm.consumeFood,
+            userId
+        )
+    }
+    fun mapAlarmToCreateApiAlarmRes(alarm: MissedReminderAlarm, userId: Long = 0): CreateApiAlarmResource {
+        return CreateApiAlarmResource(
+            alarm.medicineName,
+            alarm.activateDateString,
+            alarm.activateHour,
+            alarm.activateMinute,
+            alarm.consumeFood,
+            userId
+        )
     }
 }
