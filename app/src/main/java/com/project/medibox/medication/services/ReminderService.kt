@@ -242,9 +242,9 @@ class ReminderService : Service() {
                             it.createdDateString = SharedMethods.getJSDateFromLocalDateTime(newDate)
                             StateManager.selectedMedicine = it.medicine
                             if (it.interval != null)
-                                createAlarms(context, it, it.interval!!)
+                                createAlarmsApi(context, it, it.interval!!)
                             else if (it.frequency != null)
-                                createAlarms(context, it, it.frequency!!)
+                                createAlarmsApi(context, it, it.frequency!!)
                         }
                     }
                 }
@@ -426,6 +426,166 @@ class ReminderService : Service() {
                         generateNotificationId(upcomingReminderAlarmDAO),
                         reminder.id
                     ))
+                }
+            }
+        }
+        private fun isAlarmTimePast(alarmDateString: String, activateHour: Int, activateMinute: Int): Boolean {
+            val localDate = SharedMethods.convertDDMMYYYYToLocalDate(alarmDateString)
+            val localTime = LocalTime.of(activateHour, activateMinute)
+            val localDateTime = LocalDateTime.of(localDate, localTime)
+            return localDateTime.isBefore(LocalDateTime.now())
+        }
+        fun createAlarmsApi(context: Context, reminder: Reminder, interval: Interval) {
+            val endDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.endDateString!!)
+            val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
+            val dayDiff = Period.between(createdDate.toLocalDate(), endDate.toLocalDate()).days
+            val upcomingReminderAlarmDAO = AppDatabase.getInstance(context).getUpcomingReminderAlarmDao()
+            if (interval.intervalType == context.getString(R.string.hours)) {
+                for (dayMore in 0L..dayDiff) {
+                    val alarmDate = createdDate.plusDays(dayMore)
+                    val alarmDateString = SharedMethods.getDDMMYYStringFromDate(alarmDate)
+                    when(interval.intervalValue) {
+                        6 -> {
+                            if (!isAlarmTimePast(alarmDateString, 8, 0))
+                                upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                    0,
+                                    StateManager.selectedMedicine!!.name,
+                                    alarmDateString,
+                                    8,
+                                    0,
+                                    reminder.pills,
+                                    reminder.consumeFood,
+                                    generateNotificationId(upcomingReminderAlarmDAO),
+                                    reminder.id
+                                ))
+                            if (!isAlarmTimePast(alarmDateString, 14, 0))
+                                upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                    0,
+                                    StateManager.selectedMedicine!!.name,
+                                    alarmDateString,
+                                    14,
+                                    0,
+                                    reminder.pills,
+                                    reminder.consumeFood,
+                                    generateNotificationId(upcomingReminderAlarmDAO),
+                                    reminder.id
+                                ))
+                            if (!isAlarmTimePast(alarmDateString, 20, 0))
+                                upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                    0,
+                                    StateManager.selectedMedicine!!.name,
+                                    alarmDateString,
+                                    20,
+                                    0,
+                                    reminder.pills,
+                                    reminder.consumeFood,
+                                    generateNotificationId(upcomingReminderAlarmDAO),
+                                    reminder.id
+                                ))
+                        }
+                        8 -> {
+                            if (!isAlarmTimePast(alarmDateString, 7, 0))
+                                upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                    0,
+                                    StateManager.selectedMedicine!!.name,
+                                    alarmDateString,
+                                    7,
+                                    0,
+                                    reminder.pills,
+                                    reminder.consumeFood,
+                                    generateNotificationId(upcomingReminderAlarmDAO),
+                                    reminder.id
+                                ))
+                            if (!isAlarmTimePast(alarmDateString, 15, 0))
+                                upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                    0,
+                                    StateManager.selectedMedicine!!.name,
+                                    alarmDateString,
+                                    15,
+                                    0,
+                                    reminder.pills,
+                                    reminder.consumeFood,
+                                    generateNotificationId(upcomingReminderAlarmDAO),
+                                    reminder.id
+                                ))
+                            if (!isAlarmTimePast(alarmDateString, 23, 0))
+                                upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                    0,
+                                    StateManager.selectedMedicine!!.name,
+                                    alarmDateString,
+                                    23,
+                                    0,
+                                    reminder.pills,
+                                    reminder.consumeFood,
+                                    generateNotificationId(upcomingReminderAlarmDAO),
+                                    reminder.id
+                                ))
+                        }
+                        12 -> {
+                            if (!isAlarmTimePast(alarmDateString, createdDate.hour, createdDate.minute))
+                                upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                    0,
+                                    StateManager.selectedMedicine!!.name,
+                                    alarmDateString,
+                                    createdDate.hour,
+                                    createdDate.minute,
+                                    reminder.pills,
+                                    reminder.consumeFood,
+                                    generateNotificationId(upcomingReminderAlarmDAO),
+                                    reminder.id
+                                ))
+                            if (dayMore == 0L && createdDate.toLocalDate() == LocalDate.now()) {
+                                if (createdDate.hour < 12) {
+                                    if (!isAlarmTimePast(alarmDateString, createdDate.hour + 12, createdDate.minute))
+                                        upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                            0,
+                                            StateManager.selectedMedicine!!.name,
+                                            alarmDateString,
+                                            createdDate.hour + 12,
+                                            createdDate.minute,
+                                            reminder.pills,
+                                            reminder.consumeFood,
+                                            generateNotificationId(upcomingReminderAlarmDAO),
+                                            reminder.id
+                                        ))
+                                }
+                            }
+                            else {
+                                val alarmHour = if (createdDate.hour < 12) createdDate.hour + 12 else createdDate.hour - 12
+                                if (!isAlarmTimePast(alarmDateString, alarmHour, createdDate.minute))
+                                    upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                                        0,
+                                        StateManager.selectedMedicine!!.name,
+                                        alarmDateString,
+                                        alarmHour,
+                                        createdDate.minute,
+                                        reminder.pills,
+                                        reminder.consumeFood,
+                                        generateNotificationId(upcomingReminderAlarmDAO),
+                                        reminder.id
+                                    ))
+                            }
+                        }
+                    }
+                }
+
+            }
+            else {
+                for (dayMore in 0L until dayDiff step interval.intervalValue.toLong()) {
+                    val alarmDate = createdDate.plusDays(dayMore)
+                    val alarmDateString = SharedMethods.getDDMMYYStringFromDate(alarmDate)
+                    if (!isAlarmTimePast(alarmDateString, createdDate.hour, createdDate.minute))
+                        upcomingReminderAlarmDAO.insertAlarm(UpcomingReminderAlarm(
+                            0,
+                            StateManager.selectedMedicine!!.name,
+                            alarmDateString,
+                            createdDate.hour,
+                            createdDate.minute,
+                            reminder.pills,
+                            reminder.consumeFood,
+                            generateNotificationId(upcomingReminderAlarmDAO),
+                            reminder.id
+                        ))
                 }
             }
         }
@@ -635,6 +795,68 @@ class ReminderService : Service() {
                         )
                         upcomingReminderAlarmDAO.insertAlarm(upc2)
                         Log.d("Database", upc2.toString())
+                    }
+                }
+            }
+        }
+        fun createAlarmsApi(context: Context, reminder: Reminder, frequency: Frequency) {
+            val endDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.endDateString!!)
+            val createdDate = SharedMethods.getLocalDateTimeFromJSDate(reminder.createdDateString)
+            val dayDiff = Period.between(createdDate.toLocalDate(), endDate.toLocalDate()).days
+            val upcomingReminderAlarmDAO = AppDatabase.getInstance(context).getUpcomingReminderAlarmDao()
+
+            for (dayMore in 0L..dayDiff) {
+                val alarmDate = createdDate.plusDays(dayMore)
+                val alarmDateString = SharedMethods.getDDMMYYStringFromDate(alarmDate)
+                when(frequency.times) {
+                    1 -> {
+                        val upc1 = UpcomingReminderAlarm(
+                            0,
+                            StateManager.selectedMedicine!!.name,
+                            alarmDateString,
+                            createdDate.hour,
+                            createdDate.minute,
+                            reminder.pills,
+                            reminder.consumeFood,
+                            generateNotificationId(upcomingReminderAlarmDAO),
+                            reminder.id
+                        )
+                        if (!isAlarmTimePast(alarmDateString, createdDate.hour, createdDate.minute)) {
+                            upcomingReminderAlarmDAO.insertAlarm(upc1)
+                            Log.d("Database", upc1.toString())
+                        }
+                    }
+                    2 -> {
+                        val upc1 = UpcomingReminderAlarm(
+                            0,
+                            StateManager.selectedMedicine!!.name,
+                            alarmDateString,
+                            8,
+                            0,
+                            reminder.pills,
+                            reminder.consumeFood,
+                            generateNotificationId(upcomingReminderAlarmDAO),
+                            reminder.id
+                        )
+                        if (!isAlarmTimePast(alarmDateString, 8, 0)) {
+                            upcomingReminderAlarmDAO.insertAlarm(upc1)
+                            Log.d("Database", upc1.toString())
+                        }
+                        val upc2 = UpcomingReminderAlarm(
+                            0,
+                            StateManager.selectedMedicine!!.name,
+                            alarmDateString,
+                            20,
+                            0,
+                            reminder.pills,
+                            reminder.consumeFood,
+                            generateNotificationId(upcomingReminderAlarmDAO),
+                            reminder.id
+                        )
+                        if (!isAlarmTimePast(alarmDateString, 20, 0)) {
+                            upcomingReminderAlarmDAO.insertAlarm(upc2)
+                            Log.d("Database", upc2.toString())
+                        }
                     }
                 }
             }
