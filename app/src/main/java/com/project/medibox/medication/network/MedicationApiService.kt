@@ -33,4 +33,12 @@ interface MedicationApiService {
     fun updateInterval(@Header("Authorization") token: String, @Path("id") id: Long, @Body interval: CreateIntervalResource): Call<Interval>
     @DELETE("gateway/v1/reminders/{id}")
     fun deleteReminder(@Header("Authorization") token: String, @Path("id") id: Long): Call<Reminder>
+    @GET("gateway/v1/people/{userId}/alarms/completed")
+    fun getCompletedAlarmsByUserId(@Header("Authorization") token: String, @Path("userId") userId: Long): Call<List<ApiAlarm>>
+    @GET("gateway/v1/people/{userId}/alarms/missed")
+    fun getMissedAlarmsByUserId(@Header("Authorization") token: String, @Path("userId") userId: Long): Call<List<ApiAlarm>>
+    @POST("gateway/v1/alarms/completed")
+    fun saveCompletedAlarm(@Header("Authorization") token: String, @Body alarmResource: CreateApiAlarmResource): Call<ApiAlarm>
+    @POST("gateway/v1/alarms/missed")
+    fun saveMissedAlarm(@Header("Authorization") token: String, @Body alarmResource: CreateApiAlarmResource): Call<ApiAlarm>
 }

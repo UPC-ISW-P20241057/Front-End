@@ -16,6 +16,8 @@ import com.project.medibox.identitymanagement.models.AuthenticationResponse
 import com.project.medibox.identitymanagement.models.LoginCredentials
 import com.project.medibox.identitymanagement.models.User
 import com.project.medibox.identitymanagement.network.UserApiService
+import com.project.medibox.medication.models.ApiAlarm
+import com.project.medibox.medication.network.MedicationApiService
 import com.project.medibox.medication.services.ReminderService
 import com.project.medibox.shared.AppDatabase
 import com.project.medibox.shared.SharedMethods
@@ -89,11 +91,51 @@ class LoginActivity : AppCompatActivity() {
         StateManager.loggedUserId = authenticateResponse.id
         ReminderService.loadAlarmsFromApi(this)
         AppDatabase.getInstance(this).getToneSettingsDao().createSettings()
+        getCompletedAndMissedAlarms()
         val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
         finish()
+    }
+
+    private fun getCompletedAndMissedAlarms() {
+        val medicationApiService = SharedMethods.retrofitServiceBuilder(MedicationApiService::class.java)
+        val completedRequest = medicationApiService.getCompletedAlarmsByUserId(StateManager.authToken, StateManager.loggedUserId)
+        completedRequest.enqueue(object : Callback<List<ApiAlarm>> {
+            override fun onResponse(call: Call<List<ApiAlarm>>, response: Response<List<ApiAlarm>>) {
+                if (response.isSuccessful) {
+                    val completedAlarms = SharedMethods.mapApiAlarmListToCompletedAlarmList(response.body()!!)
+                    completedAlarms.forEach {
+                        AppDatabase.getInstance(this@LoginActivity).getCompletedReminderAlarmDao().insertAlarm(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<ApiAlarm>>, t: Throwable) {
+                Toast.makeText(this@LoginActivity,
+                    getString(R.string.error_while_getting_completed_alarms), Toast.LENGTH_SHORT).show()
+            }
+
+        })
+
+        val missedRequest = medicationApiService.getMissedAlarmsByUserId(StateManager.authToken, StateManager.loggedUserId)
+        missedRequest.enqueue(object : Callback<List<ApiAlarm>> {
+            override fun onResponse(call: Call<List<ApiAlarm>>, response: Response<List<ApiAlarm>>) {
+                if (response.isSuccessful) {
+                    val missedAlarms = SharedMethods.mapApiAlarmListToMissedAlarmList(response.body()!!)
+                    missedAlarms.forEach {
+                        AppDatabase.getInstance(this@LoginActivity).getMissedReminderAlarmDao().insertAlarm(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<ApiAlarm>>, t: Throwable) {
+                Toast.makeText(this@LoginActivity,
+                    getString(R.string.error_while_getting_missed_alarms), Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 }
