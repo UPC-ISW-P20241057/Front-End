@@ -138,4 +138,20 @@
     <string name="error_while_getting_completed_alarms">Ha ocurrido un error al obtener las alarmas completadas.</string>
     <string name="error_while_getting_missed_alarms">Ha ocurrido un error al obtener las alarmas olvidadas.</string>
     <string name="error_while_saving_the_alarm_in_cloud">Ha ocurrido un error al guardar la alarma en la nube.</string>
+    <string name="home">Inicio</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="voice">Voz</string>
+    <string name="calendar">Calendario</string>
+    <string name="january">Enero</string>
+    <string name="february">Febrero</string>
+    <string name="march">Marzo</string>
+    <string name="april">Abril</string>
+    <string name="may">Mayo</string>
+    <string name="june">Junio</string>
+    <string name="july">Julio</string>
+    <string name="august">Agosto</string>
+    <string name="september">Setiembre</string>
+    <string name="october">Octubre</string>
+    <string name="november">Noviembre</string>
+    <string name="december">Diciembre</string>
 </resources>
