@@ -339,7 +339,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvEditTakeWithFood">
 
             <RadioButton
-                android:id="@+id/rbtnFoodYes"
+                android:id="@+id/rbtnFoodEditYes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/palanquin_dark"
@@ -348,7 +348,7 @@
                 android:theme="@style/MediBoxRadioButton" />
 
             <RadioButton
-                android:id="@+id/rbtnFoodNo"
+                android:id="@+id/rbtnFoodEditNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/palanquin_dark"
@@ -357,7 +357,7 @@
                 android:theme="@style/MediBoxRadioButton" />
 
             <RadioButton
-                android:id="@+id/rbtnFoodNotMatter"
+                android:id="@+id/rbtnFoodEditNotMatter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/palanquin_dark"

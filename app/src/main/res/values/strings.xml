@@ -154,4 +154,9 @@
     <string name="october">Octubre</string>
     <string name="november">Noviembre</string>
     <string name="december">Diciembre</string>
+    <string name="password_not_match">Las contraseñas no coinciden.</string>
+    <string name="name_and_lastname_only_have_letters">Tu nombre y apellido solo deben contener letras.</string>
+    <string name="empty_fields">Hay campos vacíos.</string>
+    <string name="invalid_email_format">Formato de email inválido</string>
+    <string name="invalid_phone_number">Número inválido. Se debe componer de 9 dígitos.</string>
 </resources>

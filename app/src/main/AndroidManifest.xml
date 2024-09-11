@@ -48,69 +48,89 @@
             android:exported="false" />
         <activity
             android:name=".medication.controller.activities.NextEditReminderActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".medication.controller.activities.EditReminderActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".medication.controller.activities.MedicationHistoryActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".pillboxmanagement.controller.activities.WiFiInstructionsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
 
         <service
             android:name=".medication.services.ReminderService"
             android:exported="false"
-            android:foregroundServiceType="dataSync" />
+            android:foregroundServiceType="dataSync"
+            android:windowSoftInputMode="adjustPan"/>
         <service
             android:name=".identitymanagement.services.PermanentLoginService"
             android:exported="false"
-            android:foregroundServiceType="dataSync" />
+            android:foregroundServiceType="dataSync"
+            android:windowSoftInputMode="adjustPan"/>
         <service
             android:name=".pillboxmanagement.services.EmptyPillboxService"
             android:exported="false"
-            android:foregroundServiceType="dataSync" />
+            android:foregroundServiceType="dataSync"
+            android:windowSoftInputMode="adjustPan"/>
 
         <activity
             android:name=".medication.controller.activities.MedicationAlarmWithImageActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".pillboxmanagement.controller.activities.EmptyAlarmActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".pillboxmanagement.controller.activities.AlmostEmptyAlarmActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".medication.controller.activities.MedicationAlarmActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".medication.controller.activities.NextNewScheduleActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".medication.controller.activities.NewScheduleActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".home.controller.activities.HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".pillboxmanagement.controller.activities.CustomizeAlarmActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".identitymanagement.controller.activities.RegisterSuccessfullyActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".identitymanagement.controller.activities.RegistrationActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".identitymanagement.controller.activities.LoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".identitymanagement.controller.activities.EditProfileActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".controllers.activities.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

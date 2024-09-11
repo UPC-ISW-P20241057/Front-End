@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -126,6 +127,15 @@ class NextEditReminderActivity : AppCompatActivity() {
         val btnDeletePhoto = findViewById<Button>(R.id.btnDeletePhoto)
         btnDeletePhoto.setOnClickListener {
             deleteMedicinePhoto()
+        }
+        if (SharedMethods.isDarkTheme(this)) {
+            val rbtnFoodYes = findViewById<RadioButton>(R.id.rbtnFoodEditYes)
+            val rbtnFoodNo = findViewById<RadioButton>(R.id.rbtnFoodEditNo)
+            val rbtnFoodNotMatter = findViewById<RadioButton>(R.id.rbtnFoodEditNotMatter)
+
+            rbtnFoodYes.setTextColor(Color.WHITE)
+            rbtnFoodNo.setTextColor(Color.WHITE)
+            rbtnFoodNotMatter.setTextColor(Color.WHITE)
         }
     }
 

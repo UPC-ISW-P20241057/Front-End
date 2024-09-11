@@ -63,42 +63,50 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun saveChanges() {
         val userApiService = SharedMethods.retrofitServiceBuilder(UserApiService::class.java)
+        val emailValidation = SharedMethods.isValidEmail(etEditEmail.text.toString())
+        val numberValidation = SharedMethods.isValidNumberString(etEditCellphone.text.toString())
+        val nameValidation = SharedMethods.containsOnlyLetters(etEditName.text.toString() + etEditLastname.text.toString())
+        val strings = listOf(etEditEmail.text.toString(), etEditPassword.text.toString(), etEditCellphone.text.toString(), etEditName.text.toString(), etEditLastname.text.toString())
+        val stringsNotEmptyValidation = strings.all { it.isNotBlank() }
 
-        val request = userApiService.updateUser(StateManager.authToken, StateManager.loggedUserId, UpdateRequest(
-            etEditEmail.text.toString(),
-            etEditPassword.text.toString(),
-            etEditCellphone.text.toString(),
-            etEditName.text.toString(),
-            etEditLastname.text.toString(),
-        ))
+        if (emailValidation && nameValidation && numberValidation && stringsNotEmptyValidation) {
+            val request = userApiService.updateUser(StateManager.authToken, StateManager.loggedUserId, UpdateRequest(
+                etEditEmail.text.toString(),
+                etEditPassword.text.toString(),
+                etEditCellphone.text.toString(),
+                etEditName.text.toString(),
+                etEditLastname.text.toString(),
+            ))
 
-        request.enqueue(object : Callback<UpdateResponse> {
-            override fun onResponse(call: Call<UpdateResponse>, response: Response<UpdateResponse>) {
-                if (response.isSuccessful && response.body()!!.message == "User updated successfully.") {
-                    Toast.makeText(this@EditProfileActivity,
-                        getString(R.string.user_updated_successfully), Toast.LENGTH_SHORT).show()
-                    StateManager.loggedUser = User(
-                        StateManager.loggedUserId,
-                        etEditEmail.text.toString(),
-                        "User",
-                        etEditCellphone.text.toString(),
-                        etEditName.text.toString(),
-                        etEditLastname.text.toString()
-                    )
-                    AppDatabase.getInstance(this@EditProfileActivity).getLoginCredentialsDao().cleanTable()
-                    AppDatabase.getInstance(this@EditProfileActivity).getLoginCredentialsDao().insertCredentials(
-                        LoginCredentials(null, etEditEmail.text.toString(), etEditPassword.text.toString())
-                    )
-                    finish()
+            request.enqueue(object : Callback<UpdateResponse> {
+                override fun onResponse(call: Call<UpdateResponse>, response: Response<UpdateResponse>) {
+                    if (response.isSuccessful && response.body()!!.message == "User updated successfully.") {
+                        Toast.makeText(this@EditProfileActivity,
+                            getString(R.string.user_updated_successfully), Toast.LENGTH_SHORT).show()
+                        StateManager.loggedUser = User(
+                            StateManager.loggedUserId,
+                            etEditEmail.text.toString(),
+                            "User",
+                            etEditCellphone.text.toString(),
+                            etEditName.text.toString(),
+                            etEditLastname.text.toString()
+                        )
+                        AppDatabase.getInstance(this@EditProfileActivity).getLoginCredentialsDao().cleanTable()
+                        AppDatabase.getInstance(this@EditProfileActivity).getLoginCredentialsDao().insertCredentials(
+                            LoginCredentials(null, etEditEmail.text.toString(), etEditPassword.text.toString())
+                        )
+                        finish()
+                    }
+                    else Toast.makeText(this@EditProfileActivity,
+                        getString(R.string.error_while_updating_user), Toast.LENGTH_SHORT).show()
                 }
-                else Toast.makeText(this@EditProfileActivity,
-                    getString(R.string.error_while_updating_user), Toast.LENGTH_SHORT).show()
-            }
 
-            override fun onFailure(p0: Call<UpdateResponse>, p1: Throwable) {
-                Toast.makeText(this@EditProfileActivity, getString(R.string.error_while_updating_user), Toast.LENGTH_SHORT).show()
-            }
+                override fun onFailure(p0: Call<UpdateResponse>, p1: Throwable) {
+                    Toast.makeText(this@EditProfileActivity, getString(R.string.error_while_updating_user), Toast.LENGTH_SHORT).show()
+                }
 
-        })
+            })
+        }
+        else SharedMethods.updateUserValidationToasts(this, emailValidation, stringsNotEmptyValidation, numberValidation, nameValidation)
     }
 }
