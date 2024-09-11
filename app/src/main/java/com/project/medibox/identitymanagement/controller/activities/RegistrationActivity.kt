@@ -37,8 +37,13 @@ class RegistrationActivity : AppCompatActivity() {
         val etRegPassword = findViewById<EditText>(R.id.etRegPassword)
         val etRepeatRegPassword = findViewById<EditText>(R.id.etRepeatRegPassword)
         val userApiService = SharedMethods.retrofitServiceBuilder(UserApiService::class.java)
-
-        if (etRegPassword.text.toString() == etRepeatRegPassword.text.toString()) {
+        val emailValidation = SharedMethods.isValidEmail(etRegEmail.text.toString())
+        val passwordValidation = etRegPassword.text.toString() == etRepeatRegPassword.text.toString()
+        val numberValidation = SharedMethods.isValidNumberString(etRegPhone.text.toString())
+        val nameValidation = SharedMethods.containsOnlyLetters(etRegName.text.toString() + etRegLastName.text.toString())
+        val strings = listOf(etRegEmail.text.toString(), etRegPassword.text.toString(), etRepeatRegPassword.text.toString(), etRegPhone.text.toString(), etRegName.text.toString(), etRegLastName.text.toString())
+        val stringsNotEmptyValidation = strings.all { it.isNotBlank() }
+        if (emailValidation && passwordValidation && numberValidation && nameValidation && stringsNotEmptyValidation) {
             val request = userApiService.signUp(RegisterRequest(
                 etRegEmail.text.toString(),
                 etRegPassword.text.toString(),
@@ -64,9 +69,8 @@ class RegistrationActivity : AppCompatActivity() {
 
             })
         }
-        else Toast.makeText(this@RegistrationActivity,
-            getString(R.string.validation_errors_occurred), Toast.LENGTH_SHORT).show()
-
+        else
+            SharedMethods.registrationValidationToasts(this, emailValidation, stringsNotEmptyValidation, passwordValidation, numberValidation, nameValidation)
     }
 
     private fun goToRegistrationSuccessfullyActivity() {
