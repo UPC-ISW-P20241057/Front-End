@@ -35,7 +35,8 @@ class MedicationProgressActivity : AppCompatActivity() {
         progressTable = findViewById(R.id.progressTable)
         graphBars = ArrayList()
         hexChars = arrayOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
-        tableHeaders = arrayOf("Medicine", "Taken", "% completed")
+        tableHeaders = arrayOf(getString(R.string.medicine),
+            getString(R.string.taken), getString(R.string.percentage_completed))
         makeGraphAndTable()
     }
 

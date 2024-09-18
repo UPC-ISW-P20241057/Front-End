@@ -38,7 +38,7 @@
           android:layout_height="40dp"
           android:layout_marginStart="36dp"
           android:fontFamily="@font/palanquin_dark"
-          android:text="Menu"
+          android:text="@string/menu"
           android:textSize="26sp"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/tbUpcMed" />
@@ -68,12 +68,12 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="142dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="170dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Schedule Reminder"
+            android:text="@string/create_reminder"
             android:textColor="#FFFFFF"
             android:textSize="26sp" />
 
@@ -105,7 +105,7 @@
             android:layout_marginStart="170dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Customize Alarm"
+            android:text="@string/customize_alarm"
             android:textColor="#575757"
             android:textSize="26sp" />
 
@@ -124,12 +124,12 @@
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_width="132dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="170dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Medication History"
+            android:text="@string/medication_history"
             android:textColor="#575757"
             android:textSize="26sp" />
 
@@ -163,12 +163,12 @@
 
         <TextView
             android:id="@+id/textView6"
-            android:layout_width="139dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="170dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Medication Progress"
+            android:text="@string/medication_progress"
             android:textColor="#575757"
             android:textSize="26sp" />
       </androidx.cardview.widget.CardView>

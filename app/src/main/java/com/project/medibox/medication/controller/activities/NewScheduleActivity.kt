@@ -1,16 +1,20 @@
 package com.project.medibox.medication.controller.activities
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.project.medibox.R
@@ -58,7 +62,7 @@ class NewScheduleActivity : AppCompatActivity() {
                     loadSpinner(response.body()!!)
                 } else Toast.makeText(
                     this@NewScheduleActivity,
-                    "Error al obtener medicinas.",
+                    getString(R.string.error_while_getting_medicines),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -66,7 +70,7 @@ class NewScheduleActivity : AppCompatActivity() {
             override fun onFailure(call: Call<List<Medicine>>, t: Throwable) {
                 Toast.makeText(
                     this@NewScheduleActivity,
-                    "Error al obtener medicinas.1",
+                    getString(R.string.error_while_getting_medicines),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -75,13 +79,40 @@ class NewScheduleActivity : AppCompatActivity() {
 
         val btnSchNext = findViewById<Button>(R.id.btnSchNext)
         btnSchNext.setOnClickListener {
-            checkConflictingMedicine()
+            if (selectedMedicine!!.name == "Otro") selectCustomMedicine()
+            else checkConflictingMedicine()
         }
+    }
+
+    private fun selectCustomMedicine() {
+        val customMedicineDialog = Dialog(this)
+        customMedicineDialog.setContentView(R.layout.dialog_custom_medicine)
+        customMedicineDialog.window!!.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        customMedicineDialog.window!!.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.bg_dialog_generic_options))
+        customMedicineDialog.setCancelable(true)
+        val etCustomMedicineName = customMedicineDialog.findViewById<EditText>(R.id.etCustomMedicineName)
+        val btnAcceptCustomMedicine = customMedicineDialog.findViewById<Button>(R.id.btnAcceptCustomMedicine)
+
+        btnAcceptCustomMedicine.setOnClickListener {
+            if (etCustomMedicineName.toString().isBlank())
+                Toast.makeText(this, getString(R.string.write_medicine_name), Toast.LENGTH_SHORT).show()
+            else {
+                StateManager.customMedicine = etCustomMedicineName.text.toString()
+                goToNextActivity()
+                customMedicineDialog.dismiss()
+            }
+        }
+
+        customMedicineDialog.show()
     }
 
     private fun loadSpinner(medicines: List<Medicine>) {
         optionsSpinner.visibility = View.VISIBLE
-        val options = medicines.map { it.name }
+        val options = medicines.map { it.name }.sorted().toMutableList()
+        if (options.contains(getString(R.string.other))) {
+            options.remove(getString(R.string.other))
+            options.add(getString(R.string.other))
+        }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         optionsSpinner.adapter = adapter
@@ -147,7 +178,7 @@ class NewScheduleActivity : AppCompatActivity() {
         } else {
             Toast.makeText(
                 this@NewScheduleActivity,
-                "Please select a medicine.",
+                getString(R.string.please_select_a_medicine),
                 Toast.LENGTH_SHORT
             ).show()
         }

@@ -37,8 +37,13 @@ class RegistrationActivity : AppCompatActivity() {
         val etRegPassword = findViewById<EditText>(R.id.etRegPassword)
         val etRepeatRegPassword = findViewById<EditText>(R.id.etRepeatRegPassword)
         val userApiService = SharedMethods.retrofitServiceBuilder(UserApiService::class.java)
-
-        if (etRegPassword.text.toString() == etRepeatRegPassword.text.toString()) {
+        val emailValidation = SharedMethods.isValidEmail(etRegEmail.text.toString())
+        val passwordValidation = etRegPassword.text.toString() == etRepeatRegPassword.text.toString()
+        val numberValidation = SharedMethods.isValidNumberString(etRegPhone.text.toString())
+        val nameValidation = SharedMethods.containsOnlyLetters(etRegName.text.toString() + etRegLastName.text.toString())
+        val strings = listOf(etRegEmail.text.toString(), etRegPassword.text.toString(), etRepeatRegPassword.text.toString(), etRegPhone.text.toString(), etRegName.text.toString(), etRegLastName.text.toString())
+        val stringsNotEmptyValidation = strings.all { it.isNotBlank() }
+        if (emailValidation && passwordValidation && numberValidation && nameValidation && stringsNotEmptyValidation) {
             val request = userApiService.signUp(RegisterRequest(
                 etRegEmail.text.toString(),
                 etRegPassword.text.toString(),
@@ -58,13 +63,14 @@ class RegistrationActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                    Toast.makeText(this@RegistrationActivity, "An error occurred while registration", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@RegistrationActivity,
+                        getString(R.string.an_error_occurred_while_registration), Toast.LENGTH_SHORT).show()
                 }
 
             })
         }
-        else Toast.makeText(this@RegistrationActivity, "Validation errors occurred", Toast.LENGTH_SHORT).show()
-
+        else
+            SharedMethods.registrationValidationToasts(this, emailValidation, stringsNotEmptyValidation, passwordValidation, numberValidation, nameValidation)
     }
 
     private fun goToRegistrationSuccessfullyActivity() {

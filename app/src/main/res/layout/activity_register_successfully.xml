@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="104dp"
         android:fontFamily="@font/palanquin_dark"
-        android:text="New User Registration"
+        android:text="@string/new_user_registration"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,13 +52,13 @@
 
         <Button
             android:id="@+id/btnRegSusLogin"
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:layout_marginStart="85dp"
+            android:layout_marginStart="70dp"
             android:layout_marginTop="330dp"
             android:backgroundTint="#5D46EF"
             android:onClick="goToLoginActivity"
-            android:text="Log In"
+            android:text="@string/login"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             app:cornerRadius="13dp" />
@@ -67,10 +67,10 @@
             android:id="@+id/textView36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="75dp"
+            android:layout_marginStart="60dp"
             android:layout_marginTop="260dp"
             android:fontFamily="@font/palanquin_dark"
-            android:text="Nice Register"
+            android:text="@string/nice_register"
             android:textSize="30sp" />
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,4 +6,5 @@
     <color name="light_purple">#8E7BFF</color>
     <color name="menu_bar_background">#B5B5B5</color>
     <color name="medibox_default">#5D46EF</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

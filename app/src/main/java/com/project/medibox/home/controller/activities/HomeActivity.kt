@@ -1,14 +1,19 @@
 package com.project.medibox.home.controller.activities
 
 import android.Manifest
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -25,6 +30,13 @@ import com.project.medibox.medication.services.ReminderService
 import com.project.medibox.pillboxmanagement.services.EmptyPillboxService
 import com.project.medibox.shared.AppDatabase
 import com.project.medibox.home.controller.fragments.VoiceCommandsFragment
+import com.project.medibox.pillboxmanagement.models.Pillbox
+import com.project.medibox.pillboxmanagement.network.PillboxApiService
+import com.project.medibox.shared.SharedMethods
+import com.project.medibox.shared.StateManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeActivity : AppCompatActivity() {
 
@@ -70,7 +82,60 @@ class HomeActivity : AppCompatActivity() {
                 .commit()
         }
 
-        startServices()
+        val pillboxId = AppDatabase.getInstance(this).getSavedPillboxIdDao().getPillboxId()
+
+        if (pillboxId == null)
+            openSavePillboxDialog()
+        else
+        {
+            StateManager.selectedPillboxId = pillboxId.pillBoxId
+            startServices()
+        }
+    }
+
+    private fun openSavePillboxDialog() {
+        val changePillboxIdDialog = Dialog(this)
+        changePillboxIdDialog.setContentView(R.layout.dialog_change_pillbox_id)
+        changePillboxIdDialog.window!!.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        changePillboxIdDialog.window!!.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.bg_dialog_generic_options))
+        changePillboxIdDialog.setCancelable(false)
+        val etSelectPillboxId = changePillboxIdDialog.findViewById<EditText>(R.id.etSelectPillboxId)
+        val btnAcceptPillboxId = changePillboxIdDialog.findViewById<Button>(R.id.btnAcceptPillboxId)
+
+        btnAcceptPillboxId.setOnClickListener {
+            if (SharedMethods.isStringAnULong(etSelectPillboxId.text.toString())) {
+                val selectedId = etSelectPillboxId.text.toString().toLong()
+                val pillboxApiService = SharedMethods.retrofitServiceBuilder(PillboxApiService::class.java)
+                val request = pillboxApiService.getPillboxData(selectedId)
+                request.enqueue(object : Callback<Pillbox> {
+                    override fun onResponse(call: Call<Pillbox>, response: Response<Pillbox>) {
+                        if (response.isSuccessful) {
+                            AppDatabase.getInstance(this@HomeActivity).getSavedPillboxIdDao().savePillboxId(selectedId)
+                            StateManager.selectedPillboxId = selectedId
+                            Toast.makeText(this@HomeActivity,
+                                getString(R.string.pillbox_id_saved_correctly), Toast.LENGTH_SHORT).show()
+                            startServices()
+                            changePillboxIdDialog.dismiss()
+                        }
+                        else
+                            Toast.makeText(this@HomeActivity,
+                                getString(R.string.invalid_id), Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onFailure(call: Call<Pillbox>, t: Throwable) {
+                        Toast.makeText(this@HomeActivity,
+                            getString(R.string.error_occurred_in_pillbox_server), Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+
+            }
+            else
+                Toast.makeText(this,
+                    getString(R.string.introduce_valid_natural_number), Toast.LENGTH_SHORT).show()
+        }
+
+        changePillboxIdDialog.show()
     }
 
     override fun onRequestPermissionsResult(
@@ -81,7 +146,7 @@ class HomeActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_DENIED)
-            Toast.makeText(this, "You need to provide microphone permission to invoke voice commands.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.need_microphone_permission), Toast.LENGTH_SHORT).show()
     }
 
     private fun startServices() {
@@ -119,6 +184,7 @@ class HomeActivity : AppCompatActivity() {
         stopServices()
         AppDatabase.getInstance(this).getLoginCredentialsDao().cleanTable()
         AppDatabase.getInstance(this).getToneSettingsDao().cleanSettings()
+        AppDatabase.getInstance(this).getSavedPillboxIdDao().deletePillboxId()
         val intent = Intent(this, LoginActivity::class.java) // Cambia a LoginActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

@@ -3,6 +3,8 @@ package com.project.medibox.medication.controller.activities
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
@@ -57,10 +59,15 @@ class MedicationHistoryActivity : AppCompatActivity(), OnItemClickListener<Histo
             reminderDialog = Dialog(this)
             reminderDialog.setContentView(R.layout.dialog_reminder_options)
             reminderDialog.window!!.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            reminderDialog.window!!.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.bg_dialog_reminder_options))
+            reminderDialog.window!!.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.bg_dialog_generic_options))
             reminderDialog.setCancelable(true)
             val btnReminderEdit = reminderDialog.findViewById<Button>(R.id.btnReminderEdit)
             val btnReminderDelete = reminderDialog.findViewById<Button>(R.id.btnReminderDelete)
+
+            if (value.reminderId == 0L) {
+                btnReminderEdit.visibility = View.INVISIBLE
+                btnReminderEdit.isEnabled = false
+            }
 
             btnReminderEdit.setOnClickListener {
 
@@ -78,23 +85,36 @@ class MedicationHistoryActivity : AppCompatActivity(), OnItemClickListener<Histo
     }
 
     private fun deleteReminder(reminder: HistoricalReminder) {
-        val medicationApiService = SharedMethods.retrofitServiceBuilder(MedicationApiService::class.java)
-        val request = medicationApiService.deleteReminder(StateManager.authToken, reminder.reminderId)
-        request.enqueue(object: Callback<Reminder> {
-            override fun onResponse(call: Call<Reminder>, response: Response<Reminder>) {
-                if (response.isSuccessful) {
-                    AppDatabase.getInstance(this@MedicationHistoryActivity).getHistoricalReminderDao().deleteById(reminder.id)
-                    AppDatabase.getInstance(this@MedicationHistoryActivity).getUpcomingReminderAlarmDao().deleteAllByReminderId(reminder.reminderId)
-                    Toast.makeText(this@MedicationHistoryActivity, "Reminder deleted successfully.", Toast.LENGTH_SHORT).show()
+        if (reminder.reminderId == 0L) {
+            Log.d("Deleting with local id", reminder.localId.toString())
+            AppDatabase.getInstance(this).getHistoricalReminderDao().deleteByLocalId(reminder.localId)
+            AppDatabase.getInstance(this).getUpcomingReminderAlarmDao().deleteAllByLocalReminderId(reminder.localId)
+            Toast.makeText(this, getString(R.string.reminder_deleted_successfully), Toast.LENGTH_SHORT).show()
+            finish()
+        }
+        else {
+            val medicationApiService = SharedMethods.retrofitServiceBuilder(MedicationApiService::class.java)
+            val request = medicationApiService.deleteReminder(StateManager.authToken, reminder.reminderId)
+            request.enqueue(object: Callback<Reminder> {
+                override fun onResponse(call: Call<Reminder>, response: Response<Reminder>) {
+                    if (response.isSuccessful) {
+                        AppDatabase.getInstance(this@MedicationHistoryActivity).getHistoricalReminderDao().deleteById(reminder.id)
+                        AppDatabase.getInstance(this@MedicationHistoryActivity).getUpcomingReminderAlarmDao().deleteAllByReminderId(reminder.reminderId)
+                        Toast.makeText(this@MedicationHistoryActivity,
+                            getString(R.string.reminder_deleted_successfully), Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                    else Toast.makeText(this@MedicationHistoryActivity,
+                        getString(R.string.error_while_deleting_reminder), Toast.LENGTH_SHORT).show()
+
                 }
-                else Toast.makeText(this@MedicationHistoryActivity, "Error while deleting reminder.", Toast.LENGTH_SHORT).show()
 
-            }
+                override fun onFailure(p0: Call<Reminder>, p1: Throwable) {
+                    Toast.makeText(this@MedicationHistoryActivity, getString(R.string.error_while_deleting_reminder), Toast.LENGTH_SHORT).show()
+                }
 
-            override fun onFailure(p0: Call<Reminder>, p1: Throwable) {
-                Toast.makeText(this@MedicationHistoryActivity, "Error while deleting reminder.", Toast.LENGTH_SHORT).show()
-            }
+            })
+        }
 
-        })
     }
 }

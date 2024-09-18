@@ -1,9 +1,16 @@
 package com.project.medibox.shared
 
 import android.app.Activity
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
+import com.project.medibox.R
+import com.project.medibox.medication.models.ApiAlarm
+import com.project.medibox.medication.models.CompletedReminderAlarm
+import com.project.medibox.medication.models.MissedReminderAlarm
+import com.project.medibox.medication.resources.CreateApiAlarmResource
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
@@ -111,5 +118,110 @@ object SharedMethods {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
             return false
         return activity.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+    }
+    fun isStringAnULong(string: String): Boolean {
+        try {
+            string.toULong()
+            return true
+        }
+        catch (e: NumberFormatException) {
+            return false
+        }
+    }
+    fun mapApiAlarmListToCompletedAlarmList(apiAlarmList: List<ApiAlarm>): List<CompletedReminderAlarm> {
+        return apiAlarmList.map {
+            CompletedReminderAlarm(
+                0,
+                it.medicineName,
+                it.activateDateString,
+                it.activateHour,
+                it.activateMinute,
+                it.consumeFood
+            )
+        }
+    }
+    fun mapApiAlarmListToMissedAlarmList(apiAlarmList: List<ApiAlarm>): List<MissedReminderAlarm> {
+        return apiAlarmList.map {
+            MissedReminderAlarm(
+                0,
+                it.medicineName,
+                it.activateDateString,
+                it.activateHour,
+                it.activateMinute,
+                it.consumeFood
+            )
+        }
+    }
+    fun mapAlarmToCreateApiAlarmRes(alarm: CompletedReminderAlarm, userId: Long = 0): CreateApiAlarmResource {
+        return CreateApiAlarmResource(
+            alarm.medicineName,
+            alarm.activateDateString,
+            alarm.activateHour,
+            alarm.activateMinute,
+            alarm.consumeFood,
+            userId
+        )
+    }
+    fun mapAlarmToCreateApiAlarmRes(alarm: MissedReminderAlarm, userId: Long = 0): CreateApiAlarmResource {
+        return CreateApiAlarmResource(
+            alarm.medicineName,
+            alarm.activateDateString,
+            alarm.activateHour,
+            alarm.activateMinute,
+            alarm.consumeFood,
+            userId
+        )
+    }
+    fun containsOnlyLetters(input: String): Boolean {
+        return input.all { it.isLetter() }
+    }
+    fun isValidEmail(email: String): Boolean {
+        val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()
+        return email.matches(emailRegex)
+    }
+    fun registrationValidationToasts(context: Context,
+                                     emailValidation: Boolean,
+                                     stringsNotEmptyValidation: Boolean,
+                                     passwordValidation: Boolean,
+                                     numberValidation: Boolean,
+                                     nameValidation: Boolean) {
+        Toast.makeText(context,
+            context.getString(R.string.validation_errors_occurred), Toast.LENGTH_SHORT).show()
+        if (!emailValidation)
+            Toast.makeText(context,
+                context.getString(R.string.invalid_email_format), Toast.LENGTH_SHORT).show()
+        if (!stringsNotEmptyValidation)
+            Toast.makeText(context,
+                context.getString(R.string.empty_fields), Toast.LENGTH_SHORT).show()
+        if (!passwordValidation)
+            Toast.makeText(context, context.getString(R.string.password_not_match), Toast.LENGTH_SHORT).show()
+        if (!numberValidation)
+            Toast.makeText(context,
+                context.getString(R.string.invalid_phone_number), Toast.LENGTH_SHORT).show()
+        if (!nameValidation)
+            Toast.makeText(context, context.getString(R.string.name_and_lastname_only_have_letters), Toast.LENGTH_SHORT).show()
+    }
+    fun updateUserValidationToasts(context: Context,
+                                   emailValidation: Boolean,
+                                   stringsNotEmptyValidation: Boolean,
+                                   numberValidation: Boolean,
+                                   nameValidation: Boolean) {
+        Toast.makeText(context,
+            context.getString(R.string.validation_errors_occurred), Toast.LENGTH_SHORT).show()
+        if (!emailValidation)
+            Toast.makeText(context,
+                context.getString(R.string.invalid_email_format), Toast.LENGTH_SHORT).show()
+        if (!stringsNotEmptyValidation)
+            Toast.makeText(context,
+                context.getString(R.string.empty_fields), Toast.LENGTH_SHORT).show()
+        if (!numberValidation)
+            Toast.makeText(context,
+                context.getString(R.string.invalid_phone_number), Toast.LENGTH_SHORT).show()
+        if (!nameValidation)
+            Toast.makeText(context, context.getString(R.string.name_and_lastname_only_have_letters), Toast.LENGTH_SHORT).show()
+    }
+    fun isValidNumberString(input: String): Boolean {
+        val numberRegex = "^[0-9]{1,9}$".toRegex()
+        return input.matches(numberRegex) && input.length == 9
     }
 }

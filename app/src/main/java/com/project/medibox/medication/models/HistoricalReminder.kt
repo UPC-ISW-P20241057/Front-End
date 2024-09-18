@@ -16,5 +16,6 @@ class HistoricalReminder(
     var type: String,
     var typeId: Long,
     var consumeFood: Boolean?,
-    var reminderId: Long
+    var reminderId: Long,
+    var localId: Short = -1
 )

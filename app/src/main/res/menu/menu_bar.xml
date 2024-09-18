@@ -4,21 +4,21 @@
     <item
         android:id="@+id/menu_home"
         android:icon="@mipmap/home_grey"
-        android:title="Home" />
+        android:title="@string/home" />
     <item
         android:id="@+id/menu_dashboard"
         android:icon="@mipmap/dashboard_grey"
-        android:title="Dashboard" />
+        android:title="@string/dashboard" />
     <item
         android:id="@+id/menu_voice"
         android:icon="@mipmap/microphone"
-        android:title="Voice" />
+        android:title="@string/voice" />
     <item
         android:id="@+id/menu_calendar"
         android:icon="@mipmap/calendar_grey"
-        android:title="Calendar" />
+        android:title="@string/calendar" />
     <item
         android:id="@+id/menu_profile"
         android:icon="@mipmap/profile_grey"
-        android:title="Profile" />
+        android:title="@string/profile" />
 </menu>

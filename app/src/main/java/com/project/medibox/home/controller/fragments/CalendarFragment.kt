@@ -99,12 +99,32 @@ class CalendarFragment : Fragment() {
         }
         calendarView.monthScrollListener = object : MonthScrollListener {
             override fun invoke(month: CalendarMonth) {
+                /*val monthStr = month.yearMonth.month.toString().lowercase()
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }*/
                 val monthStr = month.yearMonth.month.toString().lowercase()
-                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+                val translatedMonth = translateMonth(monthStr)
                 val yearStr = month.yearMonth.year
-                tvMonth.text = "$monthStr $yearStr"
+                tvMonth.text = "$translatedMonth $yearStr"
             }
 
         }
     }
+    private fun translateMonth(monthStr: String): String {
+        return when (monthStr) {
+            "january" -> getString(R.string.january)
+            "february" -> getString(R.string.february)
+            "march" -> getString(R.string.march)
+            "april" -> getString(R.string.april)
+            "may" -> getString(R.string.may)
+            "june" -> getString(R.string.june)
+            "july" -> getString(R.string.july)
+            "august" -> getString(R.string.august)
+            "september" -> getString(R.string.september)
+            "october" -> getString(R.string.october)
+            "november" -> getString(R.string.november)
+            "december" -> getString(R.string.december)
+            else -> ""
+        }
+    }
+
 }
