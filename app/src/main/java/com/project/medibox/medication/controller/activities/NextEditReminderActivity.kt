@@ -480,7 +480,7 @@ class NextEditReminderActivity : AppCompatActivity() {
                 } else now
                 updateDate = LocalDateTime.of(updateDate.toLocalDate(), createHour)
                 val endDateString: String? = when(lapseType) {
-                    getString(R.string.days) -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusDays(lapseTime.toLong()))
+                    getString(R.string.days) -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusDays(lapseTime.toLong() - 1L))
                     getString(R.string.weeks) -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
                     else -> null
                 }

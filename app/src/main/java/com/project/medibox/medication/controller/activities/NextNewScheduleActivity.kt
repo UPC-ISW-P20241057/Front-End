@@ -603,7 +603,7 @@ class NextNewScheduleActivity : AppCompatActivity() {
                     createdDate = createdDate.plusDays(1)
                 }
                 val endDateString: String? = when(lapseType) {
-                    getString(R.string.days) -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusDays(lapseTime.toLong()))
+                    getString(R.string.days) -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusDays(lapseTime.toLong() - 1L))
                     getString(R.string.weeks) -> SharedMethods.getJSDateFromLocalDateTime(createdDate.plusWeeks(lapseTime.toLong()))
                     else -> null
                 }
