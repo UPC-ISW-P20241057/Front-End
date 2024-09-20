@@ -172,8 +172,8 @@ object SharedMethods {
             userId
         )
     }
-    fun containsOnlyLetters(input: String): Boolean {
-        return input.all { it.isLetter() }
+    fun containsOnlyLettersAndSpaces(input: String): Boolean {
+        return input.all { it.isLetter() || it.isWhitespace() }
     }
     fun isValidEmail(email: String): Boolean {
         val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()
@@ -187,19 +187,21 @@ object SharedMethods {
                                      nameValidation: Boolean) {
         Toast.makeText(context,
             context.getString(R.string.validation_errors_occurred), Toast.LENGTH_SHORT).show()
-        if (!emailValidation)
-            Toast.makeText(context,
-                context.getString(R.string.invalid_email_format), Toast.LENGTH_SHORT).show()
         if (!stringsNotEmptyValidation)
             Toast.makeText(context,
                 context.getString(R.string.empty_fields), Toast.LENGTH_SHORT).show()
-        if (!passwordValidation)
-            Toast.makeText(context, context.getString(R.string.password_not_match), Toast.LENGTH_SHORT).show()
-        if (!numberValidation)
-            Toast.makeText(context,
-                context.getString(R.string.invalid_phone_number), Toast.LENGTH_SHORT).show()
-        if (!nameValidation)
-            Toast.makeText(context, context.getString(R.string.name_and_lastname_only_have_letters), Toast.LENGTH_SHORT).show()
+        else {
+            if (!emailValidation)
+                Toast.makeText(context,
+                    context.getString(R.string.invalid_email_format), Toast.LENGTH_SHORT).show()
+            if (!passwordValidation)
+                Toast.makeText(context, context.getString(R.string.password_not_match), Toast.LENGTH_SHORT).show()
+            if (!numberValidation)
+                Toast.makeText(context,
+                    context.getString(R.string.invalid_phone_number), Toast.LENGTH_SHORT).show()
+            if (!nameValidation)
+                Toast.makeText(context, context.getString(R.string.name_and_lastname_only_have_letters), Toast.LENGTH_SHORT).show()
+        }
     }
     fun updateUserValidationToasts(context: Context,
                                    emailValidation: Boolean,
@@ -208,17 +210,19 @@ object SharedMethods {
                                    nameValidation: Boolean) {
         Toast.makeText(context,
             context.getString(R.string.validation_errors_occurred), Toast.LENGTH_SHORT).show()
-        if (!emailValidation)
-            Toast.makeText(context,
-                context.getString(R.string.invalid_email_format), Toast.LENGTH_SHORT).show()
         if (!stringsNotEmptyValidation)
             Toast.makeText(context,
                 context.getString(R.string.empty_fields), Toast.LENGTH_SHORT).show()
-        if (!numberValidation)
-            Toast.makeText(context,
-                context.getString(R.string.invalid_phone_number), Toast.LENGTH_SHORT).show()
-        if (!nameValidation)
-            Toast.makeText(context, context.getString(R.string.name_and_lastname_only_have_letters), Toast.LENGTH_SHORT).show()
+        else {
+            if (!emailValidation)
+                Toast.makeText(context,
+                    context.getString(R.string.invalid_email_format), Toast.LENGTH_SHORT).show()
+            if (!numberValidation)
+                Toast.makeText(context,
+                    context.getString(R.string.invalid_phone_number), Toast.LENGTH_SHORT).show()
+            if (!nameValidation)
+                Toast.makeText(context, context.getString(R.string.name_and_lastname_only_have_letters), Toast.LENGTH_SHORT).show()
+        }
     }
     fun isValidNumberString(input: String): Boolean {
         val numberRegex = "^[0-9]{1,9}$".toRegex()
