@@ -66,7 +66,7 @@ class EditProfileActivity : AppCompatActivity() {
         val formattedEmail = etEditEmail.text.toString().lowercase()
         val emailValidation = SharedMethods.isValidEmail(formattedEmail)
         val numberValidation = SharedMethods.isValidNumberString(etEditCellphone.text.toString())
-        val nameValidation = SharedMethods.containsOnlyLetters(etEditName.text.toString() + etEditLastname.text.toString())
+        val nameValidation = SharedMethods.containsOnlyLettersAndSpaces(etEditName.text.toString() + etEditLastname.text.toString())
         val strings = listOf(formattedEmail, etEditPassword.text.toString(), etEditCellphone.text.toString(), etEditName.text.toString(), etEditLastname.text.toString())
         val stringsNotEmptyValidation = strings.all { it.isNotBlank() }
 

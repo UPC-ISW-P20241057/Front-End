@@ -41,8 +41,10 @@ class RegistrationActivity : AppCompatActivity() {
         val emailValidation = SharedMethods.isValidEmail(formattedEmail)
         val passwordValidation = etRegPassword.text.toString() == etRepeatRegPassword.text.toString()
         val numberValidation = SharedMethods.isValidNumberString(etRegPhone.text.toString())
-        val nameValidation = SharedMethods.containsOnlyLetters(etRegName.text.toString() + etRegLastName.text.toString())
-        val strings = listOf(etRegEmail.text.toString(), etRegPassword.text.toString(), etRepeatRegPassword.text.toString(), etRegPhone.text.toString(), etRegName.text.toString(), etRegLastName.text.toString())
+        val name = etRegName.text.toString().trim()
+        val lastName = etRegLastName.text.toString().trim()
+        val nameValidation = SharedMethods.containsOnlyLettersAndSpaces(name + lastName)
+        val strings = listOf(etRegEmail.text.toString(), etRegPassword.text.toString(), etRepeatRegPassword.text.toString(), etRegPhone.text.toString(), name, lastName)
         val stringsNotEmptyValidation = strings.all { it.isNotBlank() }
         if (emailValidation && passwordValidation && numberValidation && nameValidation && stringsNotEmptyValidation) {
             val request = userApiService.signUp(RegisterRequest(
@@ -50,8 +52,8 @@ class RegistrationActivity : AppCompatActivity() {
                 etRegPassword.text.toString(),
                 "User",
                 etRegPhone.text.toString(),
-                etRegName.text.toString(),
-                etRegLastName.text.toString()
+                name,
+                lastName
             ))
             request.enqueue(object : Callback<RegisterResponse> {
                 override fun onResponse(
