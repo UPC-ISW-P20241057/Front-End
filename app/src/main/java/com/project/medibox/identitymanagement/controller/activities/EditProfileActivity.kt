@@ -63,15 +63,16 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun saveChanges() {
         val userApiService = SharedMethods.retrofitServiceBuilder(UserApiService::class.java)
-        val emailValidation = SharedMethods.isValidEmail(etEditEmail.text.toString())
+        val formattedEmail = etEditEmail.text.toString().lowercase()
+        val emailValidation = SharedMethods.isValidEmail(formattedEmail)
         val numberValidation = SharedMethods.isValidNumberString(etEditCellphone.text.toString())
         val nameValidation = SharedMethods.containsOnlyLetters(etEditName.text.toString() + etEditLastname.text.toString())
-        val strings = listOf(etEditEmail.text.toString(), etEditPassword.text.toString(), etEditCellphone.text.toString(), etEditName.text.toString(), etEditLastname.text.toString())
+        val strings = listOf(formattedEmail, etEditPassword.text.toString(), etEditCellphone.text.toString(), etEditName.text.toString(), etEditLastname.text.toString())
         val stringsNotEmptyValidation = strings.all { it.isNotBlank() }
 
         if (emailValidation && nameValidation && numberValidation && stringsNotEmptyValidation) {
             val request = userApiService.updateUser(StateManager.authToken, StateManager.loggedUserId, UpdateRequest(
-                etEditEmail.text.toString(),
+                formattedEmail,
                 etEditPassword.text.toString(),
                 etEditCellphone.text.toString(),
                 etEditName.text.toString(),
@@ -85,7 +86,7 @@ class EditProfileActivity : AppCompatActivity() {
                             getString(R.string.user_updated_successfully), Toast.LENGTH_SHORT).show()
                         StateManager.loggedUser = User(
                             StateManager.loggedUserId,
-                            etEditEmail.text.toString(),
+                            formattedEmail,
                             "User",
                             etEditCellphone.text.toString(),
                             etEditName.text.toString(),
@@ -93,7 +94,7 @@ class EditProfileActivity : AppCompatActivity() {
                         )
                         AppDatabase.getInstance(this@EditProfileActivity).getLoginCredentialsDao().cleanTable()
                         AppDatabase.getInstance(this@EditProfileActivity).getLoginCredentialsDao().insertCredentials(
-                            LoginCredentials(null, etEditEmail.text.toString(), etEditPassword.text.toString())
+                            LoginCredentials(null, formattedEmail, etEditPassword.text.toString())
                         )
                         finish()
                     }
