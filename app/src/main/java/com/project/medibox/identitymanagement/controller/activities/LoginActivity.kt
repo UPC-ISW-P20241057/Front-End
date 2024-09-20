@@ -43,11 +43,12 @@ class LoginActivity : AppCompatActivity() {
     }
     fun signIn(view: View){
         val etLoginEmail = findViewById<EditText>(R.id.etLoginEmail)
+        val formattedEmail = etLoginEmail.text.toString().lowercase()
         val etLoginPassword = findViewById<EditText>(R.id.etLoginPassword)
         val userApiService: UserApiService = SharedMethods.retrofitServiceBuilder(UserApiService::class.java)
 
         val request = userApiService.signIn(AuthenticationRequest(
-            etLoginEmail.text.toString(),
+            formattedEmail,
             etLoginPassword.text.toString()
         ))
 

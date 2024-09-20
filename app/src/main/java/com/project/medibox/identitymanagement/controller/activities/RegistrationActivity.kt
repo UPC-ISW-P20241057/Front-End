@@ -37,7 +37,8 @@ class RegistrationActivity : AppCompatActivity() {
         val etRegPassword = findViewById<EditText>(R.id.etRegPassword)
         val etRepeatRegPassword = findViewById<EditText>(R.id.etRepeatRegPassword)
         val userApiService = SharedMethods.retrofitServiceBuilder(UserApiService::class.java)
-        val emailValidation = SharedMethods.isValidEmail(etRegEmail.text.toString())
+        val formattedEmail = etRegEmail.text.toString().lowercase()
+        val emailValidation = SharedMethods.isValidEmail(formattedEmail)
         val passwordValidation = etRegPassword.text.toString() == etRepeatRegPassword.text.toString()
         val numberValidation = SharedMethods.isValidNumberString(etRegPhone.text.toString())
         val nameValidation = SharedMethods.containsOnlyLetters(etRegName.text.toString() + etRegLastName.text.toString())
@@ -45,7 +46,7 @@ class RegistrationActivity : AppCompatActivity() {
         val stringsNotEmptyValidation = strings.all { it.isNotBlank() }
         if (emailValidation && passwordValidation && numberValidation && nameValidation && stringsNotEmptyValidation) {
             val request = userApiService.signUp(RegisterRequest(
-                etRegEmail.text.toString(),
+                formattedEmail,
                 etRegPassword.text.toString(),
                 "User",
                 etRegPhone.text.toString(),
