@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
                     if (response.body()!!.role == "User") {
                         AppDatabase.getInstance(this@LoginActivity).getLoginCredentialsDao().cleanTable()
                         AppDatabase.getInstance(this@LoginActivity).getLoginCredentialsDao().insertCredentials(
-                            LoginCredentials(null, etLoginEmail.text.toString(), etLoginPassword.text.toString())
+                            LoginCredentials(null, formattedEmail, etLoginPassword.text.toString())
                         )
                         goToHome(response.body()!!)
                     }
