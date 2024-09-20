@@ -14,6 +14,8 @@ import com.project.medibox.identitymanagement.models.RegisterRequest
 import com.project.medibox.identitymanagement.models.RegisterResponse
 import com.project.medibox.identitymanagement.network.UserApiService
 import com.project.medibox.shared.SharedMethods
+import okhttp3.ResponseBody.Companion.toResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -62,7 +64,11 @@ class RegistrationActivity : AppCompatActivity() {
                 ) {
                     if(response.isSuccessful)
                         goToRegistrationSuccessfullyActivity()
-                    else Toast.makeText(this@RegistrationActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                    else {
+                        val errorBody = response.errorBody()?.string()
+                        val message = JSONObject(errorBody!!).getString("message")
+                        Toast.makeText(this@RegistrationActivity, message, Toast.LENGTH_SHORT).show()
+                    }
                 }
 
                 override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {

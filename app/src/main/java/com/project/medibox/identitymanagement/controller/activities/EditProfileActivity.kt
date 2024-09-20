@@ -66,8 +66,10 @@ class EditProfileActivity : AppCompatActivity() {
         val formattedEmail = etEditEmail.text.toString().lowercase()
         val emailValidation = SharedMethods.isValidEmail(formattedEmail)
         val numberValidation = SharedMethods.isValidNumberString(etEditCellphone.text.toString())
-        val nameValidation = SharedMethods.containsOnlyLettersAndSpaces(etEditName.text.toString() + etEditLastname.text.toString())
-        val strings = listOf(formattedEmail, etEditPassword.text.toString(), etEditCellphone.text.toString(), etEditName.text.toString(), etEditLastname.text.toString())
+        val name = etEditName.text.toString().trim()
+        val lastName = etEditLastname.text.toString().trim()
+        val nameValidation = SharedMethods.containsOnlyLettersAndSpaces(name + lastName)
+        val strings = listOf(formattedEmail, etEditPassword.text.toString(), etEditCellphone.text.toString(), name, lastName)
         val stringsNotEmptyValidation = strings.all { it.isNotBlank() }
 
         if (emailValidation && nameValidation && numberValidation && stringsNotEmptyValidation) {
@@ -75,8 +77,8 @@ class EditProfileActivity : AppCompatActivity() {
                 formattedEmail,
                 etEditPassword.text.toString(),
                 etEditCellphone.text.toString(),
-                etEditName.text.toString(),
-                etEditLastname.text.toString(),
+                name,
+                lastName,
             ))
 
             request.enqueue(object : Callback<UpdateResponse> {
@@ -89,8 +91,8 @@ class EditProfileActivity : AppCompatActivity() {
                             formattedEmail,
                             "User",
                             etEditCellphone.text.toString(),
-                            etEditName.text.toString(),
-                            etEditLastname.text.toString()
+                            name,
+                            lastName
                         )
                         AppDatabase.getInstance(this@EditProfileActivity).getLoginCredentialsDao().cleanTable()
                         AppDatabase.getInstance(this@EditProfileActivity).getLoginCredentialsDao().insertCredentials(
