@@ -1,5 +1,6 @@
 package com.project.medibox.home.controller.fragments
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognitionListener
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -56,8 +58,22 @@ class VoiceCommandsFragment : Fragment() {
                 handleSpeechBegin()
             }
         }
+        val btnCommands = view.findViewById<Button>(R.id.btnCommands)
+        btnCommands.setOnClickListener {
+            showVoiceCommandsDialog(view)
+        }
 
+    }
 
+    private fun showVoiceCommandsDialog(view: View) {
+        val builder = AlertDialog.Builder(view.context)
+        builder.setTitle(getString(R.string.which_are_available_voice_commands))
+            .setMessage("Editar perfil: Abre la pantalla de editar perfil\nCrear recordatorio: Abre la pantalla para crear recordatorio\nCambiar alarma: Abre la pantalla de cambiar alarma del pastillero\nPastillero: Abre la pantalla que muestra los pasos para conectar el pastillero a Wi-Fi\nCerrar sesión: Cierra la sesión del usuario\nCerrar: Cierra la aplicación\nSalir: Cierra la aplicación")
+            .setPositiveButton(getString(R.string.accept)) { _, _ ->
+
+            }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun initCommands() {
@@ -165,6 +181,9 @@ class VoiceCommandsFragment : Fragment() {
                     homeActivity.signOut()
                 }
                 getString(R.string.voice_exit) -> {
+                    homeActivity.finish()
+                }
+                getString(R.string.voice_close) -> {
                     homeActivity.finish()
                 }
             }

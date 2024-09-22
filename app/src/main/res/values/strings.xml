@@ -78,7 +78,7 @@
     <string name="voice_create_reminder">crear recordatorio</string>
     <string name="voice_change_alarm">cambiar alarma</string>
     <string name="voice_log_out">cerrar sesión</string>
-    <string name="voice_exit">cerrar</string>
+    <string name="voice_exit">salir</string>
     <string name="voice_close">cerrar</string>
     <string name="voice_pillbox">pastillero</string>
     <string name="could_not_recognize_voice_command">No se pudo reconocer el comando %1$s</string>
@@ -161,4 +161,6 @@
     <string name="invalid_phone_number">Número inválido. Se debe componer de 9 dígitos.</string>
     <string name="alarm_info">Intervalos:\nCada 6 horas: 8am, 2pm y 8pm\nCada 8 horas: 7am, 3pm y 11pm\nCada 12 horas: Usted elige la hora\n\nFrecuencias:\nUna vez por día: Usted elige la hora\nDos veces por día: 8am y 8pm</string>
     <string name="how_alarms_are_programmed">¿Cómo se programan las alarmas?</string>
+    <string name="voice_commands">Comandos de voz</string>
+    <string name="which_are_available_voice_commands">¿Cuáles son los comandos de voz disponibles?</string>
 </resources>
