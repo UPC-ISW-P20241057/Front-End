@@ -163,4 +163,6 @@
     <string name="how_alarms_are_programmed">¿Cómo se programan las alarmas?</string>
     <string name="voice_commands">Comandos de voz</string>
     <string name="which_are_available_voice_commands">¿Cuáles son los comandos de voz disponibles?</string>
+    <string name="select_one_alarm">Selecciona una alarma.</string>
+    <string name="changed_alarm_successfully">Alarma cambiada correctamente.</string>
 </resources>
