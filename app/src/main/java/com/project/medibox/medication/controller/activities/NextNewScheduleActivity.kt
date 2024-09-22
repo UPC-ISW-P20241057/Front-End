@@ -2,10 +2,9 @@ package com.project.medibox.medication.controller.activities
 
 import android.Manifest
 import android.app.Activity
-import android.content.ContentValues
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
@@ -17,7 +16,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Spinner
@@ -96,6 +95,8 @@ class NextNewScheduleActivity : AppCompatActivity() {
             insets
         }
 
+        val ivReminderInstructions = findViewById<ImageView>(R.id.ivReminderInstructions)
+
         imageDao = AppDatabase.getInstance(this).getMedicineImageDao()
 
         swInterval = findViewById(R.id.swInterval)
@@ -157,9 +158,25 @@ class NextNewScheduleActivity : AppCompatActivity() {
             rbtnFoodYes.setTextColor(Color.WHITE)
             rbtnFoodNo.setTextColor(Color.WHITE)
             rbtnFoodNotMatter.setTextColor(Color.WHITE)
+
+            ivReminderInstructions.setImageResource(R.mipmap.instructions_white)
+        }
+
+        ivReminderInstructions.setOnClickListener {
+            showReminderInstructionsDialog()
         }
     }
 
+    private fun showReminderInstructionsDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.how_alarms_are_programmed))
+            .setMessage(getString(R.string.alarm_info))
+            .setPositiveButton(getString(R.string.accept)) { _, _ ->
+
+            }
+        val dialog = builder.create()
+        dialog.show()
+    }
 
     private fun enableInterval() {
         spnIntervalTime.isEnabled = true

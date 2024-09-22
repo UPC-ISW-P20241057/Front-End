@@ -159,4 +159,6 @@
     <string name="empty_fields">Hay campos vacíos.</string>
     <string name="invalid_email_format">Formato de email inválido</string>
     <string name="invalid_phone_number">Número inválido. Se debe componer de 9 dígitos.</string>
+    <string name="alarm_info">Intervalos:\nCada 6 horas: 8am, 2pm y 8pm\nCada 8 horas: 7am, 3pm y 11pm\nCada 12 horas: Usted elige la hora\n\nFrecuencias:\nUna vez por día: Usted elige la hora\nDos veces por día: 8am y 8pm</string>
+    <string name="how_alarms_are_programmed">¿Cómo se programan las alarmas?</string>
 </resources>

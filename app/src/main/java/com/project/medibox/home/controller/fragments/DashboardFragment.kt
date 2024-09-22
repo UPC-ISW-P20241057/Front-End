@@ -6,11 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.project.medibox.R
 import com.project.medibox.medication.controller.activities.MedicationHistoryActivity
@@ -52,7 +48,7 @@ class DashboardFragment : Fragment() {
       goToMedicationProcessActivity()
     }
     if (SharedMethods.isDarkTheme(requireActivity())) {
-      ivWifiInstructions.setImageResource(R.mipmap.pillbox_wifi_instructions_white)
+      ivWifiInstructions.setImageResource(R.mipmap.instructions_white)
     }
   }
 
