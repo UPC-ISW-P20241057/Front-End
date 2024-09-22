@@ -48,7 +48,7 @@ class DashboardFragment : Fragment() {
       goToMedicationProcessActivity()
     }
     if (SharedMethods.isDarkTheme(requireActivity())) {
-      ivWifiInstructions.setImageResource(R.mipmap.instructions_white)
+      ivWifiInstructions.setImageResource(R.mipmap.wifi_instructions_white)
     }
   }
 
