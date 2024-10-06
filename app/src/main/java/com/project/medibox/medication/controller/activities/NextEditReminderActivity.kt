@@ -2,6 +2,7 @@ package com.project.medibox.medication.controller.activities
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -14,6 +15,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Spinner
@@ -91,6 +93,7 @@ class NextEditReminderActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val ivReminderEditInstructions = findViewById<ImageView>(R.id.ivReminderEditInstructions)
         reminderType = StateManager.selectedHistoricalReminder.type
         when(reminderType) {
             "Interval" -> showIntervalCard()
@@ -136,7 +139,23 @@ class NextEditReminderActivity : AppCompatActivity() {
             rbtnFoodYes.setTextColor(Color.WHITE)
             rbtnFoodNo.setTextColor(Color.WHITE)
             rbtnFoodNotMatter.setTextColor(Color.WHITE)
+
+            ivReminderEditInstructions.setImageResource(R.mipmap.instructions_white)
         }
+        ivReminderEditInstructions.setOnClickListener {
+            showReminderInstructionsDialog()
+        }
+    }
+
+    private fun showReminderInstructionsDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.how_alarms_are_programmed))
+            .setMessage(getString(R.string.alarm_info))
+            .setPositiveButton(getString(R.string.accept)) { _, _ ->
+
+            }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun deleteMedicinePhoto() {

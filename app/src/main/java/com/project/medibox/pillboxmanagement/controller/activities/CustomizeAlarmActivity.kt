@@ -72,11 +72,11 @@ class CustomizeAlarmActivity : AppCompatActivity() {
     private fun saveChanges() {
         if (selectedAlarm > 0) {
             AppDatabase.getInstance(this).getToneSettingsDao().changeTone(selectedAlarm)
-            Toast.makeText(this, "Changed alarm successfully!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.changed_alarm_successfully), Toast.LENGTH_SHORT).show()
             Log.d("CustomizeAlarmActivity", AppDatabase.getInstance(this).getToneSettingsDao().getSettings().toString())
             finish()
         }
-        else Toast.makeText(this, "Please select one alarm!", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(this, getString(R.string.select_one_alarm), Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {
